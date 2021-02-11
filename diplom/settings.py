@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'diplom_test',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'OPTIONS': {
             'sql_mode': 'traditional',
         }

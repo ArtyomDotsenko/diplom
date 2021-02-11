@@ -3,7 +3,7 @@ from .models import *
 
 
 class OtoplenieAdmin(admin.ModelAdmin):
-    list_display = ('adress', 'organization', 'fact', 'limit', 'created_at', 'updated_at')
+    list_display = ('adress', 'organization', 'fact', 'limit', 'otklonenie', 'otklonenie_percent', 'created_at', 'updated_at')
     search_fields = ('adress', 'created_at')
     list_filter = ('adress', 'created_at')
     readonly_fields = ('created_at', 'updated_at')

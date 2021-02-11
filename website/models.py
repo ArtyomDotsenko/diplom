@@ -42,8 +42,23 @@ class Otoplenie(models.Model):
     organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
     fact = models.FloatField(default=0, verbose_name='Фактическое потребление')
     limit = models.FloatField(default=0, verbose_name='Лимит потребления') # Временно
+    otklonenie = models.FloatField(max_length=30, editable=False)
+    otklonenie_percent = models.FloatField(max_length=30, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Опубликовано")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
+    
+    def get_otklonenie(self):
+        result = self.limit - self.fact
+        return result
+
+    def get_otklonenie_percent(self):
+        result = self.otklonenie - self.limit
+        return result
+
+    def save(self, *args, **kwargs):
+        self.otklonenie = self.get_otklonenie()
+        self.otklonenie_percent = self.get_otklonenie_percent()
+        super(Otoplenie, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.adress)
