@@ -1,6 +1,10 @@
 asgiref==3.3.1
 Django==3.1.6
-django-jet==1.0.8
+django-admin-interface==0.15.3
+django-colorfield==0.4.1
+django-flat-responsive==2.0
+django-flat-theme==1.1.4
+mysqlclient @ file:///C:/Users/Artem/PycharmProjects/diplom/mysqlclient-1.4.6-cp39-cp39-win_amd64.whl
 pytz==2021.1
 six==1.15.0
 sqlparse==0.4.1
