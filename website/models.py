@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -46,7 +47,7 @@ class Otoplenie(models.Model):
     otklonenie_percent = models.FloatField(max_length=30, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Опубликовано")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
-    
+
     def get_otklonenie(self):
         result = self.limit - self.fact
         return result
@@ -66,3 +67,13 @@ class Otoplenie(models.Model):
     class Meta:
         verbose_name = "Отопление"
         verbose_name_plural = "Отопление"
+
+#adress = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    adress = models.ForeignKey('Adress', on_delete=models.CASCADE, null=True, verbose_name="Адрес")
+
+    class Meta:
+        ordering = ['user']
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
