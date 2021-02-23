@@ -25,3 +25,5 @@ class UserLoginForm(AuthenticationForm):
         label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
+class AddDataForm(forms.Form):
+    fact = forms.FloatField(label='Факт по потреблению')

@@ -1,9 +1,12 @@
 from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Otoplenie
-from website.forms import UserRegisterForm, UserLoginForm
+from django.views.generic import ListView
+
+from .models import Consumption, Category
+from website.forms import UserRegisterForm, UserLoginForm, AddDataForm
 
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,12 +17,12 @@ def index(request):
 
 
 class AdressList(LoginRequiredMixin, generic.ListView):
-    model = Otoplenie
+    model = Consumption
     template_name = 'website/main.html'
     context_object_name = 'adress'
 
     def get_queryset(self):
-        return Otoplenie.objects.filter(adress=self.request.user.profile.adress)
+        return Consumption.objects.filter(adress=self.request.user.profile.adress)
 
 
 def register(request):
@@ -52,3 +55,28 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')
+
+
+def add_data_adress(request, category_id):
+    if request.method == 'POST':
+        form = AddDataForm(request.POST)
+        if form.is_valid():
+            fact = form.cleaned_data['fact']
+            adress = request.user.profile.adress
+            organization = request.user.profile.organization
+            limit = 1
+            category = Category.objects.get(pk=category_id)
+            data = Consumption(adress=adress, organization=organization, fact=fact, limit=limit, category=category)
+            data.save()
+            return redirect('index')
+    else:
+        form = AddDataForm()
+        category = Category.objects.get(pk=category_id)
+    context = {'form': form, 'category': category}
+    return render(request, 'website/add_data_adress.html', context)
+
+
+def view_data_adress(request, category_id):
+    data = Consumption.objects.filter(adress=request.user.profile.adress).filter(category=category_id)
+    category = Category.objects.get(pk=category_id)
+    return render(request, 'website/view_consumption.html', {'adress': data, 'category': category})

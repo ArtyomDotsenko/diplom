@@ -2,20 +2,43 @@
 
 {% block title %}Главная{% endblock %}
 
+{#{% block sidebar%}#}
+{#    {% include 'inc/sidebar.html' %}#}
+{#{% endblock %}#}
+
 {% block content %}
     <h1>Главная страница</h1>
 
-     {% if adress %}
-    <ul>
-
-      {% for i in adress %}
-        <p> {{ i.adress }} </p>
-        <p> {{ i.fact }} </p>
-        <p> {{ i.limit }} </p>
-      {% endfor %}
-    </ul>
-    {% else %}
-      <p>There are no adress data.</p>
-    {% endif %}
+{#     {% if adress %}#}
+{#         <table class="table">#}
+{#             <thead>#}
+{#             <tr>#}
+{#                 <th scope="col">#</th>#}
+{#                 <th scope="col">Адрес</th>#}
+{#                 <th scope="col">Факт</th>#}
+{#                 <th scope="col">План</th>#}
+{#                 <th scope="col">Отклонение</th>#}
+{#                 <th scope="col">Отклонение, %</th>#}
+{#                 <th scope="col">Дата добавления</th>#}
+{#             </tr>#}
+{#             </thead>#}
+{#             <tbody>#}
+{#             {% for i in adress %}#}
+{#                 <tr>#}
+{#                     <th scope="row">{{ forloop.counter }}</th>#}
+{#                     <td>{{ i.adress }}</td>#}
+{#                     <td>{{ i.fact }}</td>#}
+{#                     <td>{{ i.limit }}</td>#}
+{#                     <td>{{ i.otklonenie }}</td>#}
+{#                     <td>{{ i.otklonenie_percent }}</td>#}
+{#                     <td>{{ i.created_at }}</td>#}
+{#                 </tr>#}
+{#             {% endfor %}#}
+{#             {% else %}#}
+{#                 <p>There are no adress data.</p>#}
+{#             {% endif %}#}
+{##}
+{#             </tbody>#}
+{#         </table>#}
 
 {% endblock %}

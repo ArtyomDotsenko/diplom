@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 
 
 class Organization(models.Model):
@@ -38,11 +39,27 @@ class Adress(models.Model):
         verbose_name_plural = "Адреса"
 
 
-class Otoplenie(models.Model):
+class Category(models.Model):
+    title = models.CharField(max_length=120, db_index=True, verbose_name="Наименование категории")
+
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'category_id': self.pk})
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Вид энергоресурсов"
+        verbose_name_plural = "Виды энергоресурсов"
+        ordering = ['title']
+
+
+class Consumption(models.Model):
     adress = models.ForeignKey('Adress', on_delete=models.PROTECT, null=False, verbose_name="Адрес")
     organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
     fact = models.FloatField(default=0, verbose_name='Фактическое потребление')
     limit = models.FloatField(default=0, verbose_name='Лимит потребления') # Временно
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name='Категория услуги')
     otklonenie = models.FloatField(max_length=30, editable=False)
     otklonenie_percent = models.FloatField(max_length=30, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Опубликовано")
@@ -59,7 +76,7 @@ class Otoplenie(models.Model):
     def save(self, *args, **kwargs):
         self.otklonenie = self.get_otklonenie()
         self.otklonenie_percent = self.get_otklonenie_percent()
-        super(Otoplenie, self).save(*args, **kwargs)
+        super(Consumption, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.adress)
@@ -68,12 +85,16 @@ class Otoplenie(models.Model):
         verbose_name = "Отопление"
         verbose_name_plural = "Отопление"
 
-#adress = models.CharField(max_length=255, blank=True, null=True, verbose_name='Адрес')
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     adress = models.ForeignKey('Adress', on_delete=models.CASCADE, null=True, verbose_name="Адрес")
+    organization = models.ForeignKey('Organization', on_delete=models.CASCADE, null=True, verbose_name="Организация")
 
     class Meta:
         ordering = ['user']
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+
+

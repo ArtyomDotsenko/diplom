@@ -1,0 +1,10 @@
+{% load energy_type_tags %}
+
+<div class="list-group">
+    {% get_categories as categories %}
+    {% for item in categories %}
+    <a href="{% url 'category_add' item.pk %}" class="list-group-item list-group-item-action" aria-current="true">
+        {{ item.title }}
+    </a>
+    {% endfor %}
+</div>

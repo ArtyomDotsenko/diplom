@@ -22,8 +22,15 @@ class UserAdmin(UserAdmin):
 # admin.site.register(User, UserAdmin)
 
 
-class OtoplenieAdmin(admin.ModelAdmin):
-    list_display = ('adress', 'organization', 'fact', 'limit', 'otklonenie', 'otklonenie_percent', 'created_at', 'updated_at')
+class ConsumptionAdmin(admin.ModelAdmin):
+    list_display = ('organization', 'adress', 'fact', 'limit', 'otklonenie', 'otklonenie_percent', 'created_at', 'updated_at', 'category')
+    search_fields = ('adress', 'created_at')
+    list_filter = ('adress', 'created_at')
+    readonly_fields = ('created_at', 'updated_at')
+
+
+class ElectrichestvoAdmin(admin.ModelAdmin):
+    list_display = ('organization', 'adress', 'fact', 'limit', 'otklonenie', 'otklonenie_percent', 'created_at', 'updated_at')
     search_fields = ('adress', 'created_at')
     list_filter = ('adress', 'created_at')
     readonly_fields = ('created_at', 'updated_at')
@@ -40,8 +47,9 @@ class MainAdressAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Organization)
+admin.site.register(Category)
 admin.site.register(Adress, AdressAdmin)
-admin.site.register(Otoplenie, OtoplenieAdmin)
+admin.site.register(Consumption, ConsumptionAdmin)
 admin.site.register(MainAdress, MainAdressAdmin)
 admin.site.unregister(User)  # Unregister user to add new inline ProfileInline
 admin.site.register(User, UserAdmin)  # Register User with this inline profile
