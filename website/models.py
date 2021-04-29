@@ -56,6 +56,7 @@ class Category(models.Model):
 
 class Consumption(models.Model):
     adress = models.ForeignKey('Adress', on_delete=models.PROTECT, null=False, verbose_name="Адрес")
+    main_adress = models.ForeignKey('MainAdress', on_delete=models.PROTECT, null=False, verbose_name="Адрес")
     organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
     fact = models.FloatField(default=0, verbose_name='Фактическое потребление')
     limit = models.FloatField(default=0, verbose_name='Лимит потребления') # Временно

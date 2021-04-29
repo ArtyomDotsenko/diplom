@@ -1,11 +1,12 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
+from django.db.models import Count, Sum
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.views.generic import ListView
 
-from .models import Consumption, Category
+from .models import Consumption, Category, MainAdress, Adress
 from website.forms import UserRegisterForm, UserLoginForm, AddDataForm
 
 from django.views import generic
@@ -77,6 +78,34 @@ def add_data_adress(request, category_id):
 
 
 def view_data_adress(request, category_id):
-    data = Consumption.objects.filter(adress=request.user.profile.adress).filter(category=category_id)
+    data = Consumption.objects.filter(organization=request.user.profile.organization).filter(category=category_id)
+    main_data = MainAdress.objects.filter(organization=request.user.profile.organization)
+
+    main_adress = MainAdress.objects.annotate(fact=Sum('consumption__fact'), limit=Sum('consumption__limit'))
+    print(main_adress)
+    list_name = []
+    list_fact = []
+    mega_list =[]
+    for main_ad in main_adress:
+        list_name.append(main_ad.name)
+        list_fact.append(main_ad.fact)
+        print(main_ad.name, main_ad.fact)
+        adr = Adress.objects.filter(main_adress=main_ad)
+        con = Consumption.objects.filter(main_adress=main_ad)
+        for item1, item2 in zip(adr, con):
+            list_name.append(item1.name)
+            list_fact.append(item2.fact)
+            print(item1.name, item2.fact)
+    mega_list.append(list_name)
+    mega_list.append(list_fact)
+    for k in mega_list:
+        print(k)
     category = Category.objects.get(pk=category_id)
-    return render(request, 'website/view_consumption.html', {'adress': data, 'category': category})
+    return render(request, 'website/view_consumption.html', {'adress': data, 'category': category, 'data_name': list_name, 'data_fact': list_fact})
+
+
+#
+# def view_data_adress(request, category_id):
+#     data = Consumption.objects.filter(adress=request.user.profile.adress).filter(category=category_id)
+#     category = Category.objects.get(pk=category_id)
+#     return render(request, 'website/view_consumption.html', {'adress': data, 'category': category})

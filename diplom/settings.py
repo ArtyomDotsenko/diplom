@@ -76,14 +76,11 @@ WSGI_APPLICATION = 'diplom.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'diplom_test',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'diplom',
+        'USER': 'finesaucesadmin',
+        'PASSWORD': '8090',
+        'HOST': 'localhost',
     }
 }
 
