@@ -21,20 +21,36 @@
                  <th scope="col">План</th>
                  <th scope="col">Отклонение</th>
                  <th scope="col">Отклонение, %</th>
-                 <th scope="col">Дата добавления</th>
+                 <th scope="col">Сумма, выставленная по счетам, тыс.руб. (с НДС)</th>
              </tr>
              </thead>
              <tbody>
-         {% for i in data_name %}
+         {% for list in list %}
              <tr>
                  <th scope="row">{{ forloop.counter }}</th>
-                 <td>{{ i }}</td>
-             </tr>
-         {% endfor %}
-         {% for i in data_fact %}
-             <tr>
-                 <th scope="row">{{ forloop.counter }}</th>
-                 <td>{{ i }}</td>
+                 {% if list in main_adress %}
+                     {% if list in main_adress %}
+                         <td><strong>{{ list.name }}</strong></td>
+                     {% else %}
+                         <td><strong>{{ list.adress }}</strong></td>
+                     {% endif %}
+                     <td><strong>{{ list.fact }}</strong></td>
+                     <td><strong>{{ list.limit }}</strong></td>
+                     <td><strong>{{ list.otklonenie }}</strong></td>
+                     <td><strong>{{ list.otklonenie_percent }}</strong></td>
+                     <td><strong>{{ list.sum }}</strong></td>
+                 {% else %}
+                     {% if list in main_adress %}
+                         <td>{{ list.name }}</td>
+                     {% else %}
+                         <td>{{ list.adress }}</td>
+                     {% endif %}
+                 <td>{{ list.fact }}</td>
+                 <td>{{ list.limit }}</td>
+                 <td>{{ list.otklonenie }}</td>
+                 <td>{{ list.otklonenie_percent }}</td>
+                 <td>{{ list.sum }}</td>
+                 {% endif %}
              </tr>
          {% endfor %}
 {#             {% for i in adress %}#}

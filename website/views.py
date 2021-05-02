@@ -81,28 +81,80 @@ def view_data_adress(request, category_id):
     data = Consumption.objects.filter(organization=request.user.profile.organization).filter(category=category_id)
     main_data = MainAdress.objects.filter(organization=request.user.profile.organization)
 
-    main_adress = MainAdress.objects.annotate(fact=Sum('consumption__fact'), limit=Sum('consumption__limit'))
-    print(main_adress)
-    list_name = []
-    list_fact = []
-    mega_list =[]
+    main_adress = MainAdress.objects.annotate(fact=Sum('consumption__fact'), limit=Sum('consumption__limit'),
+                                              otklonenie=Sum('consumption__otklonenie'),
+                                              otklonenie_percent=Sum('consumption__otklonenie_percent'),
+                                              sum=Sum('consumption__sum'))
+    main_adr = MainAdress.objects.all()
+    list = []
     for main_ad in main_adress:
-        list_name.append(main_ad.name)
-        list_fact.append(main_ad.fact)
-        print(main_ad.name, main_ad.fact)
-        adr = Adress.objects.filter(main_adress=main_ad)
+        list.append(main_ad)
         con = Consumption.objects.filter(main_adress=main_ad)
-        for item1, item2 in zip(adr, con):
-            list_name.append(item1.name)
-            list_fact.append(item2.fact)
-            print(item1.name, item2.fact)
-    mega_list.append(list_name)
-    mega_list.append(list_fact)
-    for k in mega_list:
-        print(k)
+        for item in con:
+            list.append(item)
     category = Category.objects.get(pk=category_id)
-    return render(request, 'website/view_consumption.html', {'adress': data, 'category': category, 'data_name': list_name, 'data_fact': list_fact})
+    return render(request, 'website/view_consumption.html', {'adress': data, 'category': category, 'list': list,
+                                                             "main_adress": main_adr})
 
+# def view_data_adress(request, category_id):
+#     data = Consumption.objects.filter(organization=request.user.profile.organization).filter(category=category_id)
+#     main_data = MainAdress.objects.filter(organization=request.user.profile.organization)
+#
+#     main_adress = MainAdress.objects.annotate(fact=Sum('consumption__fact'), limit=Sum('consumption__limit'),
+#                                               otklonenie=Sum('consumption__otklonenie'),
+#                                               otklonenie_percent=Sum('consumption__otklonenie_percent'))
+#     main_adr = MainAdress.objects.all()
+#     list = []
+#     list_name = []
+#     for main_ad in main_adress:
+#         list.append(main_ad)
+#         list_name.append(main_ad.name)
+#         adr = Adress.objects.filter(main_adress=main_ad)
+#         con = Consumption.objects.filter(main_adress=main_ad)
+#         for item1, item2 in zip(adr, con):
+#             list_name.append(item1.name)
+#             list.append(item2)
+#
+#     xxx = zip(list_name, list)
+#     category = Category.objects.get(pk=category_id)
+#     return render(request, 'website/view_consumption.html', {'adress': data, 'category': category, 'Hueta': xxx,
+#                                                              "main_adress": main_adr})
+
+# def view_data_adress(request, category_id):
+#     data = Consumption.objects.filter(organization=request.user.profile.organization).filter(category=category_id)
+#     main_data = MainAdress.objects.filter(organization=request.user.profile.organization)
+#
+#     main_adress = MainAdress.objects.annotate(fact=Sum('consumption__fact'), limit=Sum('consumption__limit'),
+#                                               otklonenie=Sum('consumption__otklonenie'),
+#                                               otklonenie_percent=Sum('consumption__otklonenie_percent'))
+#     print(main_adress)
+#     list_name = []
+#     list_fact = []
+#     list_limit = []
+#     list_otklonenie = []
+#     list_otklonenie_percent = []
+#     for main_ad in main_adress:
+#         list_name.append(main_ad.name)
+#         list_fact.append(main_ad.fact)
+#         list_limit.append(main_ad.limit)
+#         list_otklonenie.append(main_ad.otklonenie)
+#         list_otklonenie_percent.append(main_ad.otklonenie_percent)
+#         print(main_ad.name, main_ad.fact, main_ad.limit, main_ad.otklonenie)
+#         adr = Adress.objects.filter(main_adress=main_ad)
+#         print(adr)
+#         con = Consumption.objects.filter(main_adress=main_ad)
+#         for item1, item2 in zip(adr, con):
+#             list_name.append(item1.name)
+#             list_fact.append(item2.fact)
+#             list_limit.append(item2.limit)
+#             list_otklonenie.append(item2.otklonenie)
+#             list_otklonenie_percent.append(item2.otklonenie_percent)
+#             print(item1.name, item2.fact, item2.limit)
+#     xxx = zip(list_name, list_fact, list_limit, list_otklonenie, list_otklonenie_percent)
+#     category = Category.objects.get(pk=category_id)
+#     return render(request, 'website/view_consumption.html', {'adress': data, 'category': category,
+#                                                              'data_name': list_name, 'data_fact': list_fact,
+#                                                              'Hueta': xxx})
 
 #
 # def view_data_adress(request, category_id):
