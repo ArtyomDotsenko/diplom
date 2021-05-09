@@ -1,13 +1,14 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.db.models import Count, Sum
+from django.forms import formset_factory
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.views.generic import ListView
 
-from .models import Consumption, Category, MainAdress, Adress
-from website.forms import UserRegisterForm, UserLoginForm, AddDataForm
+from .models import Consumption, Category, MainAdress, Adress, God, Polugodie, Month
+from website.forms import UserRegisterForm, UserLoginForm, AddDataForm, MonthYear
 
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -59,25 +60,68 @@ def user_logout(request):
 
 
 def add_data_adress(request, category_id):
+    adress_list = Adress.objects.filter(organization__name=request.user.profile.organization.name)
+    str_adress_list = []
+    for i in adress_list:
+        str_adress_list.append(str(i))
+
+    x = len(adress_list)
+    FS = formset_factory(AddDataForm, extra=x)
+
     if request.method == 'POST':
-        form = AddDataForm(request.POST)
-        if form.is_valid():
-            fact = form.cleaned_data['fact']
-            adress = request.user.profile.adress
-            organization = request.user.profile.organization
-            limit = 1
-            category = Category.objects.get(pk=category_id)
-            data = Consumption(adress=adress, organization=organization, fact=fact, limit=limit, category=category)
-            data.save()
+        form = FS(request.POST)
+        m_y_form = MonthYear(request.POST)
+        if all([form.is_valid(), m_y_form.is_valid()]):
+            i = 0
+            month = m_y_form.cleaned_data['month']
+            god = m_y_form.cleaned_data['god']
+            for form in form:
+                if form.cleaned_data:
+                    fact = form.cleaned_data['fact']
+                    adress = adress_list[i]
+                    organization = request.user.profile.organization
+                    limit = form.cleaned_data['limit']
+                    category = Category.objects.get(pk=category_id)
+                    # month = form.cleaned_data['month']
+                    # god = form.cleaned_data['god']
+                    data = Consumption(adress=adress, organization=organization, fact=fact, limit=limit, category=category,
+                               month=month, god=god)
+                    data.save()
+                    i = i + 1
             return redirect('index')
     else:
-        form = AddDataForm()
+        form = FS()
+        m_y_form = MonthYear()
         category = Category.objects.get(pk=category_id)
-    context = {'form': form, 'category': category}
+    context = {'form': form, 'm_y_form': m_y_form, 'category': category, 'adress_list': str_adress_list}
     return render(request, 'website/add_data_adress.html', context)
 
 
+# def add_data_adress(request, category_id):
+#     if request.method == 'POST':
+#         form = AddDataForm(request.POST)
+#         if form.is_valid():
+#             fact = form.cleaned_data['fact']
+#             adress = request.user.profile.adress
+#             organization = request.user.profile.organization
+#             limit = form.cleaned_data['limit']
+#             category = Category.objects.get(pk=category_id)
+#             month = form.cleaned_data['month']
+#             god = form.cleaned_data['god']
+#             data = Consumption(adress=adress, organization=organization, fact=fact, limit=limit, category=category,
+#                                month=month, god=god)
+#             data.save()
+#             return redirect('index')
+#     else:
+#         form = AddDataForm()
+#         category = Category.objects.get(pk=category_id)
+#     context = {'form': form, 'category': category}
+#     return render(request, 'website/add_data_adress.html', context)
+
+
 def view_data_adress(request, category_id):
+    adress_list = Adress.objects.filter(organization__name=request.user.profile.organization.name)
+    print(adress_list)
     data = Consumption.objects.filter(organization=request.user.profile.organization).filter(category=category_id)
     main_data = MainAdress.objects.filter(organization=request.user.profile.organization)
 

@@ -138,6 +138,10 @@ class Consumption(models.Model):
         result = self.otklonenie / self.limit
         return result
 
+    def get_main_adress(self):
+        result = MainAdress.objects.get(adress__name=self.adress)
+        return result
+
     def get_sum(self):
         zona = Zona.objects.get(adress__name=self.adress)
         polugodie = Polugodie.objects.get(month__name=self.month)
@@ -152,6 +156,7 @@ class Consumption(models.Model):
         self.otklonenie = self.get_otklonenie()
         self.otklonenie_percent = self.get_otklonenie_percent()
         self.sum = self.get_sum()
+        self.main_adress = self.get_main_adress()
         super(Consumption, self).save(*args, **kwargs)
 
     def __str__(self):

@@ -10,7 +10,13 @@
     <h2>Добавление данных: {{ category.title }}</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.management_form }}
+
+        <table>
+            {{ m_y_form }}
+            {{ form }}
+        </table>
+
         <button type="submit" class="btn btn-secondary btn-block">Отправить</button>
     </form>
 {% endblock %}
