@@ -3,41 +3,101 @@ from django.db import models
 from django.urls import reverse
 
 
-class Organization(models.Model):
-    name = models.CharField(max_length=150, verbose_name="Имя организации")
+class MunicipalOrganizations(models.Model):
+    title = models.CharField(max_length=150, db_index=True, verbose_name='Наименование муниципальной организации')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
-        verbose_name = "Организация"
-        verbose_name_plural = "Организации"
+        verbose_name = 'муниципальная организация'
+        verbose_name_plural = 'муниципальные организации'
+        ordering = ['title']
 
 
-class MainAdress(models.Model):
-    name = models.CharField(max_length=150, verbose_name="Главный адрес")
-    organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
+class AddressGroup(models.Model):
+    titleOfTheAddressGroup = models.CharField(max_length=150, verbose_name='Наименование группы адресов')
 
     def __str__(self):
-        return self.name
+        return self.titleOfTheAddressGroup
 
     class Meta:
-        verbose_name = "Главный адрес"
-        verbose_name_plural = "Главные адреса"
+        verbose_name = 'группа адресов'
+        verbose_name_plural = 'группы адресов'
+        ordering = ['titleOfTheAddressGroup']
 
 
-class Adress(models.Model):
-    name = models.CharField(max_length=150, verbose_name="Адрес")
-    main_adress = models.ForeignKey('MainAdress', on_delete=models.PROTECT, null=True, verbose_name="Главный адрес")
-    organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
+class Address(models.Model):
+    titleOfTheAddress = models.CharField(max_length=150, verbose_name='Наименование учреждения или адрес расположение объекта')
     zona = models.ForeignKey('Zona', on_delete=models.PROTECT, null=True, verbose_name='Зона')
 
     def __str__(self):
-        return self.name
+        return self.titleOfTheAddress
 
     class Meta:
-        verbose_name = "Адрес"
-        verbose_name_plural = "Адреса"
+        verbose_name = 'адрес'
+        verbose_name_plural = 'адреса'
+        ordering = ['titleOfTheAddress']
+
+
+class AddressOfTheMunicipalOrganizations(models.Model):
+    municipalOrganization = models.ForeignKey('MunicipalOrganizations', on_delete=models.CASCADE, verbose_name='Муниципальная организация', related_name='TheMunicipalOrganizations')
+    address = models.ForeignKey('Address', on_delete=models.CASCADE, verbose_name='Учреждения или адрес расположение объекта', related_name='TheAddress')
+    group = models.ForeignKey('AddressGroup', on_delete=models.CASCADE, verbose_name='Группа адресов', null=True, blank=True, related_name='TheAddressGroup')
+    # addToGroup = models.BooleanField(verbose_name='Дбавить группу адресов?')
+    # group2 = models.ForeignKey('self', on_delete=models.CASCADE, verbose_name='Наименование группы адресов', null=True, blank=True, related_name='TheAddressGroup', )
+
+    def __str__(self):
+        if self.group:
+            return '{0}:  [{1}]'.format(self.group, self.address.titleOfTheAddress)
+        return self.address.titleOfTheAddress
+
+    class Meta:
+        verbose_name = 'адрес муниципальной организации'
+        verbose_name_plural = 'адреса муниципальной организации'
+        ordering = ['municipalOrganization', 'address', 'group']
+
+
+
+
+
+
+
+# class Organization(models.Model):
+#     name = models.CharField(max_length=150, verbose_name="Имя организации")
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = "Организация"
+#         verbose_name_plural = "Организации"
+
+
+# class MainAdress(models.Model):
+#     name = models.CharField(max_length=150, verbose_name="Главный адрес")
+#     organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = "Главный адрес"
+#         verbose_name_plural = "Главные адреса"
+
+
+# class Adress(models.Model):
+#     name = models.CharField(max_length=150, verbose_name="Адрес")
+#     main_adress = models.ForeignKey('MainAdress', on_delete=models.PROTECT, null=True, verbose_name="Главный адрес")
+#     organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
+#     zona = models.ForeignKey('Zona', on_delete=models.PROTECT, null=True, verbose_name='Зона')
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = "Адрес"
+#         verbose_name_plural = "Адреса"
 
 
 class Category(models.Model):
@@ -116,9 +176,10 @@ class God(models.Model):
 
 
 class Consumption(models.Model):
-    adress = models.ForeignKey('Adress', on_delete=models.PROTECT, null=False, verbose_name="Адрес")
-    main_adress = models.ForeignKey('MainAdress', on_delete=models.PROTECT, null=False, verbose_name="Главный адрес")
-    organization = models.ForeignKey('Organization', on_delete=models.PROTECT, null=True, verbose_name="Организация")
+    # adress = models.ForeignKey('Address', on_delete=models.PROTECT, null=False, verbose_name="Адрес")
+    # main_adress = models.ForeignKey('AddressGroup', on_delete=models.PROTECT, null=False, verbose_name="Главный адрес")
+    # organization = models.ForeignKey('MunicipalOrganizations', on_delete=models.PROTECT, null=True, verbose_name="Организация")
+    address_of_the_municipal_organization = models.ForeignKey('AddressOfTheMunicipalOrganizations', on_delete=models.CASCADE)
     fact = models.FloatField(default=0, verbose_name='Фактическое потребление')
     limit = models.FloatField(default=0, verbose_name='Лимит потребления') # Временно
     category = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name='Категория услуги')
@@ -138,12 +199,12 @@ class Consumption(models.Model):
         result = self.otklonenie / self.limit
         return result
 
-    def get_main_adress(self):
-        result = MainAdress.objects.get(adress__name=self.adress)
-        return result
+    # def get_main_adress(self):
+    #     result = AddressGroup.objects.get(adress__name=self.adress)
+    #     return result
 
     def get_sum(self):
-        zona = Zona.objects.get(adress__name=self.adress)
+        zona = Zona.objects.get(address__titleOfTheAddress=self.address_of_the_municipal_organization.address)
         polugodie = Polugodie.objects.get(month__name=self.month)
         result = Tarif.objects.filter(category=self.category).filter(zona=zona).filter(polugodie=polugodie).filter(god=self.god)
         x = result[0]
@@ -156,11 +217,11 @@ class Consumption(models.Model):
         self.otklonenie = self.get_otklonenie()
         self.otklonenie_percent = self.get_otklonenie_percent()
         self.sum = self.get_sum()
-        self.main_adress = self.get_main_adress()
+        # self.main_adress = self.get_main_adress()
         super(Consumption, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.adress)
+        return str(self.address_of_the_municipal_organization)
 
     class Meta:
         verbose_name = "Отопление"
@@ -169,8 +230,9 @@ class Consumption(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    adress = models.ForeignKey('Adress', on_delete=models.CASCADE, null=True, verbose_name="Адрес")
-    organization = models.ForeignKey('Organization', on_delete=models.CASCADE, null=True, verbose_name="Организация")
+    # adress = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, verbose_name="Адрес")
+    adress = models.ForeignKey('AddressOfTheMunicipalOrganizations', on_delete=models.CASCADE, null=True, verbose_name="Адрес")
+    organization = models.ForeignKey('MunicipalOrganizations', on_delete=models.CASCADE, null=True, verbose_name="Организация")
 
     class Meta:
         ordering = ['user']

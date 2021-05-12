@@ -13,7 +13,7 @@ class ProfileInline(admin.StackedInline):
 
 
 class UserAdmin(UserAdmin):
-    inlines = (ProfileInline, )
+    inlines = (ProfileInline,)
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff')
     list_filter = ('is_staff', 'is_superuser', 'is_active')
 
@@ -23,9 +23,9 @@ class UserAdmin(UserAdmin):
 
 
 class ConsumptionAdmin(admin.ModelAdmin):
-    list_display = ('organization', 'adress', 'fact', 'limit', 'otklonenie', 'otklonenie_percent', 'sum', 'created_at', 'updated_at', 'category')
-    search_fields = ('adress', 'created_at')
-    list_filter = ('adress', 'created_at')
+    list_display = ('address_of_the_municipal_organization', 'fact', 'limit', 'otklonenie', 'otklonenie_percent', 'sum', 'created_at', 'updated_at', 'category')
+    search_fields = ('address_of_the_municipal_organization', 'created_at')
+    list_filter = ('address_of_the_municipal_organization', 'created_at')
     readonly_fields = ('created_at', 'updated_at')
 
 
@@ -37,20 +37,23 @@ class ElectrichestvoAdmin(admin.ModelAdmin):
 
 
 class AdressAdmin(admin.ModelAdmin):
-    list_display = ('name', 'main_adress')
+    list_display = ('titleOfTheAddress',)
     # readonly_fields = ('organization',)
 
 
 class MainAdressAdmin(admin.ModelAdmin):
-    list_display = ('adress', 'organization')
-    list_filter = ('organization',)
+    list_display = ('titleOfTheAddressGroup',)
+    # list_filter = ('organization',)
 
 
-admin.site.register(Organization)
+class AddressOfTheMunicipalOrganizationsAdmin(admin.ModelAdmin):
+    list_display = ('municipalOrganization', 'address', 'group')
+
+admin.site.register(MunicipalOrganizations)
 admin.site.register(Category)
-admin.site.register(Adress, AdressAdmin)
+admin.site.register(Address, AdressAdmin)
 admin.site.register(Consumption, ConsumptionAdmin)
-admin.site.register(MainAdress, MainAdressAdmin)
+admin.site.register(AddressGroup, MainAdressAdmin)
 admin.site.register(Tarif)
 admin.site.register(Zona)
 admin.site.register(Month)
@@ -58,3 +61,4 @@ admin.site.register(Polugodie)
 admin.site.register(God)
 admin.site.unregister(User)  # Unregister user to add new inline ProfileInline
 admin.site.register(User, UserAdmin)  # Register User with this inline profile
+admin.site.register(AddressOfTheMunicipalOrganizations, AddressOfTheMunicipalOrganizationsAdmin)

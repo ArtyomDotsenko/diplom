@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Consumption, Month, God
+from .models import Consumption, Month, God, AddressOfTheMunicipalOrganizations
 
 
 class UserRegisterForm(UserCreationForm):

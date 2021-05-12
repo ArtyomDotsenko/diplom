@@ -11,7 +11,6 @@
     <br>
     <br>
 
-     {% if adress %}
          <table class="table">
              <thead>
              <tr>
@@ -25,50 +24,33 @@
              </tr>
              </thead>
              <tbody>
-         {% for list in list %}
+         {% for i in list_group_data %}
              <tr>
-                 <th scope="row">{{ forloop.counter }}</th>
-                 {% if list in main_adress %}
-                     {% if list in main_adress %}
-                         <td><strong>{{ list.name }}</strong></td>
-                     {% else %}
-                         <td><strong>{{ list.adress }}</strong></td>
-                     {% endif %}
-                     <td><strong>{{ list.fact }}</strong></td>
-                     <td><strong>{{ list.limit }}</strong></td>
-                     <td><strong>{{ list.otklonenie }}</strong></td>
-                     <td><strong>{{ list.otklonenie_percent }}</strong></td>
-                     <td><strong>{{ list.sum }}</strong></td>
-                 {% else %}
-                     {% if list in main_adress %}
-                         <td>{{ list.name }}</td>
-                     {% else %}
-                         <td>{{ list.adress }}</td>
-                     {% endif %}
-                 <td>{{ list.fact }}</td>
-                 <td>{{ list.limit }}</td>
-                 <td>{{ list.otklonenie }}</td>
-                 <td>{{ list.otklonenie_percent }}</td>
-                 <td>{{ list.sum }}</td>
-                 {% endif %}
-             </tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            {% if i.address_of_the_municipal_organization.group is Not and i.titleOfTheAddressGroup is Not %}
+                <td>{{ i.address_of_the_municipal_organization.address.titleOfTheAddress }}</td>
+                <td>{{ i.fact }}</td>
+                <td>{{ i.limit }}</td>
+                <td>{{ i.otklonenie }}</td>
+                <td>{{ i.otklonenie_percent }}</td>
+                <td>{{ i.sum }}</td>
+            {% elif i.titleOfTheAddressGroup %}
+                <td><strong>{{ i.titleOfTheAddressGroup }}</strong></td>
+                <td><strong>{{ i.fact }}</strong></td>
+                <td><strong>{{ i.limit }}</strong></td>
+                <td><strong>{{ i.otklonenie }}</strong></td>
+                <td><strong>{{ i.otklonenie_percent }}</strong></td>
+                <td><strong>{{ i.sum }}</strong></td>
+            {% else %}
+                <td>{{ i.address_of_the_municipal_organization.address.titleOfTheAddress }}</td>
+                <td>{{ i.fact }}</td>
+                <td>{{ i.limit }}</td>
+                <td>{{ i.otklonenie }}</td>
+                <td>{{ i.otklonenie_percent }}</td>
+                <td>{{ i.sum }}</td>
+            {% endif %}
          {% endfor %}
-{#             {% for i in adress %}#}
-{##}
-{#                 <tr>#}
-{#                     <th scope="row">{{ forloop.counter }}</th>#}
-{#                     <td>{{ i.adress }}</td>#}
-{#                     <td>{{ i.fact }}</td>#}
-{#                     <td>{{ i.limit }}</td>#}
-{#                     <td>{{ i.otklonenie }}</td>#}
-{#                     <td>{{ i.otklonenie_percent }}</td>#}
-{#                     <td>{{ i.created_at }}</td>#}
-{#                 </tr>#}
-{#             {% endfor %}#}
-             {% else %}
-                 <p>There are no adress data.</p>
-             {% endif %}
-
+             </tr>
              </tbody>
          </table>
 

@@ -1,4 +1,4 @@
-{% extends 'website_base/base_1.html' %}
+`{% extends 'website_base/base_1.html' %}
 
 {% block title %}Регистрация{% endblock %}
 
@@ -12,11 +12,36 @@
         {% csrf_token %}
         {{ form.management_form }}
 
-        <table>
-            {{ m_y_form }}
-            {{ form }}
-        </table>
+        {#        <table>#}
+        {#            {{ m_y_form }}#}
+        {#        </table>#}
+        {##}
+{#        {% for i in adress_list %}#}
+{#            <table>#}
+                {#                {{ m_y_form }}#}
+{#                <tr>#}
+{#                    <th>{{ i.title }}</th>#}
+{#                </tr>#}
+{#            #}
+{#                {% for j in form %}#}
+{#                    {% if i %}#}
+{#                        {{ j }}#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{##}
+{#            </table>#}
+{#        {% endfor %}#}
+                <table>{{ m_y_form }}</table>
+                <hr>
+                {% for i, j in zip_list %}
+                    <p><strong>{{ i }}</strong></p>
+                    <p>{{ j }}</p>
+                {% endfor %}
+{#        {% for i in form %}#}
+{#          {{ i }}#}
+{#        {% endfor %}#}
+
 
         <button type="submit" class="btn btn-secondary btn-block">Отправить</button>
     </form>
-{% endblock %}
+{% endblock %}`
