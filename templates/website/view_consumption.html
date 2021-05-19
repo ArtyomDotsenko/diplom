@@ -7,11 +7,37 @@
 {#{% endblock %}#}
 
 {% block content %}
-    <h1>Просмотр данных: {{ category.title }}</h1>
-    <br>
-    <br>
+    <style>
+        thead tr > th {
+            background: #ccc;
+            position: sticky;
+            padding: .5rem;
+            z-index: 2;
+            top: 0;
+        }
 
-         <table class="table">
+        thead tr > :first-child {
+            z-index: 3;
+            left: 0;
+            top: 0;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tbody tr > :first-child {
+            background: #ddd;
+            position: sticky;
+            z-index: 1;
+            left: 0;
+        }
+    </style>
+
+    <h3>Категория: {{ category.title }} | Год: {{ year.name }} | Месяц: {{ month.name }}</h3>
+
+    <br>
+         <table class="table table-bordered">
              <thead>
              <tr>
                  <th scope="col">#</th>
