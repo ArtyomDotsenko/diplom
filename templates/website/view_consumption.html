@@ -1,6 +1,6 @@
 {% extends 'website_base/base_1.html' %}
 
-{% block title %}Главная{% endblock %}
+{% block title %}{{ month.name }} | {{ year.name }}{% endblock %}
 
 {#{% block sidebar%}#}
 {#    {% include 'inc/sidebar.html' %}#}
@@ -9,7 +9,7 @@
 {% block content %}
     <style>
         thead tr > th {
-            background: #ccc;
+            background: #ddd;
             position: sticky;
             padding: .5rem;
             z-index: 2;
@@ -22,7 +22,7 @@
             top: 0;
         }
 
-        td {
+        td, th {
             text-align: center;
         }
 
@@ -34,8 +34,16 @@
         }
     </style>
 
-    <h3>Категория: {{ category.title }} | Год: {{ year.name }} | Месяц: {{ month.name }}</h3>
+    <h3 style="text-align: left">Категория: {{ category.title }} | Месяц: {{ month.name }} | Год: {{ year.name }}</h3>
+{#     {% if request.user.profile.organization.title == "admin" %}#}
+     {% if request.user.is_superuser %}
+         <form method="post">
+        {% csrf_token %}
+        <p>{{ form }}</p>
 
+        <button type="submit" class="btn btn-secondary btn-block">Смотреть</button>
+    </form>
+    {% endif %}
     <br>
          <table class="table table-bordered">
              <thead>

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Consumption, Month, God, AddressOfTheMunicipalOrganizations
+from .models import Consumption, Month, God, AddressOfTheMunicipalOrganizations, MunicipalOrganizations
 
 
 class UserRegisterForm(UserCreationForm):
@@ -42,3 +42,7 @@ class AddDataForm(forms.Form):
 class MonthYear(forms.Form):
     month = forms.ModelChoiceField(queryset=Month.objects.all(), label='Месяц', widget=forms.Select(attrs={'class': 'form-control'}))
     god = forms.ModelChoiceField(queryset=God.objects.all(), label='Год', widget=forms.Select(attrs={'class': 'form-control'}))
+
+
+class OrganizationsForm(forms.Form):
+    organizations = forms.ModelChoiceField(queryset=MunicipalOrganizations.objects.all(), label='Организация', widget=forms.Select(attrs={'class': 'form-control'}))
