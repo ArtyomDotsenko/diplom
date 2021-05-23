@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Consumption, Month, God, AddressOfTheMunicipalOrganizations, MunicipalOrganizations
+
+from .models import Month, God, MunicipalOrganizations
 
 
 class UserRegisterForm(UserCreationForm):
@@ -26,23 +27,22 @@ class UserLoginForm(AuthenticationForm):
         label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
-# class AddDataForm(forms.ModelForm):
-#     class Meta:
-#         model = Consumption
-#         fields = ['fact', 'limit', 'month', 'god', ]
-
-
 class AddDataForm(forms.Form):
     fact = forms.FloatField(label='Факт по потреблению', widget=forms.NumberInput(attrs={'class': 'form-control'}))
     limit = forms.FloatField(label='Лимит по потреблению', widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    # month = forms.ModelChoiceField(queryset=Month.objects.all(), label='Месяц')
-    # god = forms.ModelChoiceField(queryset=God.objects.all(), label='Год')
+    explanatory_note = forms.FileField(label='Пояснительная записка', required=False, allow_empty_file=True,
+                                       widget=forms.FileInput(attrs={'class': 'form-control'}))
+    note = forms.CharField(label='Краткое описание пояснительной записки', required=False,
+                           widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 
 class MonthYear(forms.Form):
-    month = forms.ModelChoiceField(queryset=Month.objects.all(), label='Месяц', widget=forms.Select(attrs={'class': 'form-control'}))
-    god = forms.ModelChoiceField(queryset=God.objects.all(), label='Год', widget=forms.Select(attrs={'class': 'form-control'}))
+    month = forms.ModelChoiceField(queryset=Month.objects.all(), label='Месяц',
+                                   widget=forms.Select(attrs={'class': 'form-control'}))
+    god = forms.ModelChoiceField(queryset=God.objects.all(), label='Год',
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
 
 
 class OrganizationsForm(forms.Form):
-    organizations = forms.ModelChoiceField(queryset=MunicipalOrganizations.objects.all(), label='Организация', widget=forms.Select(attrs={'class': 'form-control'}))
+    organizations = forms.ModelChoiceField(queryset=MunicipalOrganizations.objects.all(), label='Организация',
+                                           widget=forms.Select(attrs={'class': 'form-control'}))

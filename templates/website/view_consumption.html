@@ -27,8 +27,8 @@
         }
 
         tbody tr > :first-child {
-            background: #ddd;
-            position: sticky;
+            {#background: #ddd;#}
+            {#position: sticky;#}
             z-index: 1;
             left: 0;
         }
@@ -41,50 +41,98 @@
         {% csrf_token %}
         <p>{{ form }}</p>
 
-        <button type="submit" class="btn btn-secondary btn-block">Смотреть</button>
+        <button type="submit" class="btn btn-secondary btn-block" style="background-color: #205493">Смотреть</button>
     </form>
     {% endif %}
     <br>
          <table class="table table-bordered">
              <thead>
              <tr>
-                 <th scope="col">#</th>
+                 <th scope="col">№ п/п</th>
                  <th scope="col">Адрес</th>
                  <th scope="col">Факт</th>
                  <th scope="col">План</th>
                  <th scope="col">Отклонение</th>
                  <th scope="col">Отклонение, %</th>
                  <th scope="col">Сумма, выставленная по счетам, тыс.руб. (с НДС)</th>
+                 <th scope="col">Пояснительная записка</th>
+                 <th scope="col">Примечание к п.з</th>
              </tr>
              </thead>
              <tbody>
          {% for i in list_group_data %}
              <tr>
-            <th scope="row">{{ forloop.counter }}</th>
+{#            <th scope="row">{{ forloop.counter }}</th>#}
             {% if i.address_of_the_municipal_organization.group is Not and i.titleOfTheAddressGroup is Not %}
+                {% if request.user.is_superuser %}
+                    <td>{{ i.address_of_the_municipal_organization.municipalOrganization }}</td>
+                {% else %}
+                    <td>{{ forloop.counter }}</td>
+                {% endif %}
                 <td>{{ i.address_of_the_municipal_organization.address.titleOfTheAddress }}</td>
                 <td>{{ i.fact }}</td>
                 <td>{{ i.limit }}</td>
                 <td>{{ i.otklonenie }}</td>
                 <td>{{ i.otklonenie_percent }}</td>
                 <td>{{ i.sum }}</td>
+                {% if i.explanatory_note %}
+                    <td><a href="http://127.0.0.1:8000/media/{{ i.explanatory_note }}">Скачать</a></td>
+                {% else %}
+                    <td>-</td>
+                {% endif %}
+                {% if i.note %}
+                    <td>{{ i.note }}</td>
+                {% else %}
+                    <td>-</td>
+                {% endif %}
             {% elif i.titleOfTheAddressGroup %}
+                {% if request.user.is_superuser %}
+                    <td><strong>Главный адрес</strong></td>
+                {% else %}
+                    <td><strong>{{ forloop.counter }}</strong></td>
+                {% endif %}
                 <td><strong>{{ i.titleOfTheAddressGroup }}</strong></td>
                 <td><strong>{{ i.fact }}</strong></td>
                 <td><strong>{{ i.limit }}</strong></td>
                 <td><strong>{{ i.otklonenie }}</strong></td>
                 <td><strong>{{ i.otklonenie_percent }}</strong></td>
                 <td><strong>{{ i.sum }}</strong></td>
+                <td><strong>-</strong></td>
+                <td><strong>-</strong></td>
             {% else %}
+                {% if request.user.is_superuser %}
+                    <td>{{ i.address_of_the_municipal_organization.municipalOrganization }}</td>
+                {% else %}
+                    <td>{{ forloop.counter }}</td>
+                {% endif %}
                 <td>{{ i.address_of_the_municipal_organization.address.titleOfTheAddress }}</td>
                 <td>{{ i.fact }}</td>
                 <td>{{ i.limit }}</td>
                 <td>{{ i.otklonenie }}</td>
                 <td>{{ i.otklonenie_percent }}</td>
                 <td>{{ i.sum }}</td>
+                {% if i.explanatory_note %}
+                    <td><a href="http://127.0.0.1:8000/media/{{ i.explanatory_note }}">Скачать</a></td>
+                {% else %}
+                    <td>-</td>
+                {% endif %}
+                {% if i.note %}
+                    <td>{{ i.note }}</td>
+                {% else %}
+                    <td>-</td>
+                {% endif %}
             {% endif %}
          {% endfor %}
              </tr>
+         <tr>
+             <td colspan="2"><b>Итог</b></td>
+             <td><b>{{ sum_data_final.fact }}</b></td>
+             <td><b>{{ sum_data_final.limit }}</b></td>
+             <td><b>{{ sum_data_final.otklonenie }}</b></td>
+             <td><b>{{ sum_data_final.otklonenie_percent }}</b></td>
+             <td><b>{{ sum_data_final.sum }}</b></td>
+             <td colspan="2"><b>-</b></td>
+         </tr>
              </tbody>
          </table>
 

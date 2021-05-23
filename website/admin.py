@@ -49,12 +49,15 @@ class MainAdressAdmin(admin.ModelAdmin):
 class AddressOfTheMunicipalOrganizationsAdmin(admin.ModelAdmin):
     list_display = ('municipalOrganization', 'address', 'group')
 
+class TarifAdmin(admin.ModelAdmin):
+    list_display = ('value', 'category', 'zona', 'polugodie', 'god')
+
 admin.site.register(MunicipalOrganizations)
 admin.site.register(Category)
 admin.site.register(Address, AdressAdmin)
 admin.site.register(Consumption, ConsumptionAdmin)
 admin.site.register(AddressGroup, MainAdressAdmin)
-admin.site.register(Tarif)
+admin.site.register(Tarif, TarifAdmin)
 admin.site.register(Zona)
 admin.site.register(Month)
 admin.site.register(Polugodie)
