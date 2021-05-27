@@ -24,8 +24,8 @@ class UserAdmin(UserAdmin):
 
 class ConsumptionAdmin(admin.ModelAdmin):
     list_display = ('address_of_the_municipal_organization', 'fact', 'limit', 'otklonenie', 'otklonenie_percent', 'sum', 'created_at', 'updated_at', 'category')
-    search_fields = ('address_of_the_municipal_organization', 'created_at')
-    list_filter = ('address_of_the_municipal_organization', 'created_at')
+    search_fields = ('address_of_the_municipal_organization__address', 'created_at')
+    list_filter = ('category', 'god', 'month', 'address_of_the_municipal_organization__address', 'created_at')
     readonly_fields = ('created_at', 'updated_at')
 
 
