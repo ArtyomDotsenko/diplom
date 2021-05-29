@@ -70,6 +70,39 @@
                             {% endfor %}
                         </ul>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Просмотр данных (кварталы)
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% get_categories as categories %}
+                            {% get_years as years %}
+                            {% get_quarters as quarters %}
+
+                            {% for item in categories %}
+                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle"
+                                                                href="#">{{ item.title }}</a>
+                                    <ul class="dropdown-menu">
+                                        {% for item2 in years %}
+                                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle"
+                                                                            href="#">{{ item2.name }}</a>
+                                                <ul class="dropdown-menu">
+                                                    {% for item3 in quarters %}
+                                                        <li><a class="dropdown-item"
+                                                               href="{% url 'category_view_quarter' item.pk item2.pk item3.pk %}">{{ item3.name }} квартал</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
                 {% else %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"

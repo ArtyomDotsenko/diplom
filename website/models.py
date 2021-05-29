@@ -99,6 +99,7 @@ class Zona(models.Model):
 
 class Month(models.Model):
     name = models.TextField(verbose_name='Месяц')
+    quarter = models.ForeignKey('Quarter', on_delete=models.PROTECT, verbose_name='Квартал')
     polugodie = models.ForeignKey('Polugodie', on_delete=models.PROTECT, verbose_name='Полугодие')
 
     def __str__(self):
@@ -107,6 +108,17 @@ class Month(models.Model):
     class Meta:
         verbose_name = "Месяц"
         verbose_name_plural = "Месяцы"
+
+
+class Quarter(models.Model):
+    name = models.IntegerField(verbose_name='Квартал')
+
+    def __str__(self):
+        return str(self.name)
+
+    class Meta:
+        verbose_name = "Квартал"
+        verbose_name_plural = "Кварталы"
 
 
 class Polugodie(models.Model):
@@ -136,8 +148,8 @@ class Consumption(models.Model):
     fact = models.FloatField(default=0, verbose_name='Фактическое потребление')
     limit = models.FloatField(default=0, verbose_name='Лимит потребления') # Временно
     category = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name='Категория услуги')
-    otklonenie = models.FloatField(max_length=30, editable=False,)
-    otklonenie_percent = models.FloatField(max_length=30, editable=False)
+    otklonenie = models.FloatField(max_length=300, editable=False,)
+    otklonenie_percent = models.FloatField(max_length=300, editable=False)
     month = models.ForeignKey('Month', on_delete=models.PROTECT, verbose_name='Месяц', null=True)
     god = models.ForeignKey('God', on_delete=models.PROTECT, null=True, verbose_name='Год')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Опубликовано")
@@ -151,7 +163,7 @@ class Consumption(models.Model):
         return result
 
     def get_otklonenie_percent(self):
-        result = self.otklonenie / self.limit
+        result = (self.otklonenie / self.limit) * 100
         return result
 
     def get_sum(self):

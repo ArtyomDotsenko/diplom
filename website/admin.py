@@ -49,8 +49,13 @@ class MainAdressAdmin(admin.ModelAdmin):
 class AddressOfTheMunicipalOrganizationsAdmin(admin.ModelAdmin):
     list_display = ('municipalOrganization', 'address', 'group')
 
+
 class TarifAdmin(admin.ModelAdmin):
     list_display = ('value', 'category', 'zona', 'polugodie', 'god')
+
+class QuarterAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
 
 admin.site.register(MunicipalOrganizations)
 admin.site.register(Category)
@@ -64,4 +69,5 @@ admin.site.register(Polugodie)
 admin.site.register(God)
 admin.site.unregister(User)  # Unregister user to add new inline ProfileInline
 admin.site.register(User, UserAdmin)  # Register User with this inline profile
+admin.site.register(Quarter, QuarterAdmin)
 admin.site.register(AddressOfTheMunicipalOrganizations, AddressOfTheMunicipalOrganizationsAdmin)
