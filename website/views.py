@@ -327,9 +327,12 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
         form = OrganizationsForm(request.POST)
         if form.is_valid():
             organization = form.cleaned_data['organizations']
-            all_address = AddressOfTheMunicipalOrganizations.objects.filter(
+            all_address_1 = AddressOfTheMunicipalOrganizations.objects.filter(
                 municipalOrganization=organization)
-            all_address_final = all_address.annotate(fact=Sum('consumption__fact',
+            group_data_1 = AddressGroup.objects.filter(
+                TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization__title=organization).distinct()
+
+            all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
                                                               filter=(Q(consumption__month=Month.objects.get(
                                                                   name=one_m),
                                                                         consumption__god=God.objects.get(pk=year_id),
@@ -413,15 +416,11 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                                                                      pk=year_id),
                                                                  consumption__category=Category.objects.get(
                                                                      pk=category_id)))).order_by('address')
-            print('Адреса')
-            for i in all_address_final:
-                print(i, i.fact)
 
+            all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+            all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
 
-
-            filtered_group_data = AddressGroup.objects.filter(
-                TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization__title=organization).distinct()
-            group_data_filtered = filtered_group_data.annotate(
+            group_data_2 = group_data_1.annotate(
                 fact=Sum('TheAddressGroup__consumption__fact',
                          filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
                                    TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
@@ -476,32 +475,32 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                             TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by()
-            # for i in group_data_filtered:
-            #     print(i, i.fact, i.limit)
-            # print(group_data_filtered)
+
+            group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+            group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
 
             list_group_data = []
-            for one_address in all_address_final:
+            for one_address in all_address_4:
                 if (one_address.group is None):
                     list_group_data.append(one_address)
                 elif one_address.group not in list_group_data:
-                    for one_group_data in group_data_filtered:
+                    for one_group_data in group_data_4:
                         list_group_data.append(one_group_data)
-                        table_address_with_group_data = all_address_final.filter(
+                        table_address_with_group_data = all_address_4.filter(
                             group=one_group_data)
                         for k in table_address_with_group_data:
                             list_group_data.append(k)
 
             return render(request, 'website/view_consumption_quarter.html',
-                          {'all_address': all_address_final,
+                          {'all_address': all_address_2,
                            'list_group_data': list_group_data, 'category': category,
                            'year': year, 'quarter': quarter, 'form': form, 'sum_data_final': sum_data_final})
     else:
         form = OrganizationsForm()
-        filtered_group_data = AddressGroup.objects.all().distinct()
+        group_data_1 = AddressGroup.objects.all().distinct()
+        all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
 
-        all_address = AddressOfTheMunicipalOrganizations.objects.all()
-        all_address_final = all_address.annotate(fact=Sum('consumption__fact',
+        all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
                                                           filter=(Q(consumption__month=Month.objects.get(name=one_m),
                                                                     consumption__god=God.objects.get(pk=year_id),
                                                                     consumption__category=Category.objects.get(
@@ -581,8 +580,10 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                                                              consumption__category=Category.objects.get(
                                                                  pk=category_id)))).order_by('address')
 
+        all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+        all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
 
-        group_data_filtered = filtered_group_data.annotate(
+        group_data_2 = group_data_1.annotate(
             fact=Sum('TheAddressGroup__consumption__fact',
                      filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
                                TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
@@ -635,19 +636,22 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by()
 
+        group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+        group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
         list_group_data = []
-        for one_address in all_address_final:
+        for one_address in all_address_4:
             if (one_address.group is None):
                 list_group_data.append(one_address)
             elif one_address.group not in list_group_data:
-                for one_group_data in group_data_filtered:
+                for one_group_data in group_data_4:
                     list_group_data.append(one_group_data)
-                    table_address_with_group_data = all_address_final.filter(
+                    table_address_with_group_data = all_address_4.filter(
                         group=one_group_data)
                     for k in table_address_with_group_data:
                         list_group_data.append(k)
 
         return render(request, 'website/view_consumption_quarter.html',
-                      {'all_address': all_address_final,
+                      {'all_address': all_address_2,
                        'list_group_data': list_group_data, 'category': category,
                        'year': year, 'quarter': quarter, 'form': form, 'sum_data_final': sum_data_final})

@@ -1,4 +1,5 @@
 {% extends 'website_base/base_1.html' %}
+{% load mathfilters %}
 
 {% block title %}{{ quarter.name }} Квартал | {{ year.name }}{% endblock %}
 
@@ -62,29 +63,41 @@
              <tr>
 {#            <th scope="row">{{ forloop.counter }}</th>#}
             {% if i.address_of_the_municipal_organization.group is Not and i.titleOfTheAddressGroup is Not %}
-                {% if request.user.is_superuser %}
+                {% if i.fact > i.limit %}
+                    <td style="color: red">{{ i.municipalOrganization }}</td>
+                    <td style="color: red">{{ i.address }}</td>
+                    <td style="color: red">{{ i.fact }}</td>
+                    <td style="color: red">{{ i.limit }}</td>
+                    <td style="color: red">{{ i.otklonenie_new|floatformat:3 }}</td>
+                    <td style="color: red">{{ i.otklonenie_percent_new|floatformat:3 }}</td>
+                    <td style="color: red">{{ i.sum|floatformat:3 }}</td>
+                {% else %}
                     <td>{{ i.municipalOrganization }}</td>
-                {% else %}
-                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.address }}</td>
+                    <td>{{ i.fact }}</td>
+                    <td>{{ i.limit }}</td>
+                    <td>{{ i.otklonenie_new|floatformat:3 }}</td>
+                    <td>{{ i.otklonenie_percent_new|floatformat:3 }}</td>
+                    <td>{{ i.sum|floatformat:3 }}</td>
                 {% endif %}
-                <td>{{ i.address }}</td>
-                <td>{{ i.fact }}</td>
-                <td>{{ i.limit }}</td>
-                <td>{{ i.otklonenie }}</td>
-                <td>{{ i.otklonenie_percent }}</td>
-                <td>{{ i.sum|floatformat:3 }}</td>
             {% elif i.titleOfTheAddressGroup %}
-                {% if request.user.is_superuser %}
-                    <td><strong>Главный адрес</strong></td>
+                {% if i.fact > i.limit %}
+                    <td style="color: red"><strong>Главный адрес</strong></td>
+                    <td style="color: red"><strong>{{ i.titleOfTheAddressGroup }}</strong></td>
+                    <td style="color: red"><strong>{{ i.fact }}</strong></td>
+                    <td style="color: red"><strong>{{ i.limit }}</strong></td>
+                    <td style="color: red"><strong>{{ i.otklonenie_new }}</strong></td>
+                    <td style="color: red"><strong>{{ i.otklonenie_percent_new }}</strong></td>
+                    <td style="color: red"><strong>{{ i.sum|floatformat:3 }}</strong></td>
                 {% else %}
-                    <td><strong>{{ forloop.counter }}</strong></td>
+                    <td><strong>Главный адрес</strong></td>
+                    <td><strong>{{ i.titleOfTheAddressGroup }}</strong></td>
+                    <td><strong>{{ i.fact }}</strong></td>
+                    <td><strong>{{ i.limit }}</strong></td>
+                    <td><strong>{{ i.otklonenie_new }}</strong></td>
+                    <td><strong>{{ i.otklonenie_percent_new }}</strong></td>
+                    <td><strong>{{ i.sum|floatformat:3 }}</strong></td>
                 {% endif %}
-                <td><strong>{{ i.titleOfTheAddressGroup }}</strong></td>
-                <td><strong>{{ i.fact }}</strong></td>
-                <td><strong>{{ i.limit }}</strong></td>
-                <td><strong>{{ i.otklonenie }}</strong></td>
-                <td><strong>{{ i.otklonenie_percent }}</strong></td>
-                <td><strong>{{ i.sum|floatformat:3 }}</strong></td>
             {% else %}
                 {% if request.user.is_superuser %}
                     <td>{{ i.address_of_the_municipal_organization.municipalOrganization }}</td>
@@ -102,12 +115,11 @@
              </tr>
          <tr>
              <td colspan="2"><b>Итог</b></td>
-             <td><b>{{ sum_data_final.fact }}</b></td>
-             <td><b>{{ sum_data_final.limit }}</b></td>
-             <td><b>{{ sum_data_final.otklonenie }}</b></td>
-             <td><b>{{ sum_data_final.otklonenie_percent }}</b></td>
+             <td><b>{{ sum_data_final.fact|floatformat:3 }}</b></td>
+             <td><b>{{ sum_data_final.limit|floatformat:3 }}</b></td>
+             <td><b>{{ sum_data_final.otklonenie|floatformat:3 }}</b></td>
+             <td><b>{{ sum_data_final.otklonenie_percent|floatformat:3 }}</b></td>
              <td><b>{{ sum_data_final.sum|floatformat:3 }}</b></td>
-
          </tr>
              </tbody>
          </table>
