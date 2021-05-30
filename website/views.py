@@ -68,7 +68,6 @@ def add_data_adress(request, category_id):
     for i in adress_list:
         str_adress_list.append(str(i))
 
-
     x = len(adress_list)
     FS = formset_factory(AddDataForm, extra=x)
     category_for_post = Category.objects.get(pk=category_id)
@@ -309,7 +308,6 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
 
 def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
     year = God.objects.get(pk=year_id)
-    month = Month.objects.get(pk=1)
     new_month = Month.objects.filter(quarter_id=quarter_id)
     one_m = new_month[0]
     two_m = new_month[1]
@@ -319,7 +317,6 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
 
     sum_data = Consumption.objects.filter(category=category_id).filter(
         god=year_id).filter(Q(month=one_m) | Q(month=two_m) | Q(month=three_m))
-    # print(sum_data)
     sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
                                         otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
 
@@ -333,89 +330,89 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                 TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization__title=organization).distinct()
 
             all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
-                                                              filter=(Q(consumption__month=Month.objects.get(
-                                                                  name=one_m),
-                                                                        consumption__god=God.objects.get(pk=year_id),
-                                                                        consumption__category=Category.objects.get(
-                                                                            pk=category_id))) | Q(
-                                                                  consumption__month=Month.objects.get(name=two_m),
+                                                            filter=(Q(consumption__month=Month.objects.get(
+                                                                name=one_m),
+                                                                consumption__god=God.objects.get(pk=year_id),
+                                                                consumption__category=Category.objects.get(
+                                                                    pk=category_id))) | Q(
+                                                                consumption__month=Month.objects.get(name=two_m),
+                                                                consumption__god=God.objects.get(pk=year_id),
+                                                                consumption__category=Category.objects.get(
+                                                                    pk=category_id)
+                                                            ) | Q(consumption__month=Month.objects.get(name=three_m),
                                                                   consumption__god=God.objects.get(pk=year_id),
                                                                   consumption__category=Category.objects.get(
-                                                                      pk=category_id)
-                                                              ) | Q(consumption__month=Month.objects.get(name=three_m),
-                                                                    consumption__god=God.objects.get(pk=year_id),
-                                                                    consumption__category=Category.objects.get(
-                                                                        pk=category_id))),
-                                                     limit=Sum('consumption__limit',
-                                                               filter=(Q(consumption__month=Month.objects.get(
-                                                                   name=one_m),
-                                                                         consumption__god=God.objects.get(pk=year_id),
-                                                                         consumption__category=Category.objects.get(
-                                                                             pk=category_id))) | Q(
-                                                                   consumption__month=Month.objects.get(name=two_m),
-                                                                   consumption__god=God.objects.get(pk=year_id),
-                                                                   consumption__category=Category.objects.get(
-                                                                       pk=category_id)
-                                                               ) | Q(consumption__month=Month.objects.get(name=three_m),
-                                                                     consumption__god=God.objects.get(pk=year_id),
-                                                                     consumption__category=Category.objects.get(
-                                                                         pk=category_id))),
-                                                     otklonenie=Sum('consumption__otklonenie',
-                                                                    filter=(Q(consumption__month=Month.objects.get(
-                                                                        name=one_m),
-                                                                        consumption__god=God.objects.get(pk=year_id),
-                                                                        consumption__category=Category.objects.get(
-                                                                            pk=category_id))) | Q(
-                                                                        consumption__month=Month.objects.get(
-                                                                            name=two_m),
-                                                                        consumption__god=God.objects.get(pk=year_id),
-                                                                        consumption__category=Category.objects.get(
-                                                                            pk=category_id)
-                                                                    ) | Q(
-                                                                        consumption__month=Month.objects.get(
-                                                                            name=three_m),
-                                                                        consumption__god=God.objects.get(pk=year_id),
-                                                                        consumption__category=Category.objects.get(
-                                                                            pk=category_id))),
-                                                     otklonenie_percent=Sum('consumption__otklonenie_percent',
-                                                                            filter=(
-                                                                                   Q(consumption__month=Month.objects.get(
-                                                                                       name=one_m),
-                                                                                       consumption__god=God.objects.get(
-                                                                                           pk=year_id),
-                                                                                       consumption__category=Category.objects.get(
-                                                                                           pk=category_id))) | Q(
-                                                                                consumption__month=Month.objects.get(
-                                                                                    name=two_m),
-                                                                                consumption__god=God.objects.get(
-                                                                                    pk=year_id),
-                                                                                consumption__category=Category.objects.get(
-                                                                                    pk=category_id)
-                                                                            ) | Q(consumption__month=Month.objects.get(
-                                                                                name=three_m),
-                                                                                consumption__god=God.objects.get(
-                                                                                    pk=year_id),
-                                                                                consumption__category=Category.objects.get(
-                                                                                    pk=category_id))),
-                                                     sum=Sum('consumption__sum',
+                                                                      pk=category_id))),
+                                                   limit=Sum('consumption__limit',
                                                              filter=(Q(consumption__month=Month.objects.get(
                                                                  name=one_m),
-                                                                 consumption__god=God.objects.get(
-                                                                     pk=year_id),
+                                                                 consumption__god=God.objects.get(pk=year_id),
                                                                  consumption__category=Category.objects.get(
                                                                      pk=category_id))) | Q(
-                                                                 consumption__month=Month.objects.get(
-                                                                     name=two_m),
-                                                                 consumption__god=God.objects.get(
-                                                                     pk=year_id),
+                                                                 consumption__month=Month.objects.get(name=two_m),
+                                                                 consumption__god=God.objects.get(pk=year_id),
                                                                  consumption__category=Category.objects.get(
                                                                      pk=category_id)
-                                                             ) | Q(consumption__month=Month.objects.get(
-                                                                 name=three_m),
-                                                                 consumption__god=God.objects.get(
-                                                                     pk=year_id),
-                                                                 consumption__category=Category.objects.get(
-                                                                     pk=category_id)))).order_by('address')
+                                                             ) | Q(consumption__month=Month.objects.get(name=three_m),
+                                                                   consumption__god=God.objects.get(pk=year_id),
+                                                                   consumption__category=Category.objects.get(
+                                                                       pk=category_id))),
+                                                   otklonenie=Sum('consumption__otklonenie',
+                                                                  filter=(Q(consumption__month=Month.objects.get(
+                                                                      name=one_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id))) | Q(
+                                                                      consumption__month=Month.objects.get(
+                                                                          name=two_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id)
+                                                                  ) | Q(
+                                                                      consumption__month=Month.objects.get(
+                                                                          name=three_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id))),
+                                                   otklonenie_percent=Sum('consumption__otklonenie_percent',
+                                                                          filter=(
+                                                                                     Q(consumption__month=Month.objects.get(
+                                                                                         name=one_m),
+                                                                                         consumption__god=God.objects.get(
+                                                                                             pk=year_id),
+                                                                                         consumption__category=Category.objects.get(
+                                                                                             pk=category_id))) | Q(
+                                                                              consumption__month=Month.objects.get(
+                                                                                  name=two_m),
+                                                                              consumption__god=God.objects.get(
+                                                                                  pk=year_id),
+                                                                              consumption__category=Category.objects.get(
+                                                                                  pk=category_id)
+                                                                          ) | Q(consumption__month=Month.objects.get(
+                                                                              name=three_m),
+                                                                              consumption__god=God.objects.get(
+                                                                                  pk=year_id),
+                                                                              consumption__category=Category.objects.get(
+                                                                                  pk=category_id))),
+                                                   sum=Sum('consumption__sum',
+                                                           filter=(Q(consumption__month=Month.objects.get(
+                                                               name=one_m),
+                                                               consumption__god=God.objects.get(
+                                                                   pk=year_id),
+                                                               consumption__category=Category.objects.get(
+                                                                   pk=category_id))) | Q(
+                                                               consumption__month=Month.objects.get(
+                                                                   name=two_m),
+                                                               consumption__god=God.objects.get(
+                                                                   pk=year_id),
+                                                               consumption__category=Category.objects.get(
+                                                                   pk=category_id)
+                                                           ) | Q(consumption__month=Month.objects.get(
+                                                               name=three_m),
+                                                               consumption__god=God.objects.get(
+                                                                   pk=year_id),
+                                                               consumption__category=Category.objects.get(
+                                                                   pk=category_id)))).order_by('address')
 
             all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
             all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -455,16 +452,17 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                 otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
                                        filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(
                                            name=one_m),
-                                                 TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                                 TheAddressGroup__consumption__category=Category.objects.get(
-                                                     pk=category_id))) | Q(
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id))) | Q(
                                            TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
                                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
                                            TheAddressGroup__consumption__category=Category.objects.get(
                                                pk=category_id)) | Q(
                                            TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
                                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                           TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id))),
                 sum=Sum('TheAddressGroup__consumption__sum',
                         filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
@@ -501,84 +499,84 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
         all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
 
         all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
-                                                          filter=(Q(consumption__month=Month.objects.get(name=one_m),
-                                                                    consumption__god=God.objects.get(pk=year_id),
-                                                                    consumption__category=Category.objects.get(
-                                                                        pk=category_id))) | Q(
-                                                              consumption__month=Month.objects.get(name=two_m),
+                                                        filter=(Q(consumption__month=Month.objects.get(name=one_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id))) | Q(
+                                                            consumption__month=Month.objects.get(name=two_m),
+                                                            consumption__god=God.objects.get(pk=year_id),
+                                                            consumption__category=Category.objects.get(
+                                                                pk=category_id)
+                                                        ) | Q(consumption__month=Month.objects.get(name=three_m),
                                                               consumption__god=God.objects.get(pk=year_id),
                                                               consumption__category=Category.objects.get(
-                                                                  pk=category_id)
-                                                          ) | Q(consumption__month=Month.objects.get(name=three_m),
-                                                                consumption__god=God.objects.get(pk=year_id),
-                                                                consumption__category=Category.objects.get(
-                                                                    pk=category_id))),
-                                                 limit=Sum('consumption__limit',
-                                                           filter=(Q(consumption__month=Month.objects.get(name=one_m),
-                                                                     consumption__god=God.objects.get(pk=year_id),
-                                                                     consumption__category=Category.objects.get(
-                                                                         pk=category_id))) | Q(
-                                                               consumption__month=Month.objects.get(name=two_m),
-                                                               consumption__god=God.objects.get(pk=year_id),
-                                                               consumption__category=Category.objects.get(
-                                                                   pk=category_id)
-                                                           ) | Q(consumption__month=Month.objects.get(name=three_m),
-                                                                 consumption__god=God.objects.get(pk=year_id),
-                                                                 consumption__category=Category.objects.get(
-                                                                     pk=category_id))),
-                                                 otklonenie=Sum('consumption__otklonenie',
-                                                                filter=(Q(consumption__month=Month.objects.get(
-                                                                    name=one_m),
-                                                                    consumption__god=God.objects.get(pk=year_id),
-                                                                    consumption__category=Category.objects.get(
-                                                                        pk=category_id))) | Q(
-                                                                    consumption__month=Month.objects.get(name=two_m),
-                                                                    consumption__god=God.objects.get(pk=year_id),
-                                                                    consumption__category=Category.objects.get(
-                                                                        pk=category_id)
-                                                                ) | Q(
-                                                                    consumption__month=Month.objects.get(name=three_m),
-                                                                    consumption__god=God.objects.get(pk=year_id),
-                                                                    consumption__category=Category.objects.get(
-                                                                        pk=category_id))),
-                                                 otklonenie_percent=Sum('consumption__otklonenie_percent',
-                                                                        filter=(Q(consumption__month=Month.objects.get(
-                                                                            name=one_m),
-                                                                            consumption__god=God.objects.get(
-                                                                                pk=year_id),
-                                                                            consumption__category=Category.objects.get(
-                                                                                pk=category_id))) | Q(
-                                                                            consumption__month=Month.objects.get(
-                                                                                name=two_m),
-                                                                            consumption__god=God.objects.get(
-                                                                                pk=year_id),
-                                                                            consumption__category=Category.objects.get(
-                                                                                pk=category_id)
-                                                                        ) | Q(consumption__month=Month.objects.get(
-                                                                            name=three_m),
-                                                                            consumption__god=God.objects.get(
-                                                                                pk=year_id),
-                                                                            consumption__category=Category.objects.get(
-                                                                                pk=category_id))),
-                                                 sum=Sum('consumption__sum',
-                                                         filter=(Q(consumption__month=Month.objects.get(
-                                                             name=one_m),
-                                                             consumption__god=God.objects.get(
-                                                                 pk=year_id),
-                                                             consumption__category=Category.objects.get(
-                                                                 pk=category_id))) | Q(
-                                                             consumption__month=Month.objects.get(
-                                                                 name=two_m),
-                                                             consumption__god=God.objects.get(
-                                                                 pk=year_id),
+                                                                  pk=category_id))),
+                                               limit=Sum('consumption__limit',
+                                                         filter=(Q(consumption__month=Month.objects.get(name=one_m),
+                                                                   consumption__god=God.objects.get(pk=year_id),
+                                                                   consumption__category=Category.objects.get(
+                                                                       pk=category_id))) | Q(
+                                                             consumption__month=Month.objects.get(name=two_m),
+                                                             consumption__god=God.objects.get(pk=year_id),
                                                              consumption__category=Category.objects.get(
                                                                  pk=category_id)
-                                                         ) | Q(consumption__month=Month.objects.get(
-                                                             name=three_m),
-                                                             consumption__god=God.objects.get(
-                                                                 pk=year_id),
-                                                             consumption__category=Category.objects.get(
-                                                                 pk=category_id)))).order_by('address')
+                                                         ) | Q(consumption__month=Month.objects.get(name=three_m),
+                                                               consumption__god=God.objects.get(pk=year_id),
+                                                               consumption__category=Category.objects.get(
+                                                                   pk=category_id))),
+                                               otklonenie=Sum('consumption__otklonenie',
+                                                              filter=(Q(consumption__month=Month.objects.get(
+                                                                  name=one_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id))) | Q(
+                                                                  consumption__month=Month.objects.get(name=two_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id)
+                                                              ) | Q(
+                                                                  consumption__month=Month.objects.get(name=three_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id))),
+                                               otklonenie_percent=Sum('consumption__otklonenie_percent',
+                                                                      filter=(Q(consumption__month=Month.objects.get(
+                                                                          name=one_m),
+                                                                          consumption__god=God.objects.get(
+                                                                              pk=year_id),
+                                                                          consumption__category=Category.objects.get(
+                                                                              pk=category_id))) | Q(
+                                                                          consumption__month=Month.objects.get(
+                                                                              name=two_m),
+                                                                          consumption__god=God.objects.get(
+                                                                              pk=year_id),
+                                                                          consumption__category=Category.objects.get(
+                                                                              pk=category_id)
+                                                                      ) | Q(consumption__month=Month.objects.get(
+                                                                          name=three_m),
+                                                                          consumption__god=God.objects.get(
+                                                                              pk=year_id),
+                                                                          consumption__category=Category.objects.get(
+                                                                              pk=category_id))),
+                                               sum=Sum('consumption__sum',
+                                                       filter=(Q(consumption__month=Month.objects.get(
+                                                           name=one_m),
+                                                           consumption__god=God.objects.get(
+                                                               pk=year_id),
+                                                           consumption__category=Category.objects.get(
+                                                               pk=category_id))) | Q(
+                                                           consumption__month=Month.objects.get(
+                                                               name=two_m),
+                                                           consumption__god=God.objects.get(
+                                                               pk=year_id),
+                                                           consumption__category=Category.objects.get(
+                                                               pk=category_id)
+                                                       ) | Q(consumption__month=Month.objects.get(
+                                                           name=three_m),
+                                                           consumption__god=God.objects.get(
+                                                               pk=year_id),
+                                                           consumption__category=Category.objects.get(
+                                                               pk=category_id)))).order_by('address')
 
         all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
         all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -655,3 +653,804 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                       {'all_address': all_address_2,
                        'list_group_data': list_group_data, 'category': category,
                        'year': year, 'quarter': quarter, 'form': form, 'sum_data_final': sum_data_final})
+
+
+def view_polugodie_adress_admin(request, category_id, year_id, polugodie_id):
+    year = God.objects.get(pk=year_id)
+    new_month = Month.objects.filter(polugodie_id=polugodie_id)
+    one_m = new_month[0]
+    two_m = new_month[1]
+    three_m = new_month[2]
+    four_m = new_month[3]
+    five_m = new_month[4]
+    six_m = new_month[5]
+    polugodie = Polugodie.objects.get(id=polugodie_id)
+    category = Category.objects.get(pk=category_id)
+
+    sum_data = Consumption.objects.filter(category=category_id).filter(
+        god=year_id).filter(
+        Q(month=one_m) | Q(month=two_m) | Q(month=three_m) | Q(month=four_m) | Q(month=five_m) | Q(month=six_m))
+    sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                        otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+
+    if request.method == 'POST':
+        form = OrganizationsForm(request.POST)
+        if form.is_valid():
+            organization = form.cleaned_data['organizations']
+            all_address_1 = AddressOfTheMunicipalOrganizations.objects.filter(
+                municipalOrganization=organization)
+            group_data_1 = AddressGroup.objects.filter(
+                TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization__title=organization).distinct()
+
+            all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
+                                                            filter=(Q(consumption__month=Month.objects.get(
+                                                                name=one_m),
+                                                                consumption__god=God.objects.get(pk=year_id),
+                                                                consumption__category=Category.objects.get(
+                                                                    pk=category_id))) |
+                                                                   Q(consumption__month=Month.objects.get(name=two_m),
+                                                                     consumption__god=God.objects.get(pk=year_id),
+                                                                     consumption__category=Category.objects.get(
+                                                                         pk=category_id)) |
+                                                                   Q(consumption__month=Month.objects.get(name=three_m),
+                                                                     consumption__god=God.objects.get(pk=year_id),
+                                                                     consumption__category=Category.objects.get(
+                                                                         pk=category_id)) |
+                                                                   Q(consumption__month=Month.objects.get(
+                                                                       name=four_m),
+                                                                       consumption__god=God.objects.get(pk=year_id),
+                                                                       consumption__category=Category.objects.get(
+                                                                           pk=category_id)) |
+                                                                   Q(consumption__month=Month.objects.get(
+                                                                       name=five_m),
+                                                                       consumption__god=God.objects.get(pk=year_id),
+                                                                       consumption__category=Category.objects.get(
+                                                                           pk=category_id)) |
+                                                                   Q(consumption__month=Month.objects.get(
+                                                                       name=six_m),
+                                                                       consumption__god=God.objects.get(pk=year_id),
+                                                                       consumption__category=Category.objects.get(
+                                                                           pk=category_id))),
+                                                   limit=Sum('consumption__limit',
+                                                             filter=(Q(consumption__month=Month.objects.get(
+                                                                 name=one_m),
+                                                                 consumption__god=God.objects.get(pk=year_id),
+                                                                 consumption__category=Category.objects.get(
+                                                                     pk=category_id))) |
+                                                                    Q(consumption__month=Month.objects.get(
+                                                                        name=two_m),
+                                                                        consumption__god=God.objects.get(pk=year_id),
+                                                                        consumption__category=Category.objects.get(
+                                                                            pk=category_id)) |
+                                                                    Q(consumption__month=Month.objects.get(
+                                                                        name=three_m),
+                                                                        consumption__god=God.objects.get(pk=year_id),
+                                                                        consumption__category=Category.objects.get(
+                                                                            pk=category_id)) |
+                                                                    Q(consumption__month=Month.objects.get(
+                                                                        name=four_m),
+                                                                        consumption__god=God.objects.get(pk=year_id),
+                                                                        consumption__category=Category.objects.get(
+                                                                            pk=category_id)) |
+                                                                    Q(consumption__month=Month.objects.get(
+                                                                        name=five_m),
+                                                                        consumption__god=God.objects.get(pk=year_id),
+                                                                        consumption__category=Category.objects.get(
+                                                                            pk=category_id)) |
+                                                                    Q(consumption__month=Month.objects.get(
+                                                                        name=six_m),
+                                                                        consumption__god=God.objects.get(pk=year_id),
+                                                                        consumption__category=Category.objects.get(
+                                                                            pk=category_id))),
+                                                   otklonenie=Sum('consumption__otklonenie',
+                                                                  filter=(Q(consumption__month=Month.objects.get(
+                                                                      name=one_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id))) |
+                                                                         Q(consumption__month=Month.objects.get(
+                                                                             name=two_m),
+                                                                             consumption__god=God.objects.get(
+                                                                                 pk=year_id),
+                                                                             consumption__category=Category.objects.get(
+                                                                                 pk=category_id)) |
+                                                                         Q(consumption__month=Month.objects.get(
+                                                                             name=three_m),
+                                                                             consumption__god=God.objects.get(
+                                                                                 pk=year_id),
+                                                                             consumption__category=Category.objects.get(
+                                                                                 pk=category_id)) |
+                                                                         Q(consumption__month=Month.objects.get(
+                                                                             name=four_m),
+                                                                             consumption__god=God.objects.get(
+                                                                                 pk=year_id),
+                                                                             consumption__category=Category.objects.get(
+                                                                                 pk=category_id)) |
+                                                                         Q(consumption__month=Month.objects.get(
+                                                                             name=five_m),
+                                                                             consumption__god=God.objects.get(
+                                                                                 pk=year_id),
+                                                                             consumption__category=Category.objects.get(
+                                                                                 pk=category_id)) |
+                                                                         Q(consumption__month=Month.objects.get(
+                                                                             name=six_m),
+                                                                             consumption__god=God.objects.get(
+                                                                                 pk=year_id),
+                                                                             consumption__category=Category.objects.get(
+                                                                                 pk=category_id))),
+                                                   otklonenie_percent=Sum('consumption__otklonenie_percent',
+                                                                          filter=(
+                                                                                     Q(consumption__month=Month.objects.get(
+                                                                                         name=one_m),
+                                                                                         consumption__god=God.objects.get(
+                                                                                             pk=year_id),
+                                                                                         consumption__category=Category.objects.get(
+                                                                                             pk=category_id))) |
+                                                                                 Q(consumption__month=Month.objects.get(
+                                                                                     name=two_m),
+                                                                                     consumption__god=God.objects.get(
+                                                                                         pk=year_id),
+                                                                                     consumption__category=Category.objects.get(
+                                                                                         pk=category_id)) |
+                                                                                 Q(consumption__month=Month.objects.get(
+                                                                                     name=three_m),
+                                                                                     consumption__god=God.objects.get(
+                                                                                         pk=year_id),
+                                                                                     consumption__category=Category.objects.get(
+                                                                                         pk=category_id)) |
+                                                                                 Q(consumption__month=Month.objects.get(
+                                                                                     name=four_m),
+                                                                                     consumption__god=God.objects.get(
+                                                                                         pk=year_id),
+                                                                                     consumption__category=Category.objects.get(
+                                                                                         pk=category_id)) |
+                                                                                 Q(consumption__month=Month.objects.get(
+                                                                                     name=five_m),
+                                                                                     consumption__god=God.objects.get(
+                                                                                         pk=year_id),
+                                                                                     consumption__category=Category.objects.get(
+                                                                                         pk=category_id)) |
+                                                                                 Q(consumption__month=Month.objects.get(
+                                                                                     name=six_m),
+                                                                                     consumption__god=God.objects.get(
+                                                                                         pk=year_id),
+                                                                                     consumption__category=Category.objects.get(
+                                                                                         pk=category_id))),
+                                                   sum=Sum('consumption__sum',
+                                                           filter=(Q(consumption__month=Month.objects.get(
+                                                               name=one_m),
+                                                               consumption__god=God.objects.get(pk=year_id),
+                                                               consumption__category=Category.objects.get(
+                                                                   pk=category_id))) |
+                                                                  Q(consumption__month=Month.objects.get(name=two_m),
+                                                                    consumption__god=God.objects.get(pk=year_id),
+                                                                    consumption__category=Category.objects.get(
+                                                                        pk=category_id)) |
+                                                                  Q(consumption__month=Month.objects.get(
+                                                                      name=three_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id)) |
+                                                                  Q(consumption__month=Month.objects.get(
+                                                                      name=four_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id)) |
+                                                                  Q(consumption__month=Month.objects.get(
+                                                                      name=five_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id)) |
+                                                                  Q(consumption__month=Month.objects.get(
+                                                                      name=six_m),
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id)))).order_by('address')
+
+            all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+            all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+            group_data_2 = group_data_1.annotate(
+                fact=Sum('TheAddressGroup__consumption__fact',
+                         filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))) | Q(
+                             TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                             TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                             TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                             TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                             TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                         ),
+                limit=Sum('TheAddressGroup__consumption__limit',
+                          filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                                    TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                    TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))) | Q(
+                              TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                              TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                              TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                              TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                              TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                          ),
+                otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
+                               filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                         TheAddressGroup__consumption__category=Category.objects.get(
+                                             pk=category_id))) | Q(
+                                   TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                                   TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                                   TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                                   TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                                   TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                               ),
+                otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
+                                       filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(
+                                           name=one_m),
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id))) | Q(
+                                           TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id)) | Q(
+                                           TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id)) | Q(
+                                           TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id)) | Q(
+                                           TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id)) | Q(
+                                           TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                                       ),
+                sum=Sum('TheAddressGroup__consumption__sum',
+                        filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                                  TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                  TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))) | Q(
+                            TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                            TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                            TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                            TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                            TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by()
+
+            group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+            group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+            list_group_data = []
+            for one_address in all_address_4:
+                if (one_address.group is None):
+                    list_group_data.append(one_address)
+                elif one_address.group not in list_group_data:
+                    for one_group_data in group_data_4:
+                        list_group_data.append(one_group_data)
+                        table_address_with_group_data = all_address_4.filter(
+                            group=one_group_data)
+                        for k in table_address_with_group_data:
+                            list_group_data.append(k)
+
+            return render(request, 'website/new_consumption_polugodie.html',
+                          {'all_address': all_address_2,
+                           'list_group_data': list_group_data, 'category': category,
+                           'year': year, 'form': form, 'sum_data_final': sum_data_final, 'polugodie': polugodie})
+    else:
+        form = OrganizationsForm()
+        group_data_1 = AddressGroup.objects.all().distinct()
+        all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
+
+        all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
+                                                        filter=(Q(consumption__month=Month.objects.get(
+                                                            name=one_m),
+                                                            consumption__god=God.objects.get(pk=year_id),
+                                                            consumption__category=Category.objects.get(
+                                                                pk=category_id))) |
+                                                               Q(consumption__month=Month.objects.get(name=two_m),
+                                                                 consumption__god=God.objects.get(pk=year_id),
+                                                                 consumption__category=Category.objects.get(
+                                                                     pk=category_id)) |
+                                                               Q(consumption__month=Month.objects.get(name=three_m),
+                                                                 consumption__god=God.objects.get(pk=year_id),
+                                                                 consumption__category=Category.objects.get(
+                                                                     pk=category_id)) |
+                                                               Q(consumption__month=Month.objects.get(
+                                                                   name=four_m),
+                                                                   consumption__god=God.objects.get(pk=year_id),
+                                                                   consumption__category=Category.objects.get(
+                                                                       pk=category_id)) |
+                                                               Q(consumption__month=Month.objects.get(
+                                                                   name=five_m),
+                                                                   consumption__god=God.objects.get(pk=year_id),
+                                                                   consumption__category=Category.objects.get(
+                                                                       pk=category_id)) |
+                                                               Q(consumption__month=Month.objects.get(
+                                                                   name=six_m),
+                                                                   consumption__god=God.objects.get(pk=year_id),
+                                                                   consumption__category=Category.objects.get(
+                                                                       pk=category_id))),
+                                               limit=Sum('consumption__limit',
+                                                         filter=(Q(consumption__month=Month.objects.get(
+                                                             name=one_m),
+                                                             consumption__god=God.objects.get(pk=year_id),
+                                                             consumption__category=Category.objects.get(
+                                                                 pk=category_id))) |
+                                                                Q(consumption__month=Month.objects.get(
+                                                                    name=two_m),
+                                                                    consumption__god=God.objects.get(pk=year_id),
+                                                                    consumption__category=Category.objects.get(
+                                                                        pk=category_id)) |
+                                                                Q(consumption__month=Month.objects.get(
+                                                                    name=three_m),
+                                                                    consumption__god=God.objects.get(pk=year_id),
+                                                                    consumption__category=Category.objects.get(
+                                                                        pk=category_id)) |
+                                                                Q(consumption__month=Month.objects.get(
+                                                                    name=four_m),
+                                                                    consumption__god=God.objects.get(pk=year_id),
+                                                                    consumption__category=Category.objects.get(
+                                                                        pk=category_id)) |
+                                                                Q(consumption__month=Month.objects.get(
+                                                                    name=five_m),
+                                                                    consumption__god=God.objects.get(pk=year_id),
+                                                                    consumption__category=Category.objects.get(
+                                                                        pk=category_id)) |
+                                                                Q(consumption__month=Month.objects.get(
+                                                                    name=six_m),
+                                                                    consumption__god=God.objects.get(pk=year_id),
+                                                                    consumption__category=Category.objects.get(
+                                                                        pk=category_id))),
+                                               otklonenie=Sum('consumption__otklonenie',
+                                                              filter=(Q(consumption__month=Month.objects.get(
+                                                                  name=one_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id))) |
+                                                                     Q(consumption__month=Month.objects.get(
+                                                                         name=two_m),
+                                                                         consumption__god=God.objects.get(
+                                                                             pk=year_id),
+                                                                         consumption__category=Category.objects.get(
+                                                                             pk=category_id)) |
+                                                                     Q(consumption__month=Month.objects.get(
+                                                                         name=three_m),
+                                                                         consumption__god=God.objects.get(
+                                                                             pk=year_id),
+                                                                         consumption__category=Category.objects.get(
+                                                                             pk=category_id)) |
+                                                                     Q(consumption__month=Month.objects.get(
+                                                                         name=four_m),
+                                                                         consumption__god=God.objects.get(
+                                                                             pk=year_id),
+                                                                         consumption__category=Category.objects.get(
+                                                                             pk=category_id)) |
+                                                                     Q(consumption__month=Month.objects.get(
+                                                                         name=five_m),
+                                                                         consumption__god=God.objects.get(
+                                                                             pk=year_id),
+                                                                         consumption__category=Category.objects.get(
+                                                                             pk=category_id)) |
+                                                                     Q(consumption__month=Month.objects.get(
+                                                                         name=six_m),
+                                                                         consumption__god=God.objects.get(
+                                                                             pk=year_id),
+                                                                         consumption__category=Category.objects.get(
+                                                                             pk=category_id))),
+                                               otklonenie_percent=Sum('consumption__otklonenie_percent',
+                                                                      filter=(
+                                                                                 Q(consumption__month=Month.objects.get(
+                                                                                     name=one_m),
+                                                                                     consumption__god=God.objects.get(
+                                                                                         pk=year_id),
+                                                                                     consumption__category=Category.objects.get(
+                                                                                         pk=category_id))) |
+                                                                             Q(consumption__month=Month.objects.get(
+                                                                                 name=two_m),
+                                                                                 consumption__god=God.objects.get(
+                                                                                     pk=year_id),
+                                                                                 consumption__category=Category.objects.get(
+                                                                                     pk=category_id)) |
+                                                                             Q(consumption__month=Month.objects.get(
+                                                                                 name=three_m),
+                                                                                 consumption__god=God.objects.get(
+                                                                                     pk=year_id),
+                                                                                 consumption__category=Category.objects.get(
+                                                                                     pk=category_id)) |
+                                                                             Q(consumption__month=Month.objects.get(
+                                                                                 name=four_m),
+                                                                                 consumption__god=God.objects.get(
+                                                                                     pk=year_id),
+                                                                                 consumption__category=Category.objects.get(
+                                                                                     pk=category_id)) |
+                                                                             Q(consumption__month=Month.objects.get(
+                                                                                 name=five_m),
+                                                                                 consumption__god=God.objects.get(
+                                                                                     pk=year_id),
+                                                                                 consumption__category=Category.objects.get(
+                                                                                     pk=category_id)) |
+                                                                             Q(consumption__month=Month.objects.get(
+                                                                                 name=six_m),
+                                                                                 consumption__god=God.objects.get(
+                                                                                     pk=year_id),
+                                                                                 consumption__category=Category.objects.get(
+                                                                                     pk=category_id))),
+                                               sum=Sum('consumption__sum',
+                                                       filter=(Q(consumption__month=Month.objects.get(
+                                                           name=one_m),
+                                                           consumption__god=God.objects.get(pk=year_id),
+                                                           consumption__category=Category.objects.get(
+                                                               pk=category_id))) |
+                                                              Q(consumption__month=Month.objects.get(name=two_m),
+                                                                consumption__god=God.objects.get(pk=year_id),
+                                                                consumption__category=Category.objects.get(
+                                                                    pk=category_id)) |
+                                                              Q(consumption__month=Month.objects.get(
+                                                                  name=three_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id)) |
+                                                              Q(consumption__month=Month.objects.get(
+                                                                  name=four_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id)) |
+                                                              Q(consumption__month=Month.objects.get(
+                                                                  name=five_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id)) |
+                                                              Q(consumption__month=Month.objects.get(
+                                                                  name=six_m),
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id)))).order_by('address')
+
+        all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+        all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+        group_data_2 = group_data_1.annotate(
+            fact=Sum('TheAddressGroup__consumption__fact',
+                     filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))) | Q(
+                         TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                         TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                         TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                         TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                         TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                     ),
+            limit=Sum('TheAddressGroup__consumption__limit',
+                      filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                                TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))) | Q(
+                          TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                          TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                          TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                          TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                          TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                          TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                          TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                          TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                          TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                          TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                      ),
+            otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
+                           filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                     TheAddressGroup__consumption__category=Category.objects.get(
+                                         pk=category_id))) | Q(
+                               TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                               TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                               TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                               TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                               TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                           ),
+            otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
+                                   filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(
+                                       name=one_m),
+                                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                       TheAddressGroup__consumption__category=Category.objects.get(
+                                           pk=category_id))) | Q(
+                                       TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                       TheAddressGroup__consumption__category=Category.objects.get(
+                                           pk=category_id)) | Q(
+                                       TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                       TheAddressGroup__consumption__category=Category.objects.get(
+                                           pk=category_id)) | Q(
+                                       TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                       TheAddressGroup__consumption__category=Category.objects.get(
+                                           pk=category_id)) | Q(
+                                       TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                       TheAddressGroup__consumption__category=Category.objects.get(
+                                           pk=category_id)) | Q(
+                                       TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                       TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))
+                                   ),
+            sum=Sum('TheAddressGroup__consumption__sum',
+                    filter=(Q(TheAddressGroup__consumption__month__name=Month.objects.get(name=one_m),
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))) | Q(
+                        TheAddressGroup__consumption__month__name=Month.objects.get(name=two_m),
+                        TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                        TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
+                        TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                        TheAddressGroup__consumption__month__name=Month.objects.get(name=four_m),
+                        TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                        TheAddressGroup__consumption__month__name=Month.objects.get(name=five_m),
+                        TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
+                        TheAddressGroup__consumption__month__name=Month.objects.get(name=six_m),
+                        TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by()
+
+        group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+        group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+        list_group_data = []
+        for one_address in all_address_4:
+            if (one_address.group is None):
+                list_group_data.append(one_address)
+            elif one_address.group not in list_group_data:
+                for one_group_data in group_data_4:
+                    list_group_data.append(one_group_data)
+                    table_address_with_group_data = all_address_4.filter(
+                        group=one_group_data)
+                    for k in table_address_with_group_data:
+                        list_group_data.append(k)
+
+        return render(request, 'website/new_consumption_polugodie.html',
+                      {'all_address': all_address_2,
+                       'list_group_data': list_group_data, 'category': category,
+                       'year': year, 'form': form, 'sum_data_final': sum_data_final, 'polugodie': polugodie})
+
+
+def view_god_adress_admin(request, category_id, year_id):
+    year = God.objects.get(pk=year_id)
+    category = Category.objects.get(pk=category_id)
+
+    sum_data = Consumption.objects.filter(category=category_id).filter(
+        god=year_id)
+    sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                        otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+
+    if request.method == 'POST':
+        form = OrganizationsForm(request.POST)
+        if form.is_valid():
+            organization = form.cleaned_data['organizations']
+            all_address_1 = AddressOfTheMunicipalOrganizations.objects.filter(
+                municipalOrganization=organization)
+            group_data_1 = AddressGroup.objects.filter(
+                TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization__title=organization).distinct()
+
+            all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
+                                                            filter=(Q(
+                                                                      consumption__god=God.objects.get(pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id)))),
+                                                   limit=Sum('consumption__limit',
+                                                             filter=(Q(
+                                                                       consumption__god=God.objects.get(pk=year_id),
+                                                                       consumption__category=Category.objects.get(
+                                                                           pk=category_id)))),
+                                                   otklonenie=Sum('consumption__otklonenie',
+                                                                  filter=(Q(
+                                                                            consumption__god=God.objects.get(
+                                                                                pk=year_id),
+                                                                            consumption__category=Category.objects.get(
+                                                                                pk=category_id)))),
+                                                   otklonenie_percent=Sum('consumption__otklonenie_percent',
+                                                                          filter=(
+                                                                              Q(
+                                                                                consumption__god=God.objects.get(
+                                                                                    pk=year_id),
+                                                                                consumption__category=Category.objects.get(
+                                                                                    pk=category_id)))),
+                                                   sum=Sum('consumption__sum',
+                                                           filter=(Q(
+                                                                     consumption__god=God.objects.get(pk=year_id),
+                                                                     consumption__category=Category.objects.get(
+                                                                         pk=category_id))))).order_by('address')
+
+            all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+            all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+            for i in all_address_4:
+                print(i, i.fact)
+
+            group_data_2 = group_data_1.annotate(
+                fact=Sum('TheAddressGroup__consumption__fact',
+                         filter=(Q(
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                limit=Sum('TheAddressGroup__consumption__limit',
+                          filter=(Q(
+                                    TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                    TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
+                               filter=(Q(
+                                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                         TheAddressGroup__consumption__category=Category.objects.get(
+                                             pk=category_id)))),
+                otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
+                                       filter=(Q(
+                                                 TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                                 TheAddressGroup__consumption__category=Category.objects.get(
+                                                     pk=category_id)))),
+                sum=Sum('TheAddressGroup__consumption__sum',
+                        filter=(Q(
+                                  TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                  TheAddressGroup__consumption__category=Category.objects.get(
+                                      pk=category_id))))).order_by()
+
+            group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+            group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+            list_group_data = []
+            for one_address in all_address_4:
+                if (one_address.group is None):
+                    list_group_data.append(one_address)
+                elif one_address.group not in list_group_data:
+                    for one_group_data in group_data_4:
+                        list_group_data.append(one_group_data)
+                        table_address_with_group_data = all_address_4.filter(
+                            group=one_group_data)
+                        for k in table_address_with_group_data:
+                            list_group_data.append(k)
+
+            return render(request, 'website/new_consumption_god.html',
+                          {'all_address': all_address_2,
+                           'list_group_data': list_group_data, 'category': category,
+                           'year': year, 'form': form, 'sum_data_final': sum_data_final})
+    else:
+        form = OrganizationsForm()
+        group_data_1 = AddressGroup.objects.all().distinct()
+        all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
+
+        all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
+                                                        filter=(Q(
+                                                                  consumption__god=God.objects.get(pk=year_id),
+                                                                  consumption__category=Category.objects.get(
+                                                                      pk=category_id)))),
+                                               limit=Sum('consumption__limit',
+                                                         filter=(Q(
+                                                                   consumption__god=God.objects.get(pk=year_id),
+                                                                   consumption__category=Category.objects.get(
+                                                                       pk=category_id)))),
+                                               otklonenie=Sum('consumption__otklonenie',
+                                                              filter=(Q(
+                                                                        consumption__god=God.objects.get(pk=year_id),
+                                                                        consumption__category=Category.objects.get(
+                                                                            pk=category_id)))),
+                                               otklonenie_percent=Sum('consumption__otklonenie_percent',
+                                                                      filter=(
+                                                                          Q(
+                                                                            consumption__god=God.objects.get(
+                                                                                pk=year_id),
+                                                                            consumption__category=Category.objects.get(
+                                                                                pk=category_id)))),
+                                               sum=Sum('consumption__sum',
+                                                       filter=(Q(
+                                                                 consumption__god=God.objects.get(pk=year_id),
+                                                                 consumption__category=Category.objects.get(
+                                                                     pk=category_id))))).order_by('address')
+
+        all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+        all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+        group_data_2 = group_data_1.annotate(
+            fact=Sum('TheAddressGroup__consumption__fact',
+                     filter=(Q(
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+            limit=Sum('TheAddressGroup__consumption__limit',
+                      filter=(Q(
+                                TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+            otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
+                           filter=(Q(
+                                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                     TheAddressGroup__consumption__category=Category.objects.get(
+                                         pk=category_id)))),
+            otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
+                                   filter=(Q(
+                                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                       TheAddressGroup__consumption__category=Category.objects.get(
+                                           pk=category_id)))),
+            sum=Sum('TheAddressGroup__consumption__sum',
+                    filter=(Q(
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by()
+
+        group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+        group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+        list_group_data = []
+        for one_address in all_address_4:
+            if (one_address.group is None):
+                list_group_data.append(one_address)
+            elif one_address.group not in list_group_data:
+                for one_group_data in group_data_4:
+                    list_group_data.append(one_group_data)
+                    table_address_with_group_data = all_address_4.filter(
+                        group=one_group_data)
+                    for k in table_address_with_group_data:
+                        list_group_data.append(k)
+
+        return render(request, 'website/new_consumption_god.html',
+                      {'all_address': all_address_2,
+                       'list_group_data': list_group_data, 'category': category,
+                       'year': year, 'form': form, 'sum_data_final': sum_data_final})

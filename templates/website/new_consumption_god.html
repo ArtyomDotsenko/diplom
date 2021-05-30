@@ -1,7 +1,7 @@
 {% extends 'website_base/base_1.html' %}
 {% load mathfilters %}
 
-{% block title %}{{ quarter.name }} Квартал | {{ year.name }}{% endblock %}
+{% block title %} Итог: {{ year.name }} | {{ category.title }}{% endblock %}
 
 {#{% block sidebar%}#}
 {#    {% include 'inc/sidebar.html' %}#}
@@ -35,7 +35,7 @@
         }
     </style>
 
-    <h3 style="text-align: left">Категория: {{ category.title }} | Квартал: {{ quarter.name }} | Год: {{ year.name }}</h3>
+    <h3 style="text-align: left">Категория: {{ category.title }} | Итог года: {{ year.name }}</h3>
 
      {% if request.user.is_superuser %}
          <form method="post">

@@ -81,6 +81,7 @@
                             {% get_categories as categories %}
                             {% get_years as years %}
                             {% get_quarters as quarters %}
+                            {% get_polugodie as polugodie %}
 
                             {% for item in categories %}
                                 <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle"
@@ -92,9 +93,20 @@
                                                 <ul class="dropdown-menu">
                                                     {% for item3 in quarters %}
                                                         <li><a class="dropdown-item"
-                                                               href="{% url 'category_view_quarter' item.pk item2.pk item3.pk %}">{{ item3.name }} квартал</a>
+                                                               href="{% url 'category_view_quarter' item.pk item2.pk item3.pk %}">{{ item3.name }}
+                                                            квартал</a>
                                                         </li>
                                                     {% endfor %}
+                                                    {% for item4 in polugodie %}
+                                                        <li><a class="dropdown-item"
+                                                               href="{% url 'category_view_polugodie' item.pk item2.pk item4.pk %}">{{ item4.name }}
+                                                            Полугодие</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                <li><a class="dropdown-item"
+                                                           href="{% url 'category_view_god' item.pk item2.pk %}">
+                                                        Итог</a>
+                                                    </li>
                                                 </ul>
                                             </li>
                                         {% endfor %}

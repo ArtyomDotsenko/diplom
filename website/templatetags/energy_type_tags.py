@@ -1,5 +1,5 @@
 from django import template
-from website.models import Category, God, Month, Quarter
+from website.models import Category, God, Month, Quarter, Polugodie
 
 register = template.Library()
 
@@ -22,3 +22,8 @@ def get_months():
 @register.simple_tag()
 def get_quarters():
     return Quarter.objects.all()
+
+
+@register.simple_tag()
+def get_polugodie():
+    return Polugodie.objects.all()
