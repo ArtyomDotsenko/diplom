@@ -2,10 +2,13 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.db.models import Count, Sum, Q, F
 from django.forms import formset_factory
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.views.generic import ListView
+import io
+from xlsxwriter.workbook import Workbook
 
 from .models import Consumption, Category, God, Polugodie, Month, \
     AddressOfTheMunicipalOrganizations, AddressGroup, Address, MunicipalOrganizations, Quarter
@@ -1454,3 +1457,307 @@ def view_god_adress_admin(request, category_id, year_id):
                       {'all_address': all_address_2,
                        'list_group_data': list_group_data, 'category': category,
                        'year': year, 'form': form, 'sum_data_final': sum_data_final})
+
+
+def excel_test(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = "attachment; filename=test.xlsx"
+
+    workbook = Workbook(response, {'in_memory': True})
+    # worksheet_1 = workbook.add_worksheet('Отопление')
+    worksheet_2 = workbook.add_worksheet('Компонент, Гкал')
+    worksheet_2.freeze_panes(3, 2)
+
+    format_color_1 = workbook.add_format({'bg_color': '#FFFFCC'})
+    worksheet_2.write('C3', '', format_color_1)
+
+    format_default = workbook.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'border': 1})
+
+
+    format_yellow = workbook.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#FFFFCC',
+        'border': 1})
+
+    format_blue = workbook.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#DCE6F1',
+        'border': 1})
+
+    format_green = workbook.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#D8E4BC',
+        'border': 1})
+
+    format_aqua = workbook.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#DAEEF3',
+        'border': 1})
+
+    format_red = workbook.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#F2DCDB',
+        'border': 1})
+
+    month_format_default = workbook.add_format({
+        'bold': 1,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'border': 1})
+
+    month_format_yellow = workbook.add_format({
+        'bold': 1,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#FFFFCC',
+        'border': 1})
+
+    month_format_blue = workbook.add_format({
+        'bold': 1,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#DCE6F1',
+        'border': 1})
+
+    month_format_green = workbook.add_format({
+        'bold': 1,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#D8E4BC',
+        'border': 1})
+
+    month_format_aqua = workbook.add_format({
+        'bold': 1,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#DAEEF3',
+        'border': 1})
+
+    month_format_red = workbook.add_format({
+        'bold': 1,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'bg_color': '#F2DCDB',
+        'border': 1})
+
+    # cell_format = workbook.add_format()
+    # cell_format.set_text_wrap()
+    #Общие колонки
+    worksheet_2.merge_range('A1:B2', '')
+    worksheet_2.set_column(0, 0, 25)
+    worksheet_2.set_column(1, 1, 35)
+    worksheet_2.write('A3', '№ п/п', format_default)
+    worksheet_2.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
+    # Январь
+    worksheet_2.merge_range('C1:G1', '', month_format_yellow)
+    worksheet_2.merge_range('C2:G2', 'Январь', month_format_yellow)
+    worksheet_2.set_column(2, 6, 11.22)
+    worksheet_2.write('C3', 'Фактическое потребление ',  format_yellow)
+    worksheet_2.write('D3', 'Установленный лимит  ', format_yellow)
+    worksheet_2.write('E3', 'отклонение               (лимит-факт) ', format_yellow)
+    worksheet_2.write('F3', 'отклонение               %', format_yellow)
+    worksheet_2.write('G3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+    # Февраль
+    worksheet_2.merge_range('H1:L1', '', month_format_blue)
+    worksheet_2.merge_range('H2:L2', 'Февраль', month_format_blue)
+    worksheet_2.set_column(7, 12, 11.22)
+    worksheet_2.write('H3', 'Фактическое потребление ', format_blue)
+    worksheet_2.write('I3', 'Установленный лимит  ', format_blue)
+    worksheet_2.write('J3', 'отклонение               (лимит-факт) ', format_blue)
+    worksheet_2.write('K3', 'отклонение               %', format_blue)
+    worksheet_2.write('L3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+    # Март
+    worksheet_2.merge_range('M1:Q1', '', month_format_green)
+    worksheet_2.merge_range('M2:Q2', 'Март', month_format_green)
+    worksheet_2.set_column(13, 18, 11.22)
+    worksheet_2.write('M3', 'Фактическое потребление ', format_green)
+    worksheet_2.write('N3', 'Установленный лимит  ', format_green)
+    worksheet_2.write('O3', 'отклонение               (лимит-факт) ', format_green)
+    worksheet_2.write('P3', 'отклонение               %', format_green)
+    worksheet_2.write('Q3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+    # 1 Квартал
+    worksheet_2.merge_range('R1:V1', '', month_format_default)
+    worksheet_2.merge_range('R2:V2', '1 Квартал', month_format_default)
+    worksheet_2.set_column(19, 24, 11.22)
+    worksheet_2.write('R3', 'Фактическое потребление ', format_default)
+    worksheet_2.write('S3', 'Установленный лимит  ', format_default)
+    worksheet_2.write('T3', 'отклонение               (лимит-факт) ', format_default)
+    worksheet_2.write('U3', 'отклонение               %', format_default)
+    worksheet_2.write('V3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+    # Апрель
+    worksheet_2.merge_range('W1:AA1', '', month_format_yellow)
+    worksheet_2.merge_range('W2:AA2', 'Апрель', month_format_yellow)
+    worksheet_2.set_column(25, 30, 11.22)
+    worksheet_2.write('W3', 'Фактическое потребление ', format_yellow)
+    worksheet_2.write('X3', 'Установленный лимит  ', format_yellow)
+    worksheet_2.write('Y3', 'отклонение               (лимит-факт) ', format_yellow)
+    worksheet_2.write('Z3', 'отклонение               %', format_yellow)
+    worksheet_2.write('AA3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+    # Май
+    worksheet_2.merge_range('AB1:AF1', '', month_format_blue)
+    worksheet_2.merge_range('AB2:AF2', 'Май', month_format_blue)
+    worksheet_2.set_column(31, 36, 11.22)
+    worksheet_2.write('AB3', 'Фактическое потребление ', format_blue)
+    worksheet_2.write('AC3', 'Установленный лимит  ', format_blue)
+    worksheet_2.write('AD3', 'отклонение               (лимит-факт) ', format_blue)
+    worksheet_2.write('AE3', 'отклонение               %', format_blue)
+    worksheet_2.write('AF3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+    # Июнь
+    worksheet_2.merge_range('AG1:AK1', '', month_format_green)
+    worksheet_2.merge_range('AG2:AK2', 'Июнь', month_format_green)
+    worksheet_2.set_column(37, 42, 11.22)
+    worksheet_2.write('AG3', 'Фактическое потребление ', format_green)
+    worksheet_2.write('AH3', 'Установленный лимит  ', format_green)
+    worksheet_2.write('AI3', 'отклонение               (лимит-факт) ', format_green)
+    worksheet_2.write('AJ3', 'отклонение               %', format_green)
+    worksheet_2.write('AK3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+    # 2 Квартал
+    worksheet_2.merge_range('AL1:AP1', '', month_format_default)
+    worksheet_2.merge_range('AL2:AP2', '2 Квартал', month_format_default)
+    worksheet_2.set_column(43, 48, 11.22)
+    worksheet_2.write('AL3', 'Фактическое потребление ', format_default)
+    worksheet_2.write('AM3', 'Установленный лимит  ', format_default)
+    worksheet_2.write('AN3', 'отклонение               (лимит-факт) ', format_default)
+    worksheet_2.write('AO3', 'отклонение               %', format_default)
+    worksheet_2.write('AP3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+    # 1 Полугодие
+    worksheet_2.merge_range('AQ1:AU1', '', month_format_aqua)
+    worksheet_2.merge_range('AQ2:AU2', '1 Полугодие', month_format_aqua)
+    worksheet_2.set_column(49, 54, 11.22)
+    worksheet_2.write('AQ3', 'Фактическое потребление ', format_aqua)
+    worksheet_2.write('AR3', 'Установленный лимит  ', format_aqua)
+    worksheet_2.write('AS3', 'отклонение               (лимит-факт) ', format_aqua)
+    worksheet_2.write('AT3', 'отклонение               %', format_aqua)
+    worksheet_2.write('AU3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_aqua)
+    # Июль
+    worksheet_2.merge_range('AV1:AZ1', '', month_format_yellow)
+    worksheet_2.merge_range('AV2:AZ2', 'Июль', month_format_yellow)
+    worksheet_2.set_column(49, 54, 11.22)
+    worksheet_2.write('AV3', 'Фактическое потребление ', format_yellow)
+    worksheet_2.write('AW3', 'Установленный лимит  ', format_yellow)
+    worksheet_2.write('AX3', 'отклонение               (лимит-факт) ', format_yellow)
+    worksheet_2.write('AY3', 'отклонение               %', format_yellow)
+    worksheet_2.write('AZ3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+    # Август
+    worksheet_2.merge_range('BA1:BE1', '', month_format_blue)
+    worksheet_2.merge_range('BA2:BE2', 'Август', month_format_blue)
+    worksheet_2.set_column(55, 60, 11.22)
+    worksheet_2.write('BA3', 'Фактическое потребление ', format_blue)
+    worksheet_2.write('BB3', 'Установленный лимит  ', format_blue)
+    worksheet_2.write('BC3', 'отклонение               (лимит-факт) ', format_blue)
+    worksheet_2.write('BD3', 'отклонение               %', format_blue)
+    worksheet_2.write('BE3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+    # Сентябрь
+    worksheet_2.merge_range('BF1:BJ1', '', month_format_green)
+    worksheet_2.merge_range('BF2:BJ2', 'Сентябрь', month_format_green)
+    worksheet_2.set_column(61, 66, 11.22)
+    worksheet_2.write('BF3', 'Фактическое потребление ', format_green)
+    worksheet_2.write('BG3', 'Установленный лимит  ', format_green)
+    worksheet_2.write('BH3', 'отклонение               (лимит-факт) ', format_green)
+    worksheet_2.write('BI3', 'отклонение               %', format_green)
+    worksheet_2.write('BJ3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+    # 3 Квартал
+    worksheet_2.merge_range('BK1:BO1', '', month_format_default)
+    worksheet_2.merge_range('BK2:BO2', '3 Квартал', month_format_default)
+    worksheet_2.set_column(67, 72, 11.22)
+    worksheet_2.write('BK3', 'Фактическое потребление ', format_default)
+    worksheet_2.write('BL3', 'Установленный лимит  ', format_default)
+    worksheet_2.write('BM3', 'отклонение               (лимит-факт) ', format_default)
+    worksheet_2.write('BN3', 'отклонение               %', format_default)
+    worksheet_2.write('BO3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+    # Октябрь
+    worksheet_2.merge_range('BP1:BT1', '', month_format_yellow)
+    worksheet_2.merge_range('BP2:BT2', 'Октябрь', month_format_yellow)
+    worksheet_2.set_column(73, 78, 11.22)
+    worksheet_2.write('BP3', 'Фактическое потребление ', format_yellow)
+    worksheet_2.write('BQ3', 'Установленный лимит  ', format_yellow)
+    worksheet_2.write('BR3', 'отклонение               (лимит-факт) ', format_yellow)
+    worksheet_2.write('BS3', 'отклонение               %', format_yellow)
+    worksheet_2.write('BT3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+    # Ноябрь
+    worksheet_2.merge_range('BU1:BY1', '', month_format_blue)
+    worksheet_2.merge_range('BU2:BY2', 'Ноябрь', month_format_blue)
+    worksheet_2.set_column(79, 84, 11.22)
+    worksheet_2.write('BU3', 'Фактическое потребление ', format_blue)
+    worksheet_2.write('BV3', 'Установленный лимит  ', format_blue)
+    worksheet_2.write('BW3', 'отклонение               (лимит-факт) ', format_blue)
+    worksheet_2.write('BX3', 'отклонение               %', format_blue)
+    worksheet_2.write('BY3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+    # Декабрь
+    worksheet_2.merge_range('BZ1:CD1', '', month_format_green)
+    worksheet_2.merge_range('BZ2:CD2', 'Декабрь', month_format_green)
+    worksheet_2.set_column(85, 90, 11.22)
+    worksheet_2.write('BZ3', 'Фактическое потребление ', format_green)
+    worksheet_2.write('CA3', 'Установленный лимит  ', format_green)
+    worksheet_2.write('CB3', 'отклонение               (лимит-факт) ', format_green)
+    worksheet_2.write('CC3', 'отклонение               %', format_green)
+    worksheet_2.write('CD3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+    # 4 Квартал
+    worksheet_2.merge_range('CE1:CI1', '', month_format_default)
+    worksheet_2.merge_range('CE2:CI2', '4 Квартал', month_format_default)
+    worksheet_2.set_column(91, 96, 11.22)
+    worksheet_2.write('CE3', 'Фактическое потребление ', format_default)
+    worksheet_2.write('CF3', 'Установленный лимит  ', format_default)
+    worksheet_2.write('CG3', 'отклонение               (лимит-факт) ', format_default)
+    worksheet_2.write('CH3', 'отклонение               %', format_default)
+    worksheet_2.write('CI3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+    # Год
+    worksheet_2.merge_range('CJ1:CN1', '', month_format_red)
+    worksheet_2.merge_range('CJ2:CN2', 'Год', month_format_red)
+    worksheet_2.set_column(97, 102, 11.22)
+    worksheet_2.write('CJ3', 'Фактическое потребление ', format_red)
+    worksheet_2.write('CK3', 'Установленный лимит  ', format_red)
+    worksheet_2.write('CL3', 'отклонение               (лимит-факт) ', format_red)
+    worksheet_2.write('CM3', 'отклонение               %', format_red)
+    worksheet_2.write('CN3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_red)
+
+
+
+
+
+    worksheet_2.set_row(2, 60)
+    # Write a total using a formula.
+
+
+    workbook.close()
+
+    return response
+
