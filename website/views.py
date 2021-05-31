@@ -152,7 +152,7 @@ def view_data_adress(request, category_id, year_id, month_id):
         sum=Sum('TheAddressGroup__consumption__sum',
                 filter=Q(TheAddressGroup__consumption__month__name=Month.objects.get(pk=month_id),
                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by()
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by('TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
     print(group_data_filtered)
 
     list_group_data = []
@@ -188,10 +188,10 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
 
     sum_data = Consumption.objects.filter(category=category_id).filter(
         god=year_id).filter(month=month_id)
-    print(sum_data)
+    # print(sum_data)
     sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
                                         otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
-    print(sum_data_final)
+    # print(sum_data_final)
 
     if request.method == 'POST':
         form = OrganizationsForm(request.POST)
@@ -224,8 +224,8 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                         filter=Q(TheAddressGroup__consumption__month__name=Month.objects.get(pk=month_id),
                                  TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
                                  TheAddressGroup__consumption__category=Category.objects.get(
-                                     pk=category_id)))).order_by()
-            print(group_data_filtered)
+                                     pk=category_id)))).order_by('TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
+            # print(group_data_filtered)
 
             list_group_data = []
             for one_address in all_address_of_the_municipal_organizations:
@@ -246,7 +246,7 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                             pk=month_id)).filter(category=Category.objects.get(pk=category_id))
                         for one_table_address_with_group_data in table_address_with_group_data:
                             list_group_data.append(one_table_address_with_group_data)
-            print(list_group_data, 444)
+            # print(list_group_data, 444)
 
             return render(request, 'website/view_consumption.html',
                           {'all_address': all_address_of_the_municipal_organizations,
@@ -254,7 +254,8 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                            'year': year, 'month': month, 'form': form, 'sum_data_final': sum_data_final})
     else:
         form = OrganizationsForm()
-        all_address_of_the_municipal_organizations = AddressOfTheMunicipalOrganizations.objects.all()
+        all_address_of_the_municipal_organizations = AddressOfTheMunicipalOrganizations.objects.all().order_by('address')
+        print(all_address_of_the_municipal_organizations)
         filtered_group_data = AddressGroup.objects.all().distinct()
         group_data_filtered = filtered_group_data.annotate(
             fact=Sum('TheAddressGroup__consumption__fact',
@@ -279,7 +280,7 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                     filter=Q(TheAddressGroup__consumption__month__name=Month.objects.get(pk=month_id),
                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
                              TheAddressGroup__consumption__category=Category.objects.get(
-                                 pk=category_id)))).order_by()
+                                 pk=category_id)))).order_by('TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
         print(group_data_filtered)
 
         list_group_data = []
@@ -301,7 +302,7 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                         pk=month_id)).filter(category=Category.objects.get(pk=category_id))
                     for one_table_address_with_group_data in table_address_with_group_data:
                         list_group_data.append(one_table_address_with_group_data)
-        print(list_group_data, 444)
+        # print(list_group_data, 444)
 
         return render(request, 'website/view_consumption.html',
                       {'all_address': all_address_of_the_municipal_organizations,
@@ -1459,7 +1460,7 @@ def view_god_adress_admin(request, category_id, year_id):
                        'year': year, 'form': form, 'sum_data_final': sum_data_final})
 
 
-def excel_test(request):
+def excel_test(request, year_id):
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = "attachment; filename=test.xlsx"
 
@@ -1577,10 +1578,8 @@ def excel_test(request):
         'font_name': 'Times New Roman',
         'bg_color': '#F2DCDB',
         'border': 1})
-
-    # cell_format = workbook.add_format()
-    # cell_format.set_text_wrap()
-    #Общие колонки
+    # Шапка таблицы
+    # Общие колонки
     worksheet_2.merge_range('A1:B2', '')
     worksheet_2.set_column(0, 0, 25)
     worksheet_2.set_column(1, 1, 35)
@@ -1749,15 +1748,125 @@ def excel_test(request):
     worksheet_2.write('CM3', 'отклонение               %', format_red)
     worksheet_2.write('CN3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_red)
 
-
-
-
-
     worksheet_2.set_row(2, 60)
-    # Write a total using a formula.
+
+    year = God.objects.get(pk=year_id)
+    category = Category.objects.get(pk=2)
+
+    sum_data = Consumption.objects.filter(category=2).filter(
+        god=year_id)
+    sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                        otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+
+    group_data_1 = AddressGroup.objects.all().distinct()
+    all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
+
+    all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
+                                                    filter=(Q(
+                                                        consumption__god=God.objects.get(pk=year_id),
+                                                        consumption__category=Category.objects.get(
+                                                            pk=2)))),
+                                           limit=Sum('consumption__limit',
+                                                     filter=(Q(
+                                                         consumption__god=God.objects.get(pk=year_id),
+                                                         consumption__category=Category.objects.get(
+                                                             pk=2)))),
+                                           otklonenie=Sum('consumption__otklonenie',
+                                                          filter=(Q(
+                                                              consumption__god=God.objects.get(pk=year_id),
+                                                              consumption__category=Category.objects.get(
+                                                                  pk=2)))),
+                                           otklonenie_percent=Sum('consumption__otklonenie_percent',
+                                                                  filter=(
+                                                                      Q(
+                                                                          consumption__god=God.objects.get(
+                                                                              pk=year_id),
+                                                                          consumption__category=Category.objects.get(
+                                                                              pk=2)))),
+                                           sum=Sum('consumption__sum',
+                                                   filter=(Q(
+                                                       consumption__god=God.objects.get(pk=year_id),
+                                                       consumption__category=Category.objects.get(
+                                                           pk=2))))).order_by('address')
+
+    all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+    all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+    group_data_2 = group_data_1.annotate(
+        fact=Sum('TheAddressGroup__consumption__fact',
+                 filter=(Q(
+                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                     TheAddressGroup__consumption__category=Category.objects.get(pk=2)))),
+        limit=Sum('TheAddressGroup__consumption__limit',
+                  filter=(Q(
+                      TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                      TheAddressGroup__consumption__category=Category.objects.get(pk=2)))),
+        otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
+                       filter=(Q(
+                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                           TheAddressGroup__consumption__category=Category.objects.get(
+                               pk=2)))),
+        otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
+                               filter=(Q(
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(
+                                       pk=2)))),
+        sum=Sum('TheAddressGroup__consumption__sum',
+                filter=(Q(
+                    TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                    TheAddressGroup__consumption__category=Category.objects.get(pk=2))))).order_by()
+
+    group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+    group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+
+    list_group_data = []
+    row = 3
+    col = 0
+    for one_address in all_address_4:
+        if (one_address.group is None):
+            list_group_data.append(one_address)
+            worksheet_2.write(row, 0, str(one_address.municipalOrganization))
+            worksheet_2.write(row, 1, str(one_address.address))
+            worksheet_2.write(row, 2, one_address.fact)
+            worksheet_2.write(row, 3, one_address.limit)
+            worksheet_2.write(row, 4, one_address.otklonenie)
+            worksheet_2.write(row, 5, one_address.otklonenie_percent)
+            worksheet_2.write(row, 6, one_address.sum)
+            row = row + 1
+        elif one_address.group not in list_group_data:
+            for one_group_data in group_data_4:
+                list_group_data.append(one_group_data)
+                worksheet_2.write(row, 0, str(one_address.municipalOrganization))
+                worksheet_2.write(row, 1, str(one_group_data.titleOfTheAddressGroup))
+                worksheet_2.write(row, 2, one_group_data.fact)
+                worksheet_2.write(row, 3, one_group_data.limit)
+                worksheet_2.write(row, 4, one_group_data.otklonenie)
+                worksheet_2.write(row, 5, one_group_data.otklonenie_percent)
+                worksheet_2.write(row, 6, one_group_data.sum)
+                row = row + 1
+                table_address_with_group_data = all_address_4.filter(
+                    group=one_group_data)
+                for k in table_address_with_group_data:
+                    list_group_data.append(k)
+                    worksheet_2.write(row, 0, str(one_address.municipalOrganization))
+                    worksheet_2.write(row, 1, str(k.address))
+                    worksheet_2.write(row, 2, k.fact)
+                    worksheet_2.write(row, 3, k.limit)
+                    worksheet_2.write(row, 4, k.otklonenie)
+                    worksheet_2.write(row, 5, k.otklonenie_percent)
+                    worksheet_2.write(row, 6, k.sum)
+                    row = row + 1
 
 
+    # for item in list_group_data:
+    #     if (item.address_of_the_municipal_organization.group is None):
+    #         worksheet_2.write(row, 1, item.address_of_the_municipal_organization.address.titleOfTheAddress)
+    #     else:
+    #         worksheet_2.write(row, 1, 'skip')
+    #
+    #     worksheet_2.write(row, 2, item.fact)
+    #     worksheet_2.write(row, 3, item.limit)
+    #     row += 1
     workbook.close()
-
     return response
 

@@ -12,5 +12,5 @@ urlpatterns = [
     path('category_view_quarter/<int:category_id>/<int:year_id>/<int:quarter_id>', view_quarter_adress_admin, name="category_view_quarter"),
     path('category_view_polugodie/<int:category_id>/<int:year_id>/<int:polugodie_id>', view_polugodie_adress_admin, name="category_view_polugodie"),
     path('category_view_god/<int:category_id>/<int:year_id>/', view_god_adress_admin, name="category_view_god"),
-    path('excel_download', excel_test, name='excel_download')
+    path('excel_download/<int:year_id>', excel_test, name='excel_download')
 ]

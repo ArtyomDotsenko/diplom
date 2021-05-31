@@ -157,9 +157,9 @@
                             Формирование отчетов
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            {% for item in categories %}
+                            {% for item in years %}
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'excel_download' %}">Download </a>
+                                    <a class="dropdown-item" href="{% url 'excel_download' item.pk %}">Год: {{ item.name }} - скачать </a>
                                 </li>
                             {% endfor %}
                         </ul>
