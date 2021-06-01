@@ -1653,7 +1653,8 @@ def view_god_adress_admin(request, category_id, year_id):
                        'year': year, 'form': form, 'sum_data_final': sum_data_final})
 
 
-def write_quarter(year_id,  category_id, quarter_id, worksheet_2, colonna, num_color, num_color_bold):
+def write_quarter(year_id,  category_id, quarter_id, worksheet_2, colonna, num_color, num_color_bold, num_color_cut2,
+                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
     year = God.objects.get(pk=year_id)
     new_month = Month.objects.filter(quarter_id=quarter_id)
     one_m = new_month[0]
@@ -1817,18 +1818,18 @@ def write_quarter(year_id,  category_id, quarter_id, worksheet_2, colonna, num_c
             list_group_data.append(one_address)
             worksheet_2.write(row, col, one_address.fact, num_color)
             worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color)
+            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
+            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
+            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
                 list_group_data.append(one_group_data)
                 worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
                 worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold)
+                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
+                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
+                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
@@ -1836,13 +1837,14 @@ def write_quarter(year_id,  category_id, quarter_id, worksheet_2, colonna, num_c
                     list_group_data.append(k)
                     worksheet_2.write(row, col, k.fact, num_color)
                     worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color)
-                    worksheet_2.write(row, col + 4, k.sum, num_color)
+                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color_cut2)
+                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
+                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
 
 
-def write_polugodie(year_id, polugodie_id, category_id, worksheet_2, colonnna, num_color, num_color_bold):
+def write_polugodie(year_id, polugodie_id, category_id, worksheet_2, colonnna, num_color, num_color_bold, num_color_cut2,
+                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
     year = God.objects.get(pk=year_id)
     new_month = Month.objects.filter(polugodie_id=polugodie_id)
     one_m = new_month[0]
@@ -2150,18 +2152,18 @@ def write_polugodie(year_id, polugodie_id, category_id, worksheet_2, colonnna, n
             list_group_data.append(one_address)
             worksheet_2.write(row, col, one_address.fact, num_color)
             worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color)
+            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
+            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
+            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
                 list_group_data.append(one_group_data)
                 worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
                 worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold)
+                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
+                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
+                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
@@ -2169,13 +2171,14 @@ def write_polugodie(year_id, polugodie_id, category_id, worksheet_2, colonnna, n
                     list_group_data.append(k)
                     worksheet_2.write(row, col, k.fact, num_color)
                     worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color)
-                    worksheet_2.write(row, col + 4, k.sum, num_color)
+                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color_cut2)
+                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
+                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
 
 
-def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color, num_color_bold):
+def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color, num_color_bold, num_color_cut2,
+                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
     sum_data = Consumption.objects.filter(category=category_id).filter(
         god=year_id)
     sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
@@ -2251,18 +2254,18 @@ def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color,
             list_group_data.append(one_address)
             worksheet_2.write(row, col, one_address.fact, num_color)
             worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie, num_color)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent, num_color)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color)
+            worksheet_2.write(row, col + 2, one_address.otklonenie, num_color_cut2)
+            worksheet_2.write(row, col + 3, one_address.otklonenie_percent, num_color_cut2)
+            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
                 list_group_data.append(one_group_data)
                 worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
                 worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie, num_color_bold)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent, num_color_bold)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold)
+                worksheet_2.write(row, col + 2, one_group_data.otklonenie, num_color_bold_cut2)
+                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent, num_color_bold_cut2)
+                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
@@ -2270,13 +2273,14 @@ def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color,
                     list_group_data.append(k)
                     worksheet_2.write(row, col, k.fact, num_color)
                     worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie, num_color)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent, num_color)
-                    worksheet_2.write(row, col + 4, k.sum, num_color)
+                    worksheet_2.write(row, col + 2, k.otklonenie, num_color_cut2)
+                    worksheet_2.write(row, col + 3, k.otklonenie_percent, num_color_cut2)
+                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
 
 
-def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address_bold, num_color, num_color_bold):
+def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address_bold, num_color, num_color_bold, num_color_cut2,
+                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3, f_address_italic_underline):
     sum_data = Consumption.objects.filter(category=category_id).filter(
         god=year_id)
     sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
@@ -2352,13 +2356,13 @@ def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address
     for one_address in all_address_4:
         if (one_address.group is None):
             list_group_data.append(one_address)
-            worksheet_2.write(row, 0, str(one_address.municipalOrganization), f_address)
-            worksheet_2.write(row, 1, str(one_address.address), f_address)
+            worksheet_2.write(row, 0, str(one_address.municipalOrganization), f_address_italic_underline)
+            worksheet_2.write(row, 1, str(one_address.address), f_address_italic_underline)
             worksheet_2.write(row, col, one_address.fact, num_color)
             worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color)
+            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
+            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
+            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
@@ -2367,9 +2371,9 @@ def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address
                 worksheet_2.write(row, 1, str(one_group_data.titleOfTheAddressGroup), f_address_bold)
                 worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
                 worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold)
+                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
+                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
+                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
@@ -2379,9 +2383,9 @@ def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address
                     worksheet_2.write(row, 1, str(k.address), f_address)
                     worksheet_2.write(row, col, k.fact, num_color)
                     worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color)
-                    worksheet_2.write(row, col + 4, k.sum, num_color)
+                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color_cut2)
+                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
+                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
     # for j in list_group_data:
     #     print('write year')
@@ -2389,8 +2393,9 @@ def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address
 
 
 def excel_test(request, year_id):
+    year_name = God.objects.get(pk=year_id)
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = "attachment; filename=test.xlsx"
+    response['Content-Disposition'] = f"attachment; filename=Year {year_name.name}.xlsx"
 
     workbook = Workbook(response, {'in_memory': True})
     # worksheet_1 = workbook.add_worksheet('Отопление')
@@ -2427,7 +2432,66 @@ def excel_test(request, year_id):
         'border': 1,
         'bold': 1})
 
+    f_address_italic_underline = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'border': 1,
+        'italic': 1})
 
+    # No color
+    format_noc = workbook.add_format({
+        'font_size': 9,
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'font_name': 'Times New Roman',
+        'border': 1})
+
+    format_noc_values = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'border': 1})
+
+    format_noc_values_bold = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'border': 1,
+        'bold': 1})
+
+    format_noc_values_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'border': 1,
+        'num_format': '#####0.00'})
+
+    format_noc_values_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'border': 1,
+        'num_format': '#####0.000'})
+
+    format_noc_values_bold_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.00'})
+
+    format_noc_values_bold_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.000'})
+
+    # Yellow
     format_yellow = workbook.add_format({
         'font_size': 9,
         'align': 'center',
@@ -2452,6 +2516,41 @@ def excel_test(request, year_id):
         'border': 1,
         'bold': 1})
 
+    format_yellow_values_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#FFFFCC',
+        'border': 1,
+        'num_format': '#####0.00'})
+
+    format_yellow_values_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#FFFFCC',
+        'border': 1,
+        'num_format': '#####0.000'})
+
+    format_yellow_values_bold_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#FFFFCC',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.00'})
+
+    format_yellow_values_bold_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#FFFFCC',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.000'})
+
+    # Blue
     format_blue = workbook.add_format({
         'font_size': 9,
         'align': 'center',
@@ -2476,6 +2575,41 @@ def excel_test(request, year_id):
         'border': 1,
         'bold': 1})
 
+    format_blue_values_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DCE6F1',
+        'border': 1,
+        'num_format': '#####0.00'})
+
+    format_blue_values_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DCE6F1',
+        'border': 1,
+        'num_format': '#####0.000'})
+
+    format_blue_values_bold_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DCE6F1',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.00'})
+
+    format_blue_values_bold_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DCE6F1',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.000'})
+
+    # Green
     format_green = workbook.add_format({
         'font_size': 9,
         'align': 'center',
@@ -2500,6 +2634,41 @@ def excel_test(request, year_id):
         'border': 1,
         'bold': 1})
 
+    format_green_values_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#D8E4BC',
+        'border': 1,
+        'num_format': '#####0.00'})
+
+    format_green_values_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#D8E4BC',
+        'border': 1,
+        'num_format': '#####0.000'})
+
+    format_green_values_bold_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#D8E4BC',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.00'})
+
+    format_green_values_bold_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#D8E4BC',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.000'})
+
+    # Aqua
     format_aqua = workbook.add_format({
         'font_size': 9,
         'align': 'center',
@@ -2524,6 +2693,41 @@ def excel_test(request, year_id):
         'border': 1,
         'bold': 1})
 
+    format_aqua_values_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DAEEF3',
+        'border': 1,
+        'num_format': '#####0.00'})
+
+    format_aqua_values_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DAEEF3',
+        'border': 1,
+        'num_format': '#####0.000'})
+
+    format_aqua_values_bold_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DAEEF3',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.00'})
+
+    format_aqua_values_bold_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#DAEEF3',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.000'})
+
+    # Red
     format_red = workbook.add_format({
         'font_size': 9,
         'align': 'center',
@@ -2548,6 +2752,41 @@ def excel_test(request, year_id):
         'border': 1,
         'bold': 1})
 
+    format_red_values_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#F2DCDB',
+        'border': 1,
+        'num_format': '#####0.00'})
+
+    format_red_values_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#F2DCDB',
+        'border': 1,
+        'num_format': '#####0.000'})
+
+    format_red_values_bold_cut2 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#F2DCDB',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.00'})
+
+    format_red_values_bold_cut3 = workbook.add_format({
+        'align': 'center',
+        'valign': 'vcenter',
+        'text_wrap': 1,
+        'bg_color': '#F2DCDB',
+        'border': 1,
+        'bold': 1,
+        'num_format': '#####0.000'})
+
+    # Month
     month_format_default = workbook.add_format({
         'bold': 1,
         'align': 'center',
@@ -2601,14 +2840,6 @@ def excel_test(request, year_id):
         'bg_color': '#F2DCDB',
         'border': 1})
 
-    format1 = workbook.add_format({'bg_color': '#FFC7CE',
-                                   'font_color': '#9C0006'})
-    worksheet_2.conditional_format('CJ4:CN4', {'type': 'formula',
-                                             'criteria': '=$CJ4<$CK4',
-                                             'format': format1})
-    worksheet_2.conditional_format('CJ5:CN5', {'type': 'formula',
-                                               'criteria': '=$CJ5<$CK5',
-                                               'format': format1})
     # Шапка таблицы
     # Общие колонки
     worksheet_2.merge_range('A1:B2', '')
@@ -2781,68 +3012,107 @@ def excel_test(request, year_id):
 
     worksheet_2.set_row(2, 60)
 
-    write_year(1, 2, worksheet_2, 87, f_address, f_address_bold, format_red_values, format_red_values_bold)
-    write_polugodie(1, 1, 2, worksheet_2, 42,  format_aqua_values, format_aqua_values_bold)
+    write_year(year_id=year_id, category_id=2, worksheet_2=worksheet_2, colonnna=87, f_address=f_address, f_address_bold=f_address_bold,
+               num_color=format_red_values, num_color_bold=format_red_values_bold,num_color_cut2=format_red_values_cut2,
+                num_color_cut3=format_red_values_cut3, num_color_bold_cut2=format_red_values_bold_cut2,
+                num_color_bold_cut3=format_red_values_bold_cut3, f_address_italic_underline=f_address_italic_underline)
+
+    write_polugodie(year_id=year_id, polugodie_id=1, category_id=2, worksheet_2=worksheet_2, colonnna=42,
+                    num_color=format_aqua_values, num_color_bold=format_aqua_values_bold, num_color_cut2=format_aqua_values_cut2,
+                num_color_cut3=format_aqua_values_cut3, num_color_bold_cut2=format_aqua_values_bold_cut2,
+                num_color_bold_cut3=format_aqua_values_bold_cut3)
     # 1 Квартал
-    write_quarter(year_id=1, category_id=2, quarter_id=3, worksheet_2=worksheet_2, colonna=17,
-                  num_color=f_address, num_color_bold=f_address_bold)
+    write_quarter(year_id=year_id, category_id=2, quarter_id=3, worksheet_2=worksheet_2, colonna=17,
+                  num_color=format_noc_values, num_color_bold=format_noc_values_bold, num_color_cut2=format_noc_values_cut2,
+                num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                num_color_bold_cut3=format_noc_values_bold_cut3)
     # 2 Квартал
-    write_quarter(year_id=1, category_id=2, quarter_id=4, worksheet_2=worksheet_2, colonna=37,
-                  num_color=f_address, num_color_bold=f_address_bold)
+    write_quarter(year_id=year_id, category_id=2, quarter_id=4, worksheet_2=worksheet_2, colonna=37,
+                  num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+                  num_color_cut2=format_noc_values_cut2,
+                  num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                  num_color_bold_cut3=format_noc_values_bold_cut3)
     # 3 Квартал
-    write_quarter(year_id=1, category_id=2, quarter_id=5, worksheet_2=worksheet_2, colonna=62,
-                  num_color=f_address, num_color_bold=f_address_bold)
+    write_quarter(year_id=year_id, category_id=2, quarter_id=5, worksheet_2=worksheet_2, colonna=62,
+                  num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+                  num_color_cut2=format_noc_values_cut2,
+                  num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                  num_color_bold_cut3=format_noc_values_bold_cut3)
     # 4 Квартал
-    write_quarter(year_id=1, category_id=2, quarter_id=6, worksheet_2=worksheet_2, colonna=82,
-                  num_color=f_address, num_color_bold=f_address_bold)
+    write_quarter(year_id=year_id, category_id=2, quarter_id=6, worksheet_2=worksheet_2, colonna=82,
+                  num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+                  num_color_cut2=format_noc_values_cut2,
+                  num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                  num_color_bold_cut3=format_noc_values_bold_cut3)
     # Январь
-    write_month(year_id=1, month_id=1, category_id=2, worksheet_2=worksheet_2, colonna=2,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold)
+    write_month(year_id=year_id, month_id=1, category_id=2, worksheet_2=worksheet_2, colonna=2,
+                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                num_color_bold_cut3=format_yellow_values_bold_cut3)
     # Февраль
-    write_month(year_id=1, month_id=2, category_id=2, worksheet_2=worksheet_2, colonna=7, num_color=format_blue_values,
-                num_color_bold=format_blue_values_bold)
-    # Март
-    write_month(year_id=1, month_id=3, category_id=2, worksheet_2=worksheet_2, colonna=12,
-                num_color=format_green_values, num_color_bold=format_green_values_bold)
-    # Апрель
-    write_month(year_id=1, month_id=4, category_id=2, worksheet_2=worksheet_2, colonna=22,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold)
-    # Май
-    write_month(year_id=1, month_id=5, category_id=2, worksheet_2=worksheet_2, colonna=27, num_color=format_blue_values,
-                num_color_bold=format_blue_values_bold)
-    # Июнь
-    write_month(year_id=1, month_id=6, category_id=2, worksheet_2=worksheet_2, colonna=32,
-                num_color=format_green_values, num_color_bold=format_green_values_bold)
-    # Июль
-    write_month(year_id=1, month_id=7, category_id=2, worksheet_2=worksheet_2, colonna=47,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold)
-    # Август
-    write_month(year_id=1, month_id=8, category_id=2, worksheet_2=worksheet_2, colonna=52, num_color=format_blue_values,
-                num_color_bold=format_blue_values_bold)
-    # Сентябрь
-    write_month(year_id=1, month_id=9, category_id=2, worksheet_2=worksheet_2, colonna=57,
-                num_color=format_green_values, num_color_bold=format_green_values_bold)
-    # Октябрь
-    write_month(year_id=1, month_id=10, category_id=2, worksheet_2=worksheet_2, colonna=67,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold)
-    # Ноябрь
-    write_month(year_id=1, month_id=11, category_id=2, worksheet_2=worksheet_2, colonna=72,
-                num_color=format_blue_values, num_color_bold=format_blue_values_bold)
-    # Декабрь
-    write_month(year_id=1, month_id=12, category_id=2, worksheet_2=worksheet_2, colonna=77,
-                num_color=format_green_values, num_color_bold=format_green_values_bold)
+    write_month(year_id=year_id, month_id=2, category_id=2, worksheet_2=worksheet_2, colonna=7, num_color=format_blue_values,
+                num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # Март
+    write_month(year_id=year_id, month_id=3, category_id=2, worksheet_2=worksheet_2, colonna=12,
+                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                num_color_bold_cut3=format_green_values_bold_cut3)
+    # # Апрель
+    write_month(year_id=year_id, month_id=4, category_id=2, worksheet_2=worksheet_2, colonna=22,
+                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                num_color_bold_cut3=format_yellow_values_bold_cut3)
+    # # Май
+    write_month(year_id=year_id, month_id=5, category_id=2, worksheet_2=worksheet_2, colonna=27, num_color=format_blue_values,
+                num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # Июнь
+    write_month(year_id=year_id, month_id=6, category_id=2, worksheet_2=worksheet_2, colonna=32,
+                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                num_color_bold_cut3=format_green_values_bold_cut3)
+    # # Июль
+    write_month(year_id=year_id, month_id=7, category_id=2, worksheet_2=worksheet_2, colonna=47,
+                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                num_color_bold_cut3=format_yellow_values_bold_cut3)
+    # # Август
+    write_month(year_id=year_id, month_id=8, category_id=2, worksheet_2=worksheet_2, colonna=52, num_color=format_blue_values,
+                num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # Сентябрь
+    write_month(year_id=year_id, month_id=9, category_id=2, worksheet_2=worksheet_2, colonna=57,
+                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                num_color_bold_cut3=format_green_values_bold_cut3)
+    # # Октябрь
+    write_month(year_id=year_id, month_id=10, category_id=2, worksheet_2=worksheet_2, colonna=67,
+                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                num_color_bold_cut3=format_yellow_values_bold_cut3)
+    # # Ноябрь
+    write_month(year_id=year_id, month_id=11, category_id=2, worksheet_2=worksheet_2, colonna=72,
+                num_color=format_blue_values, num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # Декабрь
+    write_month(year_id=year_id, month_id=12, category_id=2, worksheet_2=worksheet_2, colonna=77,
+                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                num_color_bold_cut3=format_green_values_bold_cut3)
 
-
-
-    # for item in list_group_data:
-    #     if (item.address_of_the_municipal_organization.group is None):
-    #         worksheet_2.write(row, 1, item.address_of_the_municipal_organization.address.titleOfTheAddress)
-    #     else:
-    #         worksheet_2.write(row, 1, 'skip')
-    #
-    #     worksheet_2.write(row, 2, item.fact)
-    #     worksheet_2.write(row, 3, item.limit)
-    #     row += 1
+    format1 = workbook.add_format({'bg_color': '#FFC7CE',
+                                   'font_color': '#9C0006'})
+    worksheet_2.conditional_format('$C$4:$G$4', {'type': 'formula',
+                                               'criteria': '=$C$4>$D$4',
+                                               'format': format1})
+    worksheet_2.conditional_format('$C$5:$G$5', {'type': 'formula',
+                                               'criteria': '=$C$5>$D$5',
+                                               'format': format1})
     workbook.close()
     return response
 
