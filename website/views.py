@@ -310,7 +310,7 @@ def view_data_adress(request, category_id, year_id, month_id):
 #                       {'all_address': all_address_of_the_municipal_organizations,
 #                        'list_group_data': list_group_data, 'category': category,
 #                        'year': year, 'month': month, 'form': form, 'sum_data_final': sum_data_final})
-
+#Доделать
 def view_data_adress_admin(request, category_id, year_id, month_id):
     year = God.objects.get(pk=year_id)
     month = Month.objects.get(pk=month_id)
@@ -509,15 +509,21 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
     quarter = Quarter.objects.get(id=quarter_id)
     category = Category.objects.get(pk=category_id)
 
-    sum_data = Consumption.objects.filter(category=category_id).filter(
-        god=year_id).filter(Q(month=one_m) | Q(month=two_m) | Q(month=three_m))
-    sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
-                                        otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+    # sum_data = Consumption.objects.filter(category=category_id).filter(
+    #     god=year_id).filter(Q(month=one_m) | Q(month=two_m) | Q(month=three_m))
+    # sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+    #                                     otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
 
     if request.method == 'POST':
         form = OrganizationsForm(request.POST)
         if form.is_valid():
             organization = form.cleaned_data['organizations']
+            sum_data = Consumption.objects.filter(category=category_id).filter(
+                god=year_id).filter(Q(month=one_m) | Q(month=two_m) | Q(month=three_m)).filter(
+                address_of_the_municipal_organization__municipalOrganization=organization)
+            sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                                otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+
             all_address_1 = AddressOfTheMunicipalOrganizations.objects.filter(
                 municipalOrganization=organization)
             group_data_1 = AddressGroup.objects.filter(
@@ -667,8 +673,8 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
                             TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by()
-
+                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by(
+        'TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
             group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
             group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
 
@@ -690,6 +696,10 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                            'year': year, 'quarter': quarter, 'form': form, 'sum_data_final': sum_data_final})
     else:
         form = OrganizationsForm()
+        sum_data = Consumption.objects.filter(category=category_id).filter(
+            god=year_id).filter(Q(month=one_m) | Q(month=two_m) | Q(month=three_m))
+        sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                            otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
         group_data_1 = AddressGroup.objects.all().distinct()
         all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
 
@@ -772,12 +782,12 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                                                                pk=year_id),
                                                            consumption__category=Category.objects.get(
                                                                pk=category_id)))).order_by(
-            'consumption__address_of_the_municipal_organization__group')
+                'consumption__address_of_the_municipal_organization__group')
 
         all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
         all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
-        for j in all_address_4:
-            print(j, 'addresss')
+        for i in all_address_2:
+            print(i, 'Адрес')
 
         group_data_2 = group_data_1.annotate(
             fact=Sum('TheAddressGroup__consumption__fact',
@@ -830,12 +840,13 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)) | Q(
                         TheAddressGroup__consumption__month__name=Month.objects.get(name=three_m),
                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by()
+                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by(
+        'TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
 
         group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
         group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
-        for i in group_data_4:
-            print(i, 'Main address')
+        # for i in group_data_4:
+        #     print(i, 'Main address')
 
         list_group_data = []
         for one_address in all_address_4:
@@ -867,16 +878,23 @@ def view_polugodie_adress_admin(request, category_id, year_id, polugodie_id):
     polugodie = Polugodie.objects.get(id=polugodie_id)
     category = Category.objects.get(pk=category_id)
 
-    sum_data = Consumption.objects.filter(category=category_id).filter(
-        god=year_id).filter(
-        Q(month=one_m) | Q(month=two_m) | Q(month=three_m) | Q(month=four_m) | Q(month=five_m) | Q(month=six_m))
-    sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
-                                        otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+    # sum_data = Consumption.objects.filter(category=category_id).filter(
+    #     god=year_id).filter(
+    #     Q(month=one_m) | Q(month=two_m) | Q(month=three_m) | Q(month=four_m) | Q(month=five_m) | Q(month=six_m))
+    # sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+    #                                     otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
 
     if request.method == 'POST':
         form = OrganizationsForm(request.POST)
         if form.is_valid():
             organization = form.cleaned_data['organizations']
+            sum_data = Consumption.objects.filter(category=category_id).filter(
+                god=year_id).filter(
+                Q(month=one_m) | Q(month=two_m) | Q(month=three_m) | Q(month=four_m) | Q(month=five_m) | Q(
+                    month=six_m)).filter(address_of_the_municipal_organization__municipalOrganization=organization)
+            sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                                otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+
             all_address_1 = AddressOfTheMunicipalOrganizations.objects.filter(
                 municipalOrganization=organization)
             group_data_1 = AddressGroup.objects.filter(
@@ -1045,7 +1063,8 @@ def view_polugodie_adress_admin(request, category_id, year_id, polugodie_id):
                                                                       name=six_m),
                                                                       consumption__god=God.objects.get(pk=year_id),
                                                                       consumption__category=Category.objects.get(
-                                                                          pk=category_id)))).order_by('address')
+                                                                          pk=category_id)))).order_by(
+                'consumption__address_of_the_municipal_organization__group')
 
             all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
             all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1179,6 +1198,11 @@ def view_polugodie_adress_admin(request, category_id, year_id, polugodie_id):
                            'year': year, 'form': form, 'sum_data_final': sum_data_final, 'polugodie': polugodie})
     else:
         form = OrganizationsForm()
+        sum_data = Consumption.objects.filter(category=category_id).filter(
+            god=year_id).filter(
+            Q(month=one_m) | Q(month=two_m) | Q(month=three_m) | Q(month=four_m) | Q(month=five_m) | Q(month=six_m))
+        sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                            otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
         group_data_1 = AddressGroup.objects.all().distinct()
         all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
 
@@ -1345,7 +1369,8 @@ def view_polugodie_adress_admin(request, category_id, year_id, polugodie_id):
                                                                   name=six_m),
                                                                   consumption__god=God.objects.get(pk=year_id),
                                                                   consumption__category=Category.objects.get(
-                                                                      pk=category_id)))).order_by('address')
+                                                                      pk=category_id)))).order_by(
+                'consumption__address_of_the_municipal_organization__group')
 
         all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
         all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1483,15 +1508,20 @@ def view_god_adress_admin(request, category_id, year_id):
     year = God.objects.get(pk=year_id)
     category = Category.objects.get(pk=category_id)
 
-    sum_data = Consumption.objects.filter(category=category_id).filter(
-        god=year_id)
-    sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
-                                        otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+    # sum_data = Consumption.objects.filter(category=category_id).filter(
+    #     god=year_id)
+    # sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+    #                                     otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
 
     if request.method == 'POST':
         form = OrganizationsForm(request.POST)
         if form.is_valid():
             organization = form.cleaned_data['organizations']
+            sum_data = Consumption.objects.filter(category=category_id).filter(
+                god=year_id).filter(address_of_the_municipal_organization__municipalOrganization=organization)
+            sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                                otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+
             all_address_1 = AddressOfTheMunicipalOrganizations.objects.filter(
                 municipalOrganization=organization)
             group_data_1 = AddressGroup.objects.filter(
@@ -1524,12 +1554,13 @@ def view_god_adress_admin(request, category_id, year_id):
                                                            filter=(Q(
                                                                consumption__god=God.objects.get(pk=year_id),
                                                                consumption__category=Category.objects.get(
-                                                                   pk=category_id))))).order_by('address')
+                                                                   pk=category_id))))).order_by(
+                'consumption__address_of_the_municipal_organization__group')
 
             all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
             all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
-            for i in all_address_4:
-                print(i, i.fact)
+            # for i in all_address_4:
+            #     print(i, i.fact)
 
             group_data_2 = group_data_1.annotate(
                 fact=Sum('TheAddressGroup__consumption__fact',
@@ -1579,6 +1610,10 @@ def view_god_adress_admin(request, category_id, year_id):
         form = OrganizationsForm()
         group_data_1 = AddressGroup.objects.all().distinct()
         all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
+        sum_data = Consumption.objects.filter(category=category_id).filter(
+            god=year_id)
+        sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+                                            otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
 
         all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
                                                         filter=(Q(
@@ -1606,7 +1641,8 @@ def view_god_adress_admin(request, category_id, year_id):
                                                        filter=(Q(
                                                            consumption__god=God.objects.get(pk=year_id),
                                                            consumption__category=Category.objects.get(
-                                                               pk=category_id))))).order_by('address')
+                                                               pk=category_id))))).order_by(
+                'consumption__address_of_the_municipal_organization__group')
 
         all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
         all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1755,6 +1791,7 @@ def write_quarter(year_id, category_id, quarter_id, worksheet, colonna, num_colo
                                                            pk=category_id)))).order_by(
         'consumption__address_of_the_municipal_organization__group')
 
+
     all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
     all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
 
@@ -1845,6 +1882,11 @@ def write_quarter(year_id, category_id, quarter_id, worksheet, colonna, num_colo
                     worksheet.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
                     worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
+    worksheet.write(row, col, sum_data_final['fact'], num_color)
+    worksheet.write(row, col + 1, sum_data_final['limit'], num_color)
+    worksheet.write(row, col + 2, sum_data_final['otklonenie'], num_color)
+    worksheet.write(row, col + 3, '-', num_color)
+    worksheet.write(row, col + 4, sum_data_final['sum'], num_color)
 
 
 def write_polugodie(year_id, polugodie_id, category_id, worksheet, colonnna, num_color, num_color_bold, num_color_cut2,
@@ -2180,14 +2222,20 @@ def write_polugodie(year_id, polugodie_id, category_id, worksheet, colonnna, num
                     worksheet.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
                     worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
+    worksheet.write(row, col, sum_data_final['fact'], num_color)
+    worksheet.write(row, col + 1, sum_data_final['limit'], num_color)
+    worksheet.write(row, col + 2, sum_data_final['otklonenie'], num_color)
+    worksheet.write(row, col + 3, '-', num_color)
+    worksheet.write(row, col + 4, sum_data_final['sum'], num_color)
 
 
 def write_month(year_id, month_id, category_id, worksheet, colonna, num_color, num_color_bold, num_color_cut2,
                 num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
     sum_data = Consumption.objects.filter(category=category_id).filter(
-        god=year_id)
+        god=year_id).filter(month=month_id)
     sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
                                         otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+    # print(sum_data_final['fact'], sum_data_final['limit'])
 
     group_data_1 = AddressGroup.objects.all().distinct()
     all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
@@ -2256,6 +2304,7 @@ def write_month(year_id, month_id, category_id, worksheet, colonna, num_color, n
     list_group_data = []
     row = 3
     col = colonna
+    # worksheet.write(35, 2, sum_data_final['fact'], num_color)
     for one_address in all_address_4:
         if (one_address.group is None):
             list_group_data.append(one_address)
@@ -2284,6 +2333,11 @@ def write_month(year_id, month_id, category_id, worksheet, colonna, num_color, n
                     worksheet.write(row, col + 3, k.otklonenie_percent, num_color_cut2)
                     worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
+    worksheet.write(row, col, sum_data_final['fact'], num_color)
+    worksheet.write(row, col + 1, sum_data_final['limit'], num_color)
+    worksheet.write(row, col + 2, sum_data_final['otklonenie'], num_color)
+    worksheet.write(row, col + 3, '-', num_color)
+    worksheet.write(row, col + 4, sum_data_final['sum'], num_color)
 
 
 def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_bold, num_color, num_color_bold,
@@ -2291,9 +2345,16 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3, f_address_italic_underline):
     sum_data = Consumption.objects.filter(category=category_id).filter(
         god=year_id)
+    # sum_data = Consumption.objects.filter(category=category_id).filter(
+    #     god=year_id).filter(
+    #     address_of_the_municipal_organization__municipalOrganization__title='УОиДО')
     sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
                                         otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
 
+
+
+
+    print(sum_data_final['fact'], sum_data_final['limit'])
     group_data_1 = AddressGroup.objects.all().distinct()
     all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
 
@@ -2325,6 +2386,8 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
                                                        consumption__category=Category.objects.get(
                                                            pk=category_id))))).order_by(
         'consumption__address_of_the_municipal_organization__group')
+    for i in all_address_2:
+        print(i, 'Адрес')
 
     all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
     all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -2353,9 +2416,9 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
                     TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by(
         'TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
-    for j in group_data_2:
-        print('year')
-        print(j)
+    # for j in group_data_2:
+    #     print('year')
+    #     print(j)
 
     group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
     group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -2366,6 +2429,7 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
     for one_address in all_address_4:
         if (one_address.group is None):
             list_group_data.append(one_address)
+            # print(one_address, 'Просто адрес')
             worksheet.write(row, 0, str(one_address.municipalOrganization), f_address_italic_underline)
             worksheet.write(row, 1, str(one_address.address), f_address_italic_underline)
             worksheet.write(row, col, one_address.fact, num_color)
@@ -2376,9 +2440,11 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
+                # print(one_group_data, 'Главный адрес')
                 list_group_data.append(one_group_data)
                 worksheet.write(row, 0, str(one_address.municipalOrganization), f_address_bold)
                 worksheet.write(row, 1, str(one_group_data.titleOfTheAddressGroup), f_address_bold)
+                # worksheet.write(row, col, sum_data_final['fact'], num_color_bold)
                 worksheet.write(row, col, one_group_data.fact, num_color_bold)
                 worksheet.write(row, col + 1, one_group_data.limit, num_color_bold)
                 worksheet.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
@@ -2389,6 +2455,7 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
                     group=one_group_data)
                 for k in table_address_with_group_data:
                     list_group_data.append(k)
+                    # print(k, 'Дочерний адрес')
                     worksheet.write(row, 0, str(one_address.municipalOrganization), f_address)
                     worksheet.write(row, 1, str(k.address), f_address)
                     worksheet.write(row, col, k.fact, num_color)
@@ -2397,6 +2464,13 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
                     worksheet.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
                     worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
+    worksheet.merge_range(row, 0, row, 1, '', f_address_bold)
+    worksheet.write(row, 0, 'Итог', f_address_bold)
+    worksheet.write(row, col, sum_data_final['fact'], num_color)
+    worksheet.write(row, col + 1, sum_data_final['limit'], num_color)
+    worksheet.write(row, col + 2, sum_data_final['otklonenie'], num_color)
+    worksheet.write(row, col + 3, '-', num_color)
+    worksheet.write(row, col + 4, sum_data_final['sum'], num_color)
     # for j in list_group_data:
     #     print('write year')
     #     print(j, j.fact, j.limit)
@@ -3319,74 +3393,6 @@ def excel_test(request, year_id):
     #               num_color_cut2=format_noc_values_cut2,
     #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
     #               num_color_bold_cut3=format_noc_values_bold_cut3)
-    # # Январь
-    # write_month(year_id=year_id, month_id=1, category_id=2, worksheet=worksheet_2, colonna=2,
-    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # # Февраль
-    # write_month(year_id=year_id, month_id=2, category_id=2, worksheet=worksheet_2, colonna=7, num_color=format_blue_values,
-    #             num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-    #             num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # # Март
-    # write_month(year_id=year_id, month_id=3, category_id=2, worksheet=worksheet_2, colonna=12,
-    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-    #             num_color_bold_cut3=format_green_values_bold_cut3)
-    # # # Апрель
-    # write_month(year_id=year_id, month_id=4, category_id=2, worksheet=worksheet_2, colonna=22,
-    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # # # Май
-    # write_month(year_id=year_id, month_id=5, category_id=2, worksheet=worksheet_2, colonna=27, num_color=format_blue_values,
-    #             num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-    #             num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # # Июнь
-    # write_month(year_id=year_id, month_id=6, category_id=2, worksheet=worksheet_2, colonna=32,
-    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-    #             num_color_bold_cut3=format_green_values_bold_cut3)
-    # # # Июль
-    # write_month(year_id=year_id, month_id=7, category_id=2, worksheet=worksheet_2, colonna=47,
-    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # # # Август
-    # write_month(year_id=year_id, month_id=8, category_id=2, worksheet=worksheet_2, colonna=52, num_color=format_blue_values,
-    #             num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-    #             num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # # Сентябрь
-    # write_month(year_id=year_id, month_id=9, category_id=2, worksheet=worksheet_2, colonna=57,
-    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-    #             num_color_bold_cut3=format_green_values_bold_cut3)
-    # # # Октябрь
-    # write_month(year_id=year_id, month_id=10, category_id=2, worksheet=worksheet_2, colonna=67,
-    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # # # Ноябрь
-    # write_month(year_id=year_id, month_id=11, category_id=2, worksheet=worksheet_2, colonna=72,
-    #             num_color=format_blue_values, num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-    #             num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # # Декабрь
-    # write_month(year_id=year_id, month_id=12, category_id=2, worksheet=worksheet_2, colonna=77,
-    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-    #             num_color_bold_cut3=format_green_values_bold_cut3)
 
-    format1 = workbook.add_format({'bg_color': '#FFC7CE',
-                                   'font_color': '#9C0006'})
-    worksheet_2.conditional_format('$C$4:$G$4', {'type': 'formula',
-                                                 'criteria': '=$C$4>$D$4',
-                                                 'format': format1})
-    worksheet_2.conditional_format('$C$5:$G$5', {'type': 'formula',
-                                                 'criteria': '=$C$5>$D$5',
-                                                 'format': format1})
     workbook.close()
     return response
