@@ -152,7 +152,8 @@ def view_data_adress(request, category_id, year_id, month_id):
         sum=Sum('TheAddressGroup__consumption__sum',
                 filter=Q(TheAddressGroup__consumption__month__name=Month.objects.get(pk=month_id),
                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by('TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))).order_by(
+        'TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
     group_data_3 = group_data_filtered.annotate(otklonenie_new=F('limit') - F('fact'))
     group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
 
@@ -342,15 +343,15 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                                                                    consumption__god=God.objects.get(pk=year_id),
                                                                    consumption__category=Category.objects.get(
                                                                        pk=category_id),
-                                                                      consumption__address_of_the_municipal_organization__municipalOrganization=organization))),
+                                                                   consumption__address_of_the_municipal_organization__municipalOrganization=organization))),
                                                    otklonenie=Sum('consumption__otklonenie',
                                                                   filter=(
                                                                       Q(consumption__month=Month.objects.get(
                                                                           pk=month_id),
-                                                                        consumption__god=God.objects.get(pk=year_id),
-                                                                        consumption__category=Category.objects.get(
-                                                                            pk=category_id),
-                                                                      consumption__address_of_the_municipal_organization__municipalOrganization=organization))),
+                                                                          consumption__god=God.objects.get(pk=year_id),
+                                                                          consumption__category=Category.objects.get(
+                                                                              pk=category_id),
+                                                                          consumption__address_of_the_municipal_organization__municipalOrganization=organization))),
                                                    otklonenie_percent=Sum('consumption__otklonenie_percent',
                                                                           filter=(
                                                                               Q(consumption__month=Month.objects.get(
@@ -359,13 +360,14 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                                                                                       pk=year_id),
                                                                                   consumption__category=Category.objects.get(
                                                                                       pk=category_id),
-                                                                      consumption__address_of_the_municipal_organization__municipalOrganization=organization))),
+                                                                                  consumption__address_of_the_municipal_organization__municipalOrganization=organization))),
                                                    sum=Sum('consumption__sum',
                                                            filter=(Q(consumption__month=Month.objects.get(pk=month_id),
                                                                      consumption__god=God.objects.get(pk=year_id),
                                                                      consumption__category=Category.objects.get(
                                                                          pk=category_id),
-                                                                      consumption__address_of_the_municipal_organization__municipalOrganization=organization)))).order_by('address')
+                                                                     consumption__address_of_the_municipal_organization__municipalOrganization=organization)))).order_by(
+                'address')
 
             # all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
             # all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -440,10 +442,10 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                                                                       filter=(
                                                                           Q(consumption__month=Month.objects.get(
                                                                               pk=month_id),
-                                                                            consumption__god=God.objects.get(
-                                                                                pk=year_id),
-                                                                            consumption__category=Category.objects.get(
-                                                                                pk=category_id)))),
+                                                                              consumption__god=God.objects.get(
+                                                                                  pk=year_id),
+                                                                              consumption__category=Category.objects.get(
+                                                                                  pk=category_id)))),
                                                sum=Sum('consumption__sum',
                                                        filter=(Q(consumption__month=Month.objects.get(pk=month_id),
                                                                  consumption__god=God.objects.get(pk=year_id),
@@ -604,7 +606,8 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                                                                consumption__god=God.objects.get(
                                                                    pk=year_id),
                                                                consumption__category=Category.objects.get(
-                                                                   pk=category_id)))).order_by('consumption__address_of_the_municipal_organization__group')
+                                                                   pk=category_id)))).order_by(
+                'consumption__address_of_the_municipal_organization__group')
 
             all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
             all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -768,7 +771,8 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                                                            consumption__god=God.objects.get(
                                                                pk=year_id),
                                                            consumption__category=Category.objects.get(
-                                                               pk=category_id)))).order_by('consumption__address_of_the_municipal_organization__group')
+                                                               pk=category_id)))).order_by(
+            'consumption__address_of_the_municipal_organization__group')
 
         all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
         all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -844,7 +848,6 @@ def view_quarter_adress_admin(request, category_id, year_id, quarter_id):
                         group=one_group_data)
                     for k in table_address_with_group_data:
                         list_group_data.append(k)
-
 
         return render(request, 'website/view_consumption_quarter.html',
                       {'all_address': all_address_2,
@@ -1496,32 +1499,32 @@ def view_god_adress_admin(request, category_id, year_id):
 
             all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
                                                             filter=(Q(
-                                                                      consumption__god=God.objects.get(pk=year_id),
-                                                                      consumption__category=Category.objects.get(
-                                                                          pk=category_id)))),
+                                                                consumption__god=God.objects.get(pk=year_id),
+                                                                consumption__category=Category.objects.get(
+                                                                    pk=category_id)))),
                                                    limit=Sum('consumption__limit',
                                                              filter=(Q(
-                                                                       consumption__god=God.objects.get(pk=year_id),
-                                                                       consumption__category=Category.objects.get(
-                                                                           pk=category_id)))),
+                                                                 consumption__god=God.objects.get(pk=year_id),
+                                                                 consumption__category=Category.objects.get(
+                                                                     pk=category_id)))),
                                                    otklonenie=Sum('consumption__otklonenie',
                                                                   filter=(Q(
-                                                                            consumption__god=God.objects.get(
-                                                                                pk=year_id),
-                                                                            consumption__category=Category.objects.get(
-                                                                                pk=category_id)))),
+                                                                      consumption__god=God.objects.get(
+                                                                          pk=year_id),
+                                                                      consumption__category=Category.objects.get(
+                                                                          pk=category_id)))),
                                                    otklonenie_percent=Sum('consumption__otklonenie_percent',
                                                                           filter=(
                                                                               Q(
-                                                                                consumption__god=God.objects.get(
-                                                                                    pk=year_id),
-                                                                                consumption__category=Category.objects.get(
-                                                                                    pk=category_id)))),
+                                                                                  consumption__god=God.objects.get(
+                                                                                      pk=year_id),
+                                                                                  consumption__category=Category.objects.get(
+                                                                                      pk=category_id)))),
                                                    sum=Sum('consumption__sum',
                                                            filter=(Q(
-                                                                     consumption__god=God.objects.get(pk=year_id),
-                                                                     consumption__category=Category.objects.get(
-                                                                         pk=category_id))))).order_by('address')
+                                                               consumption__god=God.objects.get(pk=year_id),
+                                                               consumption__category=Category.objects.get(
+                                                                   pk=category_id))))).order_by('address')
 
             all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
             all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1531,27 +1534,27 @@ def view_god_adress_admin(request, category_id, year_id):
             group_data_2 = group_data_1.annotate(
                 fact=Sum('TheAddressGroup__consumption__fact',
                          filter=(Q(
-                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                   TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                             TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                             TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
                 limit=Sum('TheAddressGroup__consumption__limit',
                           filter=(Q(
-                                    TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                    TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
                 otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
                                filter=(Q(
-                                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                         TheAddressGroup__consumption__category=Category.objects.get(
-                                             pk=category_id)))),
+                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                   TheAddressGroup__consumption__category=Category.objects.get(
+                                       pk=category_id)))),
                 otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
                                        filter=(Q(
-                                                 TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                                 TheAddressGroup__consumption__category=Category.objects.get(
-                                                     pk=category_id)))),
+                                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                           TheAddressGroup__consumption__category=Category.objects.get(
+                                               pk=category_id)))),
                 sum=Sum('TheAddressGroup__consumption__sum',
                         filter=(Q(
-                                  TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                  TheAddressGroup__consumption__category=Category.objects.get(
-                                      pk=category_id))))).order_by()
+                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                            TheAddressGroup__consumption__category=Category.objects.get(
+                                pk=category_id))))).order_by()
 
             group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
             group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1579,31 +1582,31 @@ def view_god_adress_admin(request, category_id, year_id):
 
         all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
                                                         filter=(Q(
+                                                            consumption__god=God.objects.get(pk=year_id),
+                                                            consumption__category=Category.objects.get(
+                                                                pk=category_id)))),
+                                               limit=Sum('consumption__limit',
+                                                         filter=(Q(
+                                                             consumption__god=God.objects.get(pk=year_id),
+                                                             consumption__category=Category.objects.get(
+                                                                 pk=category_id)))),
+                                               otklonenie=Sum('consumption__otklonenie',
+                                                              filter=(Q(
                                                                   consumption__god=God.objects.get(pk=year_id),
                                                                   consumption__category=Category.objects.get(
                                                                       pk=category_id)))),
-                                               limit=Sum('consumption__limit',
-                                                         filter=(Q(
-                                                                   consumption__god=God.objects.get(pk=year_id),
-                                                                   consumption__category=Category.objects.get(
-                                                                       pk=category_id)))),
-                                               otklonenie=Sum('consumption__otklonenie',
-                                                              filter=(Q(
-                                                                        consumption__god=God.objects.get(pk=year_id),
-                                                                        consumption__category=Category.objects.get(
-                                                                            pk=category_id)))),
                                                otklonenie_percent=Sum('consumption__otklonenie_percent',
                                                                       filter=(
                                                                           Q(
-                                                                            consumption__god=God.objects.get(
-                                                                                pk=year_id),
-                                                                            consumption__category=Category.objects.get(
-                                                                                pk=category_id)))),
+                                                                              consumption__god=God.objects.get(
+                                                                                  pk=year_id),
+                                                                              consumption__category=Category.objects.get(
+                                                                                  pk=category_id)))),
                                                sum=Sum('consumption__sum',
                                                        filter=(Q(
-                                                                 consumption__god=God.objects.get(pk=year_id),
-                                                                 consumption__category=Category.objects.get(
-                                                                     pk=category_id))))).order_by('address')
+                                                           consumption__god=God.objects.get(pk=year_id),
+                                                           consumption__category=Category.objects.get(
+                                                               pk=category_id))))).order_by('address')
 
         all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
         all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1611,17 +1614,17 @@ def view_god_adress_admin(request, category_id, year_id):
         group_data_2 = group_data_1.annotate(
             fact=Sum('TheAddressGroup__consumption__fact',
                      filter=(Q(
-                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                               TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                         TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
             limit=Sum('TheAddressGroup__consumption__limit',
                       filter=(Q(
-                                TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                          TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
             otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
                            filter=(Q(
-                                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                     TheAddressGroup__consumption__category=Category.objects.get(
-                                         pk=category_id)))),
+                               TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                               TheAddressGroup__consumption__category=Category.objects.get(
+                                   pk=category_id)))),
             otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
                                    filter=(Q(
                                        TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
@@ -1629,8 +1632,8 @@ def view_god_adress_admin(request, category_id, year_id):
                                            pk=category_id)))),
             sum=Sum('TheAddressGroup__consumption__sum',
                     filter=(Q(
-                              TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                              TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by()
+                        TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                        TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by()
 
         group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
         group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1653,8 +1656,8 @@ def view_god_adress_admin(request, category_id, year_id):
                        'year': year, 'form': form, 'sum_data_final': sum_data_final})
 
 
-def write_quarter(year_id,  category_id, quarter_id, worksheet_2, colonna, num_color, num_color_bold, num_color_cut2,
-                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
+def write_quarter(year_id, category_id, quarter_id, worksheet, colonna, num_color, num_color_bold, num_color_cut2,
+                  num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
     year = God.objects.get(pk=year_id)
     new_month = Month.objects.filter(quarter_id=quarter_id)
     one_m = new_month[0]
@@ -1749,7 +1752,8 @@ def write_quarter(year_id,  category_id, quarter_id, worksheet_2, colonna, num_c
                                                        consumption__god=God.objects.get(
                                                            pk=year_id),
                                                        consumption__category=Category.objects.get(
-                                                           pk=category_id)))).order_by('consumption__address_of_the_municipal_organization__group')
+                                                           pk=category_id)))).order_by(
+        'consumption__address_of_the_municipal_organization__group')
 
     all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
     all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -1816,35 +1820,35 @@ def write_quarter(year_id,  category_id, quarter_id, worksheet_2, colonna, num_c
     for one_address in all_address_4:
         if (one_address.group is None):
             list_group_data.append(one_address)
-            worksheet_2.write(row, col, one_address.fact, num_color)
-            worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
+            worksheet.write(row, col, one_address.fact, num_color)
+            worksheet.write(row, col + 1, one_address.limit, num_color)
+            worksheet.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
+            worksheet.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
+            worksheet.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
                 list_group_data.append(one_group_data)
-                worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
-                worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
+                worksheet.write(row, col, one_group_data.fact, num_color_bold)
+                worksheet.write(row, col + 1, one_group_data.limit, num_color_bold)
+                worksheet.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
+                worksheet.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
+                worksheet.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
                 for k in table_address_with_group_data:
                     list_group_data.append(k)
-                    worksheet_2.write(row, col, k.fact, num_color)
-                    worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color_cut2)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
-                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
+                    worksheet.write(row, col, k.fact, num_color)
+                    worksheet.write(row, col + 1, k.limit, num_color)
+                    worksheet.write(row, col + 2, k.otklonenie_new, num_color_cut2)
+                    worksheet.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
+                    worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
 
 
-def write_polugodie(year_id, polugodie_id, category_id, worksheet_2, colonnna, num_color, num_color_bold, num_color_cut2,
-                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
+def write_polugodie(year_id, polugodie_id, category_id, worksheet, colonnna, num_color, num_color_bold, num_color_cut2,
+                    num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
     year = God.objects.get(pk=year_id)
     new_month = Month.objects.filter(polugodie_id=polugodie_id)
     one_m = new_month[0]
@@ -2028,7 +2032,8 @@ def write_polugodie(year_id, polugodie_id, category_id, worksheet_2, colonnna, n
                                                               name=six_m),
                                                               consumption__god=God.objects.get(pk=year_id),
                                                               consumption__category=Category.objects.get(
-                                                                  pk=category_id)))).order_by('consumption__address_of_the_municipal_organization__group')
+                                                                  pk=category_id)))).order_by(
+        'consumption__address_of_the_municipal_organization__group')
 
     all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
     all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -2150,34 +2155,34 @@ def write_polugodie(year_id, polugodie_id, category_id, worksheet_2, colonnna, n
     for one_address in all_address_4:
         if (one_address.group is None):
             list_group_data.append(one_address)
-            worksheet_2.write(row, col, one_address.fact, num_color)
-            worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
+            worksheet.write(row, col, one_address.fact, num_color)
+            worksheet.write(row, col + 1, one_address.limit, num_color)
+            worksheet.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
+            worksheet.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
+            worksheet.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
                 list_group_data.append(one_group_data)
-                worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
-                worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
+                worksheet.write(row, col, one_group_data.fact, num_color_bold)
+                worksheet.write(row, col + 1, one_group_data.limit, num_color_bold)
+                worksheet.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
+                worksheet.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
+                worksheet.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
                 for k in table_address_with_group_data:
                     list_group_data.append(k)
-                    worksheet_2.write(row, col, k.fact, num_color)
-                    worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color_cut2)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
-                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
+                    worksheet.write(row, col, k.fact, num_color)
+                    worksheet.write(row, col + 1, k.limit, num_color)
+                    worksheet.write(row, col + 2, k.otklonenie_new, num_color_cut2)
+                    worksheet.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
+                    worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
 
 
-def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color, num_color_bold, num_color_cut2,
+def write_month(year_id, month_id, category_id, worksheet, colonna, num_color, num_color_bold, num_color_cut2,
                 num_color_cut3, num_color_bold_cut2, num_color_bold_cut3):
     sum_data = Consumption.objects.filter(category=category_id).filter(
         god=year_id)
@@ -2189,31 +2194,33 @@ def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color,
 
     all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
                                                     filter=(Q(consumption__month=Month.objects.get(pk=month_id),
-                                                        consumption__god=God.objects.get(pk=year_id),
-                                                        consumption__category=Category.objects.get(
-                                                            pk=category_id)))),
-                                           limit=Sum('consumption__limit',
-                                                     filter=(Q(consumption__month=Month.objects.get(pk=month_id),
-                                                         consumption__god=God.objects.get(pk=year_id),
-                                                         consumption__category=Category.objects.get(
-                                                             pk=category_id)))),
-                                           otklonenie=Sum('consumption__otklonenie',
-                                                          filter=(Q(consumption__month=Month.objects.get(pk=month_id),
                                                               consumption__god=God.objects.get(pk=year_id),
                                                               consumption__category=Category.objects.get(
                                                                   pk=category_id)))),
+                                           limit=Sum('consumption__limit',
+                                                     filter=(Q(consumption__month=Month.objects.get(pk=month_id),
+                                                               consumption__god=God.objects.get(pk=year_id),
+                                                               consumption__category=Category.objects.get(
+                                                                   pk=category_id)))),
+                                           otklonenie=Sum('consumption__otklonenie',
+                                                          filter=(Q(consumption__month=Month.objects.get(pk=month_id),
+                                                                    consumption__god=God.objects.get(pk=year_id),
+                                                                    consumption__category=Category.objects.get(
+                                                                        pk=category_id)))),
                                            otklonenie_percent=Sum('consumption__otklonenie_percent',
                                                                   filter=(
-                                                                      Q(consumption__month=Month.objects.get(pk=month_id),
-                                                                          consumption__god=God.objects.get(
-                                                                              pk=year_id),
-                                                                          consumption__category=Category.objects.get(
-                                                                              pk=category_id)))),
+                                                                      Q(consumption__month=Month.objects.get(
+                                                                          pk=month_id),
+                                                                        consumption__god=God.objects.get(
+                                                                            pk=year_id),
+                                                                        consumption__category=Category.objects.get(
+                                                                            pk=category_id)))),
                                            sum=Sum('consumption__sum',
                                                    filter=(Q(consumption__month=Month.objects.get(pk=month_id),
-                                                       consumption__god=God.objects.get(pk=year_id),
-                                                       consumption__category=Category.objects.get(
-                                                           pk=category_id))))).order_by('consumption__address_of_the_municipal_organization__group')
+                                                             consumption__god=God.objects.get(pk=year_id),
+                                                             consumption__category=Category.objects.get(
+                                                                 pk=category_id))))).order_by(
+        'consumption__address_of_the_municipal_organization__group')
 
     all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
     all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -2221,27 +2228,27 @@ def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color,
     group_data_2 = group_data_1.annotate(
         fact=Sum('TheAddressGroup__consumption__fact',
                  filter=(Q(TheAddressGroup__consumption__month=Month.objects.get(pk=month_id),
-                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                     TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                           TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
         limit=Sum('TheAddressGroup__consumption__limit',
                   filter=(Q(TheAddressGroup__consumption__month=Month.objects.get(pk=month_id),
-                      TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                      TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                            TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
         otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
                        filter=(Q(TheAddressGroup__consumption__month=Month.objects.get(pk=month_id),
-                           TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                           TheAddressGroup__consumption__category=Category.objects.get(
-                               pk=category_id)))),
+                                 TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                 TheAddressGroup__consumption__category=Category.objects.get(
+                                     pk=category_id)))),
         otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
                                filter=(Q(TheAddressGroup__consumption__month=Month.objects.get(pk=month_id),
-                                   TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                                   TheAddressGroup__consumption__category=Category.objects.get(
-                                       pk=category_id)))),
+                                         TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                                         TheAddressGroup__consumption__category=Category.objects.get(
+                                             pk=category_id)))),
         sum=Sum('TheAddressGroup__consumption__sum',
                 filter=(Q(TheAddressGroup__consumption__month=Month.objects.get(pk=month_id),
-                    TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                    TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by('TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
-
+                          TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+                          TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by(
+        'TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
 
     group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
     group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -2252,35 +2259,36 @@ def write_month(year_id, month_id, category_id, worksheet_2, colonna, num_color,
     for one_address in all_address_4:
         if (one_address.group is None):
             list_group_data.append(one_address)
-            worksheet_2.write(row, col, one_address.fact, num_color)
-            worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie, num_color_cut2)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent, num_color_cut2)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
+            worksheet.write(row, col, one_address.fact, num_color)
+            worksheet.write(row, col + 1, one_address.limit, num_color)
+            worksheet.write(row, col + 2, one_address.otklonenie, num_color_cut2)
+            worksheet.write(row, col + 3, one_address.otklonenie_percent, num_color_cut2)
+            worksheet.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
                 list_group_data.append(one_group_data)
-                worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
-                worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie, num_color_bold_cut2)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent, num_color_bold_cut2)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
+                worksheet.write(row, col, one_group_data.fact, num_color_bold)
+                worksheet.write(row, col + 1, one_group_data.limit, num_color_bold)
+                worksheet.write(row, col + 2, one_group_data.otklonenie, num_color_bold_cut2)
+                worksheet.write(row, col + 3, one_group_data.otklonenie_percent, num_color_bold_cut2)
+                worksheet.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
                 for k in table_address_with_group_data:
                     list_group_data.append(k)
-                    worksheet_2.write(row, col, k.fact, num_color)
-                    worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie, num_color_cut2)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent, num_color_cut2)
-                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
+                    worksheet.write(row, col, k.fact, num_color)
+                    worksheet.write(row, col + 1, k.limit, num_color)
+                    worksheet.write(row, col + 2, k.otklonenie, num_color_cut2)
+                    worksheet.write(row, col + 3, k.otklonenie_percent, num_color_cut2)
+                    worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
 
 
-def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address_bold, num_color, num_color_bold, num_color_cut2,
-                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3, f_address_italic_underline):
+def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_bold, num_color, num_color_bold,
+               num_color_cut2,
+               num_color_cut3, num_color_bold_cut2, num_color_bold_cut3, f_address_italic_underline):
     sum_data = Consumption.objects.filter(category=category_id).filter(
         god=year_id)
     sum_data_final = sum_data.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
@@ -2315,7 +2323,8 @@ def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address
                                                    filter=(Q(
                                                        consumption__god=God.objects.get(pk=year_id),
                                                        consumption__category=Category.objects.get(
-                                                           pk=category_id))))).order_by('consumption__address_of_the_municipal_organization__group')
+                                                           pk=category_id))))).order_by(
+        'consumption__address_of_the_municipal_organization__group')
 
     all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
     all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
@@ -2342,7 +2351,8 @@ def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address
         sum=Sum('TheAddressGroup__consumption__sum',
                 filter=(Q(
                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
-                    TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by()
+                    TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by(
+        'TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
     for j in group_data_2:
         print('year')
         print(j)
@@ -2356,36 +2366,36 @@ def write_year(year_id, category_id, worksheet_2, colonnna, f_address, f_address
     for one_address in all_address_4:
         if (one_address.group is None):
             list_group_data.append(one_address)
-            worksheet_2.write(row, 0, str(one_address.municipalOrganization), f_address_italic_underline)
-            worksheet_2.write(row, 1, str(one_address.address), f_address_italic_underline)
-            worksheet_2.write(row, col, one_address.fact, num_color)
-            worksheet_2.write(row, col + 1, one_address.limit, num_color)
-            worksheet_2.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
-            worksheet_2.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
-            worksheet_2.write(row, col + 4, one_address.sum, num_color_cut3)
+            worksheet.write(row, 0, str(one_address.municipalOrganization), f_address_italic_underline)
+            worksheet.write(row, 1, str(one_address.address), f_address_italic_underline)
+            worksheet.write(row, col, one_address.fact, num_color)
+            worksheet.write(row, col + 1, one_address.limit, num_color)
+            worksheet.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
+            worksheet.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
+            worksheet.write(row, col + 4, one_address.sum, num_color_cut3)
             row = row + 1
         elif one_address.group not in list_group_data:
             for one_group_data in group_data_4:
                 list_group_data.append(one_group_data)
-                worksheet_2.write(row, 0, str(one_address.municipalOrganization), f_address_bold)
-                worksheet_2.write(row, 1, str(one_group_data.titleOfTheAddressGroup), f_address_bold)
-                worksheet_2.write(row, col, one_group_data.fact, num_color_bold)
-                worksheet_2.write(row, col + 1, one_group_data.limit, num_color_bold)
-                worksheet_2.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
-                worksheet_2.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
-                worksheet_2.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
+                worksheet.write(row, 0, str(one_address.municipalOrganization), f_address_bold)
+                worksheet.write(row, 1, str(one_group_data.titleOfTheAddressGroup), f_address_bold)
+                worksheet.write(row, col, one_group_data.fact, num_color_bold)
+                worksheet.write(row, col + 1, one_group_data.limit, num_color_bold)
+                worksheet.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
+                worksheet.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
+                worksheet.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
                 row = row + 1
                 table_address_with_group_data = all_address_4.filter(
                     group=one_group_data)
                 for k in table_address_with_group_data:
                     list_group_data.append(k)
-                    worksheet_2.write(row, 0, str(one_address.municipalOrganization), f_address)
-                    worksheet_2.write(row, 1, str(k.address), f_address)
-                    worksheet_2.write(row, col, k.fact, num_color)
-                    worksheet_2.write(row, col + 1, k.limit, num_color)
-                    worksheet_2.write(row, col + 2, k.otklonenie_new, num_color_cut2)
-                    worksheet_2.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
-                    worksheet_2.write(row, col + 4, k.sum, num_color_cut3)
+                    worksheet.write(row, 0, str(one_address.municipalOrganization), f_address)
+                    worksheet.write(row, 1, str(k.address), f_address)
+                    worksheet.write(row, col, k.fact, num_color)
+                    worksheet.write(row, col + 1, k.limit, num_color)
+                    worksheet.write(row, col + 2, k.otklonenie_new, num_color_cut2)
+                    worksheet.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
+                    worksheet.write(row, col + 4, k.sum, num_color_cut3)
                     row = row + 1
     # for j in list_group_data:
     #     print('write year')
@@ -2398,12 +2408,37 @@ def excel_test(request, year_id):
     response['Content-Disposition'] = f"attachment; filename=Year {year_name.name}.xlsx"
 
     workbook = Workbook(response, {'in_memory': True})
-    # worksheet_1 = workbook.add_worksheet('Отопление')
+    format_color_1 = workbook.add_format({'bg_color': '#FFFFCC'})
+
+    worksheet_1 = workbook.add_worksheet('Отопление')
+    worksheet_1.freeze_panes(3, 2)
+    worksheet_1.set_row(2, 60)
+    worksheet_1.write('C3', '', format_color_1)
+
     worksheet_2 = workbook.add_worksheet('Компонент, Гкал')
     worksheet_2.freeze_panes(3, 2)
-
-    format_color_1 = workbook.add_format({'bg_color': '#FFFFCC'})
+    worksheet_2.set_row(2, 60)
     worksheet_2.write('C3', '', format_color_1)
+
+    worksheet_3 = workbook.add_worksheet('Компонент, тыс.м3')
+    worksheet_3.freeze_panes(3, 2)
+    worksheet_3.set_row(2, 60)
+    worksheet_3.write('C3', '', format_color_1)
+
+    worksheet_4 = workbook.add_worksheet('ХВС')
+    worksheet_4.freeze_panes(3, 2)
+    worksheet_4.set_row(2, 60)
+    worksheet_4.write('C3', '', format_color_1)
+
+    worksheet_5 = workbook.add_worksheet('ВО')
+    worksheet_5.freeze_panes(3, 2)
+    worksheet_5.set_row(2, 60)
+    worksheet_5.write('C3', '', format_color_1)
+
+    worksheet_6 = workbook.add_worksheet('Электричество')
+    worksheet_6.freeze_panes(3, 2)
+    worksheet_6.set_row(2, 60)
+    worksheet_6.write('C3', '', format_color_1)
 
     format_default = workbook.add_format({
         'font_size': 9,
@@ -2842,277 +2877,516 @@ def excel_test(request, year_id):
 
     # Шапка таблицы
     # Общие колонки
+    worksheet_1.merge_range('A1:B2', '')
+    worksheet_1.set_column(0, 0, 25)
+    worksheet_1.set_column(1, 1, 35)
+    worksheet_1.write('A3', '№ п/п', format_default)
+    worksheet_1.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
+
     worksheet_2.merge_range('A1:B2', '')
     worksheet_2.set_column(0, 0, 25)
     worksheet_2.set_column(1, 1, 35)
     worksheet_2.write('A3', '№ п/п', format_default)
     worksheet_2.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
-    # Январь
-    worksheet_2.merge_range('C1:G1', '', month_format_yellow)
-    worksheet_2.merge_range('C2:G2', 'Январь', month_format_yellow)
-    worksheet_2.set_column(2, 6, 11.22)
-    worksheet_2.write('C3', 'Фактическое потребление ',  format_yellow)
-    worksheet_2.write('D3', 'Установленный лимит  ', format_yellow)
-    worksheet_2.write('E3', 'отклонение               (лимит-факт) ', format_yellow)
-    worksheet_2.write('F3', 'отклонение               %', format_yellow)
-    worksheet_2.write('G3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
-    # Февраль
-    worksheet_2.merge_range('H1:L1', '', month_format_blue)
-    worksheet_2.merge_range('H2:L2', 'Февраль', month_format_blue)
-    worksheet_2.set_column(7, 12, 11.22)
-    worksheet_2.write('H3', 'Фактическое потребление ', format_blue)
-    worksheet_2.write('I3', 'Установленный лимит  ', format_blue)
-    worksheet_2.write('J3', 'отклонение               (лимит-факт) ', format_blue)
-    worksheet_2.write('K3', 'отклонение               %', format_blue)
-    worksheet_2.write('L3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
-    # Март
-    worksheet_2.merge_range('M1:Q1', '', month_format_green)
-    worksheet_2.merge_range('M2:Q2', 'Март', month_format_green)
-    worksheet_2.set_column(13, 18, 11.22)
-    worksheet_2.write('M3', 'Фактическое потребление ', format_green)
-    worksheet_2.write('N3', 'Установленный лимит  ', format_green)
-    worksheet_2.write('O3', 'отклонение               (лимит-факт) ', format_green)
-    worksheet_2.write('P3', 'отклонение               %', format_green)
-    worksheet_2.write('Q3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
-    # 1 Квартал
-    worksheet_2.merge_range('R1:V1', '', month_format_default)
-    worksheet_2.merge_range('R2:V2', '1 Квартал', month_format_default)
-    worksheet_2.set_column(19, 24, 11.22)
-    worksheet_2.write('R3', 'Фактическое потребление ', format_default)
-    worksheet_2.write('S3', 'Установленный лимит  ', format_default)
-    worksheet_2.write('T3', 'отклонение               (лимит-факт) ', format_default)
-    worksheet_2.write('U3', 'отклонение               %', format_default)
-    worksheet_2.write('V3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
-    # Апрель
-    worksheet_2.merge_range('W1:AA1', '', month_format_yellow)
-    worksheet_2.merge_range('W2:AA2', 'Апрель', month_format_yellow)
-    worksheet_2.set_column(25, 30, 11.22)
-    worksheet_2.write('W3', 'Фактическое потребление ', format_yellow)
-    worksheet_2.write('X3', 'Установленный лимит  ', format_yellow)
-    worksheet_2.write('Y3', 'отклонение               (лимит-факт) ', format_yellow)
-    worksheet_2.write('Z3', 'отклонение               %', format_yellow)
-    worksheet_2.write('AA3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
-    # Май
-    worksheet_2.merge_range('AB1:AF1', '', month_format_blue)
-    worksheet_2.merge_range('AB2:AF2', 'Май', month_format_blue)
-    worksheet_2.set_column(31, 36, 11.22)
-    worksheet_2.write('AB3', 'Фактическое потребление ', format_blue)
-    worksheet_2.write('AC3', 'Установленный лимит  ', format_blue)
-    worksheet_2.write('AD3', 'отклонение               (лимит-факт) ', format_blue)
-    worksheet_2.write('AE3', 'отклонение               %', format_blue)
-    worksheet_2.write('AF3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
-    # Июнь
-    worksheet_2.merge_range('AG1:AK1', '', month_format_green)
-    worksheet_2.merge_range('AG2:AK2', 'Июнь', month_format_green)
-    worksheet_2.set_column(37, 42, 11.22)
-    worksheet_2.write('AG3', 'Фактическое потребление ', format_green)
-    worksheet_2.write('AH3', 'Установленный лимит  ', format_green)
-    worksheet_2.write('AI3', 'отклонение               (лимит-факт) ', format_green)
-    worksheet_2.write('AJ3', 'отклонение               %', format_green)
-    worksheet_2.write('AK3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
-    # 2 Квартал
-    worksheet_2.merge_range('AL1:AP1', '', month_format_default)
-    worksheet_2.merge_range('AL2:AP2', '2 Квартал', month_format_default)
-    worksheet_2.set_column(43, 48, 11.22)
-    worksheet_2.write('AL3', 'Фактическое потребление ', format_default)
-    worksheet_2.write('AM3', 'Установленный лимит  ', format_default)
-    worksheet_2.write('AN3', 'отклонение               (лимит-факт) ', format_default)
-    worksheet_2.write('AO3', 'отклонение               %', format_default)
-    worksheet_2.write('AP3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
-    # 1 Полугодие
-    worksheet_2.merge_range('AQ1:AU1', '', month_format_aqua)
-    worksheet_2.merge_range('AQ2:AU2', '1 Полугодие', month_format_aqua)
-    worksheet_2.set_column(49, 54, 11.22)
-    worksheet_2.write('AQ3', 'Фактическое потребление ', format_aqua)
-    worksheet_2.write('AR3', 'Установленный лимит  ', format_aqua)
-    worksheet_2.write('AS3', 'отклонение               (лимит-факт) ', format_aqua)
-    worksheet_2.write('AT3', 'отклонение               %', format_aqua)
-    worksheet_2.write('AU3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_aqua)
-    # Июль
-    worksheet_2.merge_range('AV1:AZ1', '', month_format_yellow)
-    worksheet_2.merge_range('AV2:AZ2', 'Июль', month_format_yellow)
-    worksheet_2.set_column(49, 54, 11.22)
-    worksheet_2.write('AV3', 'Фактическое потребление ', format_yellow)
-    worksheet_2.write('AW3', 'Установленный лимит  ', format_yellow)
-    worksheet_2.write('AX3', 'отклонение               (лимит-факт) ', format_yellow)
-    worksheet_2.write('AY3', 'отклонение               %', format_yellow)
-    worksheet_2.write('AZ3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
-    # Август
-    worksheet_2.merge_range('BA1:BE1', '', month_format_blue)
-    worksheet_2.merge_range('BA2:BE2', 'Август', month_format_blue)
-    worksheet_2.set_column(55, 60, 11.22)
-    worksheet_2.write('BA3', 'Фактическое потребление ', format_blue)
-    worksheet_2.write('BB3', 'Установленный лимит  ', format_blue)
-    worksheet_2.write('BC3', 'отклонение               (лимит-факт) ', format_blue)
-    worksheet_2.write('BD3', 'отклонение               %', format_blue)
-    worksheet_2.write('BE3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
-    # Сентябрь
-    worksheet_2.merge_range('BF1:BJ1', '', month_format_green)
-    worksheet_2.merge_range('BF2:BJ2', 'Сентябрь', month_format_green)
-    worksheet_2.set_column(61, 66, 11.22)
-    worksheet_2.write('BF3', 'Фактическое потребление ', format_green)
-    worksheet_2.write('BG3', 'Установленный лимит  ', format_green)
-    worksheet_2.write('BH3', 'отклонение               (лимит-факт) ', format_green)
-    worksheet_2.write('BI3', 'отклонение               %', format_green)
-    worksheet_2.write('BJ3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
-    # 3 Квартал
-    worksheet_2.merge_range('BK1:BO1', '', month_format_default)
-    worksheet_2.merge_range('BK2:BO2', '3 Квартал', month_format_default)
-    worksheet_2.set_column(67, 72, 11.22)
-    worksheet_2.write('BK3', 'Фактическое потребление ', format_default)
-    worksheet_2.write('BL3', 'Установленный лимит  ', format_default)
-    worksheet_2.write('BM3', 'отклонение               (лимит-факт) ', format_default)
-    worksheet_2.write('BN3', 'отклонение               %', format_default)
-    worksheet_2.write('BO3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
-    # Октябрь
-    worksheet_2.merge_range('BP1:BT1', '', month_format_yellow)
-    worksheet_2.merge_range('BP2:BT2', 'Октябрь', month_format_yellow)
-    worksheet_2.set_column(73, 78, 11.22)
-    worksheet_2.write('BP3', 'Фактическое потребление ', format_yellow)
-    worksheet_2.write('BQ3', 'Установленный лимит  ', format_yellow)
-    worksheet_2.write('BR3', 'отклонение               (лимит-факт) ', format_yellow)
-    worksheet_2.write('BS3', 'отклонение               %', format_yellow)
-    worksheet_2.write('BT3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
-    # Ноябрь
-    worksheet_2.merge_range('BU1:BY1', '', month_format_blue)
-    worksheet_2.merge_range('BU2:BY2', 'Ноябрь', month_format_blue)
-    worksheet_2.set_column(79, 84, 11.22)
-    worksheet_2.write('BU3', 'Фактическое потребление ', format_blue)
-    worksheet_2.write('BV3', 'Установленный лимит  ', format_blue)
-    worksheet_2.write('BW3', 'отклонение               (лимит-факт) ', format_blue)
-    worksheet_2.write('BX3', 'отклонение               %', format_blue)
-    worksheet_2.write('BY3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
-    # Декабрь
-    worksheet_2.merge_range('BZ1:CD1', '', month_format_green)
-    worksheet_2.merge_range('BZ2:CD2', 'Декабрь', month_format_green)
-    worksheet_2.set_column(85, 90, 11.22)
-    worksheet_2.write('BZ3', 'Фактическое потребление ', format_green)
-    worksheet_2.write('CA3', 'Установленный лимит  ', format_green)
-    worksheet_2.write('CB3', 'отклонение               (лимит-факт) ', format_green)
-    worksheet_2.write('CC3', 'отклонение               %', format_green)
-    worksheet_2.write('CD3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
-    # 4 Квартал
-    worksheet_2.merge_range('CE1:CI1', '', month_format_default)
-    worksheet_2.merge_range('CE2:CI2', '4 Квартал', month_format_default)
-    worksheet_2.set_column(91, 96, 11.22)
-    worksheet_2.write('CE3', 'Фактическое потребление ', format_default)
-    worksheet_2.write('CF3', 'Установленный лимит  ', format_default)
-    worksheet_2.write('CG3', 'отклонение               (лимит-факт) ', format_default)
-    worksheet_2.write('CH3', 'отклонение               %', format_default)
-    worksheet_2.write('CI3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
-    # Год
-    worksheet_2.merge_range('CJ1:CN1', '', month_format_red)
-    worksheet_2.merge_range('CJ2:CN2', 'Год', month_format_red)
-    worksheet_2.set_column(97, 102, 11.22)
-    worksheet_2.write('CJ3', 'Фактическое потребление ', format_red)
-    worksheet_2.write('CK3', 'Установленный лимит  ', format_red)
-    worksheet_2.write('CL3', 'отклонение               (лимит-факт) ', format_red)
-    worksheet_2.write('CM3', 'отклонение               %', format_red)
-    worksheet_2.write('CN3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_red)
 
-    worksheet_2.set_row(2, 60)
+    worksheet_3.merge_range('A1:B2', '')
+    worksheet_3.set_column(0, 0, 25)
+    worksheet_3.set_column(1, 1, 35)
+    worksheet_3.write('A3', '№ п/п', format_default)
+    worksheet_3.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
 
-    write_year(year_id=year_id, category_id=2, worksheet_2=worksheet_2, colonnna=87, f_address=f_address, f_address_bold=f_address_bold,
-               num_color=format_red_values, num_color_bold=format_red_values_bold,num_color_cut2=format_red_values_cut2,
-                num_color_cut3=format_red_values_cut3, num_color_bold_cut2=format_red_values_bold_cut2,
-                num_color_bold_cut3=format_red_values_bold_cut3, f_address_italic_underline=f_address_italic_underline)
+    worksheet_4.merge_range('A1:B2', '')
+    worksheet_4.set_column(0, 0, 25)
+    worksheet_4.set_column(1, 1, 35)
+    worksheet_4.write('A3', '№ п/п', format_default)
+    worksheet_4.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
 
-    write_polugodie(year_id=year_id, polugodie_id=1, category_id=2, worksheet_2=worksheet_2, colonnna=42,
-                    num_color=format_aqua_values, num_color_bold=format_aqua_values_bold, num_color_cut2=format_aqua_values_cut2,
-                num_color_cut3=format_aqua_values_cut3, num_color_bold_cut2=format_aqua_values_bold_cut2,
-                num_color_bold_cut3=format_aqua_values_bold_cut3)
-    # 1 Квартал
-    write_quarter(year_id=year_id, category_id=2, quarter_id=3, worksheet_2=worksheet_2, colonna=17,
-                  num_color=format_noc_values, num_color_bold=format_noc_values_bold, num_color_cut2=format_noc_values_cut2,
-                num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
-                num_color_bold_cut3=format_noc_values_bold_cut3)
-    # 2 Квартал
-    write_quarter(year_id=year_id, category_id=2, quarter_id=4, worksheet_2=worksheet_2, colonna=37,
-                  num_color=format_noc_values, num_color_bold=format_noc_values_bold,
-                  num_color_cut2=format_noc_values_cut2,
-                  num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
-                  num_color_bold_cut3=format_noc_values_bold_cut3)
-    # 3 Квартал
-    write_quarter(year_id=year_id, category_id=2, quarter_id=5, worksheet_2=worksheet_2, colonna=62,
-                  num_color=format_noc_values, num_color_bold=format_noc_values_bold,
-                  num_color_cut2=format_noc_values_cut2,
-                  num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
-                  num_color_bold_cut3=format_noc_values_bold_cut3)
-    # 4 Квартал
-    write_quarter(year_id=year_id, category_id=2, quarter_id=6, worksheet_2=worksheet_2, colonna=82,
-                  num_color=format_noc_values, num_color_bold=format_noc_values_bold,
-                  num_color_cut2=format_noc_values_cut2,
-                  num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
-                  num_color_bold_cut3=format_noc_values_bold_cut3)
-    # Январь
-    write_month(year_id=year_id, month_id=1, category_id=2, worksheet_2=worksheet_2, colonna=2,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-                num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # Февраль
-    write_month(year_id=year_id, month_id=2, category_id=2, worksheet_2=worksheet_2, colonna=7, num_color=format_blue_values,
-                num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-                num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # Март
-    write_month(year_id=year_id, month_id=3, category_id=2, worksheet_2=worksheet_2, colonna=12,
-                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-                num_color_bold_cut3=format_green_values_bold_cut3)
-    # # Апрель
-    write_month(year_id=year_id, month_id=4, category_id=2, worksheet_2=worksheet_2, colonna=22,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-                num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # # Май
-    write_month(year_id=year_id, month_id=5, category_id=2, worksheet_2=worksheet_2, colonna=27, num_color=format_blue_values,
-                num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-                num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # Июнь
-    write_month(year_id=year_id, month_id=6, category_id=2, worksheet_2=worksheet_2, colonna=32,
-                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-                num_color_bold_cut3=format_green_values_bold_cut3)
-    # # Июль
-    write_month(year_id=year_id, month_id=7, category_id=2, worksheet_2=worksheet_2, colonna=47,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-                num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # # Август
-    write_month(year_id=year_id, month_id=8, category_id=2, worksheet_2=worksheet_2, colonna=52, num_color=format_blue_values,
-                num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-                num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # Сентябрь
-    write_month(year_id=year_id, month_id=9, category_id=2, worksheet_2=worksheet_2, colonna=57,
-                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-                num_color_bold_cut3=format_green_values_bold_cut3)
-    # # Октябрь
-    write_month(year_id=year_id, month_id=10, category_id=2, worksheet_2=worksheet_2, colonna=67,
-                num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
-                num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
-                num_color_bold_cut3=format_yellow_values_bold_cut3)
-    # # Ноябрь
-    write_month(year_id=year_id, month_id=11, category_id=2, worksheet_2=worksheet_2, colonna=72,
-                num_color=format_blue_values, num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
-                num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
-                num_color_bold_cut3=format_blue_values_bold_cut3)
-    # # Декабрь
-    write_month(year_id=year_id, month_id=12, category_id=2, worksheet_2=worksheet_2, colonna=77,
-                num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
-                num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
-                num_color_bold_cut3=format_green_values_bold_cut3)
+    worksheet_5.merge_range('A1:B2', '')
+    worksheet_5.set_column(0, 0, 25)
+    worksheet_5.set_column(1, 1, 35)
+    worksheet_5.write('A3', '№ п/п', format_default)
+    worksheet_5.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
+
+    worksheet_6.merge_range('A1:B2', '')
+    worksheet_6.set_column(0, 0, 25)
+    worksheet_6.set_column(1, 1, 35)
+    worksheet_6.write('A3', '№ п/п', format_default)
+    worksheet_6.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
+
+    list = [worksheet_1, worksheet_2, worksheet_3, worksheet_4, worksheet_5, worksheet_6]
+    categories = Category.objects.all().order_by('pk')
+    categories1 = Category.objects.all()
+    for i in list:
+        # Январь
+        i.merge_range('C1:G1', '', month_format_yellow)
+        i.merge_range('C2:G2', 'Январь', month_format_yellow)
+        i.set_column(2, 6, 11.22)
+        i.write('C3', 'Фактическое потребление ', format_yellow)
+        i.write('D3', 'Установленный лимит  ', format_yellow)
+        i.write('E3', 'отклонение               (лимит-факт) ', format_yellow)
+        i.write('F3', 'отклонение               %', format_yellow)
+        i.write('G3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+        # Февраль
+        i.merge_range('H1:L1', '', month_format_blue)
+        i.merge_range('H2:L2', 'Февраль', month_format_blue)
+        i.set_column(7, 12, 11.22)
+        i.write('H3', 'Фактическое потребление ', format_blue)
+        i.write('I3', 'Установленный лимит  ', format_blue)
+        i.write('J3', 'отклонение               (лимит-факт) ', format_blue)
+        i.write('K3', 'отклонение               %', format_blue)
+        i.write('L3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+        # Март
+        i.merge_range('M1:Q1', '', month_format_green)
+        i.merge_range('M2:Q2', 'Март', month_format_green)
+        i.set_column(13, 18, 11.22)
+        i.write('M3', 'Фактическое потребление ', format_green)
+        i.write('N3', 'Установленный лимит  ', format_green)
+        i.write('O3', 'отклонение               (лимит-факт) ', format_green)
+        i.write('P3', 'отклонение               %', format_green)
+        i.write('Q3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+        # 1 Квартал
+        i.merge_range('R1:V1', '', month_format_default)
+        i.merge_range('R2:V2', '1 Квартал', month_format_default)
+        i.set_column(19, 24, 11.22)
+        i.write('R3', 'Фактическое потребление ', format_default)
+        i.write('S3', 'Установленный лимит  ', format_default)
+        i.write('T3', 'отклонение               (лимит-факт) ', format_default)
+        i.write('U3', 'отклонение               %', format_default)
+        i.write('V3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+        # Апрель
+        i.merge_range('W1:AA1', '', month_format_yellow)
+        i.merge_range('W2:AA2', 'Апрель', month_format_yellow)
+        i.set_column(25, 30, 11.22)
+        i.write('W3', 'Фактическое потребление ', format_yellow)
+        i.write('X3', 'Установленный лимит  ', format_yellow)
+        i.write('Y3', 'отклонение               (лимит-факт) ', format_yellow)
+        i.write('Z3', 'отклонение               %', format_yellow)
+        i.write('AA3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+        # Май
+        i.merge_range('AB1:AF1', '', month_format_blue)
+        i.merge_range('AB2:AF2', 'Май', month_format_blue)
+        i.set_column(31, 36, 11.22)
+        i.write('AB3', 'Фактическое потребление ', format_blue)
+        i.write('AC3', 'Установленный лимит  ', format_blue)
+        i.write('AD3', 'отклонение               (лимит-факт) ', format_blue)
+        i.write('AE3', 'отклонение               %', format_blue)
+        i.write('AF3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+        # Июнь
+        i.merge_range('AG1:AK1', '', month_format_green)
+        i.merge_range('AG2:AK2', 'Июнь', month_format_green)
+        i.set_column(37, 42, 11.22)
+        i.write('AG3', 'Фактическое потребление ', format_green)
+        i.write('AH3', 'Установленный лимит  ', format_green)
+        i.write('AI3', 'отклонение               (лимит-факт) ', format_green)
+        i.write('AJ3', 'отклонение               %', format_green)
+        i.write('AK3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+        # 2 Квартал
+        i.merge_range('AL1:AP1', '', month_format_default)
+        i.merge_range('AL2:AP2', '2 Квартал', month_format_default)
+        i.set_column(43, 48, 11.22)
+        i.write('AL3', 'Фактическое потребление ', format_default)
+        i.write('AM3', 'Установленный лимит  ', format_default)
+        i.write('AN3', 'отклонение               (лимит-факт) ', format_default)
+        i.write('AO3', 'отклонение               %', format_default)
+        i.write('AP3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+        # 1 Полугодие
+        i.merge_range('AQ1:AU1', '', month_format_aqua)
+        i.merge_range('AQ2:AU2', '1 Полугодие', month_format_aqua)
+        i.set_column(49, 54, 11.22)
+        i.write('AQ3', 'Фактическое потребление ', format_aqua)
+        i.write('AR3', 'Установленный лимит  ', format_aqua)
+        i.write('AS3', 'отклонение               (лимит-факт) ', format_aqua)
+        i.write('AT3', 'отклонение               %', format_aqua)
+        i.write('AU3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_aqua)
+        # Июль
+        i.merge_range('AV1:AZ1', '', month_format_yellow)
+        i.merge_range('AV2:AZ2', 'Июль', month_format_yellow)
+        i.set_column(49, 54, 11.22)
+        i.write('AV3', 'Фактическое потребление ', format_yellow)
+        i.write('AW3', 'Установленный лимит  ', format_yellow)
+        i.write('AX3', 'отклонение               (лимит-факт) ', format_yellow)
+        i.write('AY3', 'отклонение               %', format_yellow)
+        i.write('AZ3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+        # Август
+        i.merge_range('BA1:BE1', '', month_format_blue)
+        i.merge_range('BA2:BE2', 'Август', month_format_blue)
+        i.set_column(55, 60, 11.22)
+        i.write('BA3', 'Фактическое потребление ', format_blue)
+        i.write('BB3', 'Установленный лимит  ', format_blue)
+        i.write('BC3', 'отклонение               (лимит-факт) ', format_blue)
+        i.write('BD3', 'отклонение               %', format_blue)
+        i.write('BE3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+        # Сентябрь
+        i.merge_range('BF1:BJ1', '', month_format_green)
+        i.merge_range('BF2:BJ2', 'Сентябрь', month_format_green)
+        i.set_column(61, 66, 11.22)
+        i.write('BF3', 'Фактическое потребление ', format_green)
+        i.write('BG3', 'Установленный лимит  ', format_green)
+        i.write('BH3', 'отклонение               (лимит-факт) ', format_green)
+        i.write('BI3', 'отклонение               %', format_green)
+        i.write('BJ3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+        # 3 Квартал
+        i.merge_range('BK1:BO1', '', month_format_default)
+        i.merge_range('BK2:BO2', '3 Квартал', month_format_default)
+        i.set_column(67, 72, 11.22)
+        i.write('BK3', 'Фактическое потребление ', format_default)
+        i.write('BL3', 'Установленный лимит  ', format_default)
+        i.write('BM3', 'отклонение               (лимит-факт) ', format_default)
+        i.write('BN3', 'отклонение               %', format_default)
+        i.write('BO3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+        # Октябрь
+        i.merge_range('BP1:BT1', '', month_format_yellow)
+        i.merge_range('BP2:BT2', 'Октябрь', month_format_yellow)
+        i.set_column(73, 78, 11.22)
+        i.write('BP3', 'Фактическое потребление ', format_yellow)
+        i.write('BQ3', 'Установленный лимит  ', format_yellow)
+        i.write('BR3', 'отклонение               (лимит-факт) ', format_yellow)
+        i.write('BS3', 'отклонение               %', format_yellow)
+        i.write('BT3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+        # Ноябрь
+        i.merge_range('BU1:BY1', '', month_format_blue)
+        i.merge_range('BU2:BY2', 'Ноябрь', month_format_blue)
+        i.set_column(79, 84, 11.22)
+        i.write('BU3', 'Фактическое потребление ', format_blue)
+        i.write('BV3', 'Установленный лимит  ', format_blue)
+        i.write('BW3', 'отклонение               (лимит-факт) ', format_blue)
+        i.write('BX3', 'отклонение               %', format_blue)
+        i.write('BY3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+        # Декабрь
+        i.merge_range('BZ1:CD1', '', month_format_green)
+        i.merge_range('BZ2:CD2', 'Декабрь', month_format_green)
+        i.set_column(85, 90, 11.22)
+        i.write('BZ3', 'Фактическое потребление ', format_green)
+        i.write('CA3', 'Установленный лимит  ', format_green)
+        i.write('CB3', 'отклонение               (лимит-факт) ', format_green)
+        i.write('CC3', 'отклонение               %', format_green)
+        i.write('CD3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+        # 4 Квартал
+        i.merge_range('CE1:CI1', '', month_format_default)
+        i.merge_range('CE2:CI2', '4 Квартал', month_format_default)
+        i.set_column(91, 96, 11.22)
+        i.write('CE3', 'Фактическое потребление ', format_default)
+        i.write('CF3', 'Установленный лимит  ', format_default)
+        i.write('CG3', 'отклонение               (лимит-факт) ', format_default)
+        i.write('CH3', 'отклонение               %', format_default)
+        i.write('CI3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+        # Год
+        i.merge_range('CJ1:CN1', '', month_format_red)
+        i.merge_range('CJ2:CN2', 'Год', month_format_red)
+        i.set_column(97, 102, 11.22)
+        i.write('CJ3', 'Фактическое потребление ', format_red)
+        i.write('CK3', 'Установленный лимит  ', format_red)
+        i.write('CL3', 'отклонение               (лимит-факт) ', format_red)
+        i.write('CM3', 'отклонение               %', format_red)
+        i.write('CN3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_red)
+
+    for sheet, category in zip(list, categories):
+        write_year(year_id=year_id, category_id=category.id, worksheet=sheet, colonnna=87, f_address=f_address,
+                   f_address_bold=f_address_bold,
+                   num_color=format_red_values, num_color_bold=format_red_values_bold,
+                   num_color_cut2=format_red_values_cut2,
+                   num_color_cut3=format_red_values_cut3, num_color_bold_cut2=format_red_values_bold_cut2,
+                   num_color_bold_cut3=format_red_values_bold_cut3, f_address_italic_underline=f_address_italic_underline)
+        write_polugodie(year_id=year_id, polugodie_id=1, category_id=category.id, worksheet=sheet, colonnna=42,
+                        num_color=format_aqua_values, num_color_bold=format_aqua_values_bold, num_color_cut2=format_aqua_values_cut2,
+                    num_color_cut3=format_aqua_values_cut3, num_color_bold_cut2=format_aqua_values_bold_cut2,
+                    num_color_bold_cut3=format_aqua_values_bold_cut3)
+        # Январь
+        write_month(year_id=year_id, month_id=1, category_id=category.id, worksheet=sheet, colonna=2,
+                    num_color=format_yellow_values, num_color_bold=format_yellow_values_bold,
+                    num_color_cut2=format_yellow_values_cut2,
+                    num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                    num_color_bold_cut3=format_yellow_values_bold_cut3)
+        # Февраль
+        write_month(year_id=year_id, month_id=2, category_id=category.id, worksheet=sheet, colonna=7, num_color=format_blue_values,
+                    num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                    num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                    num_color_bold_cut3=format_blue_values_bold_cut3)
+        # # Март
+        write_month(year_id=year_id, month_id=3, category_id=category.id, worksheet=sheet, colonna=12,
+                    num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                    num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                    num_color_bold_cut3=format_green_values_bold_cut3)
+        # # Апрель
+        write_month(year_id=year_id, month_id=4, category_id=category.id, worksheet=sheet, colonna=22,
+                    num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+                    num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                    num_color_bold_cut3=format_yellow_values_bold_cut3)
+        # # Май
+        write_month(year_id=year_id, month_id=5, category_id=category.id, worksheet=sheet, colonna=27, num_color=format_blue_values,
+                    num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                    num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                    num_color_bold_cut3=format_blue_values_bold_cut3)
+        # # Июнь
+        write_month(year_id=year_id, month_id=6, category_id=category.id, worksheet=sheet, colonna=32,
+                    num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                    num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                    num_color_bold_cut3=format_green_values_bold_cut3)
+        # # Июль
+        write_month(year_id=year_id, month_id=7, category_id=category.id, worksheet=sheet, colonna=47,
+                    num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+                    num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                    num_color_bold_cut3=format_yellow_values_bold_cut3)
+        # # Август
+        write_month(year_id=year_id, month_id=8, category_id=category.id, worksheet=sheet, colonna=52, num_color=format_blue_values,
+                    num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                    num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                    num_color_bold_cut3=format_blue_values_bold_cut3)
+        # # Сентябрь
+        write_month(year_id=year_id, month_id=9, category_id=category.id, worksheet=sheet, colonna=57,
+                    num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                    num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                    num_color_bold_cut3=format_green_values_bold_cut3)
+        # # Октябрь
+        write_month(year_id=year_id, month_id=10, category_id=category.id, worksheet=sheet, colonna=67,
+                    num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+                    num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+                    num_color_bold_cut3=format_yellow_values_bold_cut3)
+        # # Ноябрь
+        write_month(year_id=year_id, month_id=11, category_id=category.id, worksheet=sheet, colonna=72,
+                    num_color=format_blue_values, num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+                    num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+                    num_color_bold_cut3=format_blue_values_bold_cut3)
+        # # Декабрь
+        write_month(year_id=year_id, month_id=12, category_id=category.id, worksheet=sheet, colonna=77,
+                    num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+                    num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+                    num_color_bold_cut3=format_green_values_bold_cut3)
+        # 1 Квартал
+        write_quarter(year_id=year_id, category_id=category.id, quarter_id=3, worksheet=sheet, colonna=17,
+                      num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+                      num_color_cut2=format_noc_values_cut2,
+                      num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                      num_color_bold_cut3=format_noc_values_bold_cut3)
+        # 2 Квартал
+        write_quarter(year_id=year_id, category_id=category.id, quarter_id=4, worksheet=sheet, colonna=37,
+                      num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+                      num_color_cut2=format_noc_values_cut2,
+                      num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                      num_color_bold_cut3=format_noc_values_bold_cut3)
+        # 3 Квартал
+        write_quarter(year_id=year_id, category_id=category.id, quarter_id=5, worksheet=sheet, colonna=62,
+                      num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+                      num_color_cut2=format_noc_values_cut2,
+                      num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                      num_color_bold_cut3=format_noc_values_bold_cut3)
+        # 4 Квартал
+        write_quarter(year_id=year_id, category_id=category.id, quarter_id=6, worksheet=sheet, colonna=82,
+                      num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+                      num_color_cut2=format_noc_values_cut2,
+                      num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+                      num_color_bold_cut3=format_noc_values_bold_cut3)
+
+
+
+    # write_year(year_id=year_id, category_id=1, worksheet=worksheet_1, colonnna=87, f_address=f_address,
+    #            f_address_bold=f_address_bold,
+    #            num_color=format_red_values, num_color_bold=format_red_values_bold,
+    #            num_color_cut2=format_red_values_cut2,
+    #            num_color_cut3=format_red_values_cut3, num_color_bold_cut2=format_red_values_bold_cut2,
+    #            num_color_bold_cut3=format_red_values_bold_cut3, f_address_italic_underline=f_address_italic_underline)
+    # write_year(year_id=year_id, category_id=2, worksheet=worksheet_2, colonnna=87, f_address=f_address,
+    #            f_address_bold=f_address_bold,
+    #            num_color=format_red_values, num_color_bold=format_red_values_bold,
+    #            num_color_cut2=format_red_values_cut2,
+    #            num_color_cut3=format_red_values_cut3, num_color_bold_cut2=format_red_values_bold_cut2,
+    #            num_color_bold_cut3=format_red_values_bold_cut3, f_address_italic_underline=f_address_italic_underline)
+
+    # write_polugodie(year_id=year_id, polugodie_id=1, category_id=2, worksheet=worksheet_2, colonnna=42,
+    #                 num_color=format_aqua_values, num_color_bold=format_aqua_values_bold, num_color_cut2=format_aqua_values_cut2,
+    #             num_color_cut3=format_aqua_values_cut3, num_color_bold_cut2=format_aqua_values_bold_cut2,
+    #             num_color_bold_cut3=format_aqua_values_bold_cut3)
+    # # 1 Квартал
+    # write_quarter(year_id=year_id, category_id=1, quarter_id=3, worksheet=worksheet_1, colonna=17,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold, num_color_cut2=format_noc_values_cut2,
+    #             num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #             num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=2, quarter_id=3, worksheet=worksheet_2, colonna=17,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=3, quarter_id=3, worksheet=worksheet_3, colonna=17,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=4, quarter_id=3, worksheet=worksheet_4, colonna=17,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=5, quarter_id=3, worksheet=worksheet_5, colonna=17,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=6, quarter_id=3, worksheet=worksheet_6, colonna=17,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # # 2 Квартал
+    # write_quarter(year_id=year_id, category_id=1, quarter_id=4, worksheet=worksheet_1, colonna=37,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=2, quarter_id=4, worksheet=worksheet_2, colonna=37,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=3, quarter_id=4, worksheet=worksheet_3, colonna=37,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=4, quarter_id=4, worksheet=worksheet_4, colonna=37,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=5, quarter_id=4, worksheet=worksheet_5, colonna=37,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=6, quarter_id=4, worksheet=worksheet_6, colonna=37,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # # 3 Квартал
+    # write_quarter(year_id=year_id, category_id=1, quarter_id=5, worksheet=worksheet_1, colonna=62,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=2, quarter_id=5, worksheet=worksheet_2, colonna=62,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=3, quarter_id=5, worksheet=worksheet_3, colonna=62,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=4, quarter_id=5, worksheet=worksheet_4, colonna=62,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=5, quarter_id=5, worksheet=worksheet_5, colonna=62,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=6, quarter_id=5, worksheet=worksheet_6, colonna=62,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # # 4 Квартал
+    # write_quarter(year_id=year_id, category_id=1, quarter_id=6, worksheet=worksheet_1, colonna=82,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=2, quarter_id=6, worksheet=worksheet_2, colonna=82,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=3, quarter_id=6, worksheet=worksheet_3, colonna=82,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=4, quarter_id=6, worksheet=worksheet_4, colonna=82,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=5, quarter_id=6, worksheet=worksheet_5, colonna=82,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # write_quarter(year_id=year_id, category_id=6, quarter_id=6, worksheet=worksheet_6, colonna=82,
+    #               num_color=format_noc_values, num_color_bold=format_noc_values_bold,
+    #               num_color_cut2=format_noc_values_cut2,
+    #               num_color_cut3=format_noc_values_cut3, num_color_bold_cut2=format_noc_values_bold_cut2,
+    #               num_color_bold_cut3=format_noc_values_bold_cut3)
+    # # Январь
+    # write_month(year_id=year_id, month_id=1, category_id=2, worksheet=worksheet_2, colonna=2,
+    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
+    # # Февраль
+    # write_month(year_id=year_id, month_id=2, category_id=2, worksheet=worksheet_2, colonna=7, num_color=format_blue_values,
+    #             num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+    #             num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # # Март
+    # write_month(year_id=year_id, month_id=3, category_id=2, worksheet=worksheet_2, colonna=12,
+    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+    #             num_color_bold_cut3=format_green_values_bold_cut3)
+    # # # Апрель
+    # write_month(year_id=year_id, month_id=4, category_id=2, worksheet=worksheet_2, colonna=22,
+    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
+    # # # Май
+    # write_month(year_id=year_id, month_id=5, category_id=2, worksheet=worksheet_2, colonna=27, num_color=format_blue_values,
+    #             num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+    #             num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # # Июнь
+    # write_month(year_id=year_id, month_id=6, category_id=2, worksheet=worksheet_2, colonna=32,
+    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+    #             num_color_bold_cut3=format_green_values_bold_cut3)
+    # # # Июль
+    # write_month(year_id=year_id, month_id=7, category_id=2, worksheet=worksheet_2, colonna=47,
+    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
+    # # # Август
+    # write_month(year_id=year_id, month_id=8, category_id=2, worksheet=worksheet_2, colonna=52, num_color=format_blue_values,
+    #             num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+    #             num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # # Сентябрь
+    # write_month(year_id=year_id, month_id=9, category_id=2, worksheet=worksheet_2, colonna=57,
+    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+    #             num_color_bold_cut3=format_green_values_bold_cut3)
+    # # # Октябрь
+    # write_month(year_id=year_id, month_id=10, category_id=2, worksheet=worksheet_2, colonna=67,
+    #             num_color=format_yellow_values, num_color_bold=format_yellow_values_bold, num_color_cut2=format_yellow_values_cut2,
+    #             num_color_cut3=format_yellow_values_cut3, num_color_bold_cut2=format_yellow_values_bold_cut2,
+    #             num_color_bold_cut3=format_yellow_values_bold_cut3)
+    # # # Ноябрь
+    # write_month(year_id=year_id, month_id=11, category_id=2, worksheet=worksheet_2, colonna=72,
+    #             num_color=format_blue_values, num_color_bold=format_blue_values_bold, num_color_cut2=format_blue_values_cut2,
+    #             num_color_cut3=format_blue_values_cut3, num_color_bold_cut2=format_blue_values_bold_cut2,
+    #             num_color_bold_cut3=format_blue_values_bold_cut3)
+    # # # Декабрь
+    # write_month(year_id=year_id, month_id=12, category_id=2, worksheet=worksheet_2, colonna=77,
+    #             num_color=format_green_values, num_color_bold=format_green_values_bold, num_color_cut2=format_green_values_cut2,
+    #             num_color_cut3=format_green_values_cut3, num_color_bold_cut2=format_green_values_bold_cut2,
+    #             num_color_bold_cut3=format_green_values_bold_cut3)
 
     format1 = workbook.add_format({'bg_color': '#FFC7CE',
                                    'font_color': '#9C0006'})
     worksheet_2.conditional_format('$C$4:$G$4', {'type': 'formula',
-                                               'criteria': '=$C$4>$D$4',
-                                               'format': format1})
+                                                 'criteria': '=$C$4>$D$4',
+                                                 'format': format1})
     worksheet_2.conditional_format('$C$5:$G$5', {'type': 'formula',
-                                               'criteria': '=$C$5>$D$5',
-                                               'format': format1})
+                                                 'criteria': '=$C$5>$D$5',
+                                                 'format': format1})
     workbook.close()
     return response
-
