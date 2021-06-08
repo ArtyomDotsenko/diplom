@@ -94,9 +94,9 @@
                 <td><strong>{{ i.titleOfTheAddressGroup }}</strong></td>
                 <td><strong>{{ i.fact }}</strong></td>
                 <td><strong>{{ i.limit }}</strong></td>
-                <td><strong>{{ i.otklonenie_new }}</strong></td>
-                <td><strong>{{ i.otklonenie_percent_new }}</strong></td>
-                <td><strong>{{ i.sum }}</strong></td>
+                <td><strong>{{ i.otklonenie_new|floatformat:3 }}</strong></td>
+                <td><strong>{{ i.otklonenie_percent_new|floatformat:3 }}</strong></td>
+                <td><strong>{{ i.sum|floatformat:3 }}</strong></td>
                 <td><strong>-</strong></td>
                 <td><strong>-</strong></td>
             {% else %}
@@ -108,9 +108,9 @@
                 <td>{{ i.address_of_the_municipal_organization.address.titleOfTheAddress }}</td>
                 <td>{{ i.fact }}</td>
                 <td>{{ i.limit }}</td>
-                <td>{{ i.otklonenie }}</td>
-                <td>{{ i.otklonenie_percent }}</td>
-                <td>{{ i.sum }}</td>
+                <td>{{ i.otklonenie|floatformat:3 }}</td>
+                <td>{{ i.otklonenie_percent|floatformat:3 }}</td>
+                <td>{{ i.sum|floatformat:3 }}</td>
                 {% if i.explanatory_note %}
                     <td><a href="http://127.0.0.1:8000/media/{{ i.explanatory_note }}">Скачать</a></td>
                 {% else %}
@@ -128,12 +128,11 @@
              <td colspan="2"><b>Итог</b></td>
              <td><b>{{ sum_data_final.fact }}</b></td>
              <td><b>{{ sum_data_final.limit }}</b></td>
-             <td><b>{{ sum_data_final.otklonenie }}</b></td>
-             <td><b>{{ sum_data_final.otklonenie_percent }}</b></td>
-             <td><b>{{ sum_data_final.sum }}</b></td>
+             <td><b>{{ sum_data_final.otklonenie|floatformat:3 }}</b></td>
+             <td><b>{{ sum_data_final.otklonenie_percent|floatformat:3 }}</b></td>
+             <td><b>{{ sum_data_final.sum|floatformat:3 }}</b></td>
              <td colspan="2"><b>-</b></td>
          </tr>
              </tbody>
          </table>
-
 {% endblock %}

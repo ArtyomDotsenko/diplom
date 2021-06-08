@@ -22,6 +22,615 @@ def index(request):
     return render(request, 'website/main.html')
 
 
+def dashboard(request, year_id):
+    Year = God.objects.get(pk=year_id)
+    # Отопление
+    c_jan_ot = 0
+    c_feb_ot = 0
+    c_mar_ot = 0
+    c_apr_ot = 0
+    c_may_ot = 0
+    c_jun_ot = 0
+    c_jul_ot = 0
+    c_aug_ot = 0
+    c_sep_ot = 0
+    c_oct_ot = 0
+    c_nov_ot = 0
+    c_dec_ot = 0
+
+    jan_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=1) & Q(category_id=1))
+    feb_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=2) & Q(category_id=1))
+    mar_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=3) & Q(category_id=1))
+    apr_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=4) & Q(category_id=1))
+    may_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=5) & Q(category_id=1))
+    jun_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=6) & Q(category_id=1))
+    jul_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=7) & Q(category_id=1))
+    aug_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=8) & Q(category_id=1))
+    sep_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=9) & Q(category_id=1))
+    oct_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=10) & Q(category_id=1))
+    nov_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=11) & Q(category_id=1))
+    dec_ot = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=12) & Q(category_id=1))
+
+    for item in jan_ot:
+        if item.fact > item.limit:
+            c_jan_ot = c_jan_ot + 1
+    print(c_jan_ot)
+
+    for item in feb_ot:
+        if item.fact > item.limit:
+            c_feb_ot = c_feb_ot + 1
+    print(c_feb_ot)
+
+    for item in mar_ot:
+        if item.fact > item.limit:
+            c_mar_ot = c_mar_ot + 1
+    print(c_mar_ot)
+
+    for item in apr_ot:
+        if item.fact > item.limit:
+            c_apr_ot = c_apr_ot + 1
+    print(c_apr_ot)
+
+    for item in may_ot:
+        if item.fact > item.limit:
+            c_may_ot = c_may_ot + 1
+    print(c_may_ot)
+
+    for item in jun_ot:
+        if item.fact > item.limit:
+            c_jun_ot = c_jun_ot + 1
+    print(c_jun_ot)
+
+    for item in jul_ot:
+        if item.fact > item.limit:
+            c_jul_ot = c_jul_ot + 1
+    print(c_jul_ot)
+
+    for item in aug_ot:
+        if item.fact > item.limit:
+            c_aug_ot = c_aug_ot + 1
+    print(c_aug_ot)
+
+    for item in sep_ot:
+        if item.fact > item.limit:
+            c_sep_ot = c_sep_ot + 1
+    print(c_sep_ot)
+
+    for item in oct_ot:
+        if item.fact > item.limit:
+            c_oct_ot = c_oct_ot + 1
+    print(c_oct_ot)
+
+    for item in nov_ot:
+        if item.fact > item.limit:
+            c_nov_ot = c_nov_ot + 1
+    print(c_feb_ot)
+
+    for item in dec_ot:
+        if item.fact > item.limit:
+            c_dec_ot = c_dec_ot + 1
+    print(c_dec_ot)
+
+    # Компонент, ГКал
+    c_jan_kog = 0
+    c_feb_kog = 0
+    c_mar_kog = 0
+    c_apr_kog = 0
+    c_may_kog = 0
+    c_jun_kog = 0
+    c_jul_kog = 0
+    c_aug_kog = 0
+    c_sep_kog = 0
+    c_oct_kog = 0
+    c_nov_kog = 0
+    c_dec_kog = 0
+
+    jan_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=1) & Q(category_id=2))
+    feb_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=2) & Q(category_id=2))
+    mar_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=3) & Q(category_id=2))
+    apr_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=4) & Q(category_id=2))
+    may_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=5) & Q(category_id=2))
+    jun_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=6) & Q(category_id=2))
+    jul_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=7) & Q(category_id=2))
+    aug_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=8) & Q(category_id=2))
+    sep_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=9) & Q(category_id=2))
+    oct_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=10) & Q(category_id=2))
+    nov_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=11) & Q(category_id=2))
+    dec_kog = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=12) & Q(category_id=2))
+
+    for item in jan_kog:
+        if item.fact > item.limit:
+            c_jan_kog = c_jan_kog + 1
+    print(c_jan_kog)
+
+    for item in feb_kog:
+        if item.fact > item.limit:
+            c_feb_kog = c_feb_kog + 1
+    print(c_feb_kog)
+
+    for item in mar_kog:
+        if item.fact > item.limit:
+            c_mar_kog = c_mar_kog + 1
+    print(c_mar_kog)
+
+    for item in apr_kog:
+        if item.fact > item.limit:
+            c_apr_kog = c_apr_kog + 1
+    print(c_apr_kog)
+
+    for item in may_kog:
+        if item.fact > item.limit:
+            c_may_kog = c_may_kog + 1
+    print(c_may_kog)
+
+    for item in jun_kog:
+        if item.fact > item.limit:
+            c_jun_kog = c_jun_kog + 1
+    print(c_jun_kog)
+
+    for item in jul_kog:
+        if item.fact > item.limit:
+            c_jul_kog = c_jul_kog + 1
+    print(c_jul_kog)
+
+    for item in aug_kog:
+        if item.fact > item.limit:
+            c_aug_kog = c_aug_kog + 1
+    print(c_aug_kog)
+
+    for item in sep_kog:
+        if item.fact > item.limit:
+            c_sep_kog = c_sep_kog + 1
+    print(c_sep_kog)
+
+    for item in oct_kog:
+        if item.fact > item.limit:
+            c_oct_kog = c_oct_kog + 1
+    print(c_oct_kog)
+
+    for item in nov_kog:
+        if item.fact > item.limit:
+            c_nov_kog = c_nov_kog + 1
+    print(c_feb_kog)
+
+    for item in dec_kog:
+        if item.fact > item.limit:
+            c_dec_kog = c_dec_kog + 1
+    print(c_dec_kog)
+
+    # Компонент, м3
+    c_jan_k3 = 0
+    c_feb_k3 = 0
+    c_mar_k3 = 0
+    c_apr_k3 = 0
+    c_may_k3 = 0
+    c_jun_k3 = 0
+    c_jul_k3 = 0
+    c_aug_k3 = 0
+    c_sep_k3 = 0
+    c_oct_k3 = 0
+    c_nov_k3 = 0
+    c_dec_k3 = 0
+
+    jan_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=1) & Q(category_id=3))
+    feb_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=2) & Q(category_id=3))
+    mar_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=3) & Q(category_id=3))
+    apr_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=4) & Q(category_id=3))
+    may_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=5) & Q(category_id=3))
+    jun_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=6) & Q(category_id=3))
+    jul_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=7) & Q(category_id=3))
+    aug_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=8) & Q(category_id=3))
+    sep_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=9) & Q(category_id=3))
+    oct_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=10) & Q(category_id=3))
+    nov_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=11) & Q(category_id=3))
+    dec_k3 = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=12) & Q(category_id=3))
+
+    for item in jan_k3:
+        if item.fact > item.limit:
+            c_jan_k3 = c_jan_k3 + 1
+    print(c_jan_k3)
+
+    for item in feb_k3:
+        if item.fact > item.limit:
+            c_feb_k3 = c_feb_k3 + 1
+    print(c_feb_k3)
+
+    for item in mar_k3:
+        if item.fact > item.limit:
+            c_mar_k3 = c_mar_k3 + 1
+    print(c_mar_k3)
+
+    for item in apr_k3:
+        if item.fact > item.limit:
+            c_apr_k3 = c_apr_k3 + 1
+    print(c_apr_k3)
+
+    for item in may_k3:
+        if item.fact > item.limit:
+            c_may_k3 = c_may_k3 + 1
+    print(c_may_k3)
+
+    for item in jun_k3:
+        if item.fact > item.limit:
+            c_jun_k3 = c_jun_k3 + 1
+    print(c_jun_k3)
+
+    for item in jul_k3:
+        if item.fact > item.limit:
+            c_jul_k3 = c_jul_k3 + 1
+    print(c_jul_k3)
+
+    for item in aug_k3:
+        if item.fact > item.limit:
+            c_aug_k3 = c_aug_k3 + 1
+    print(c_aug_k3)
+
+    for item in sep_k3:
+        if item.fact > item.limit:
+            c_sep_k3 = c_sep_k3 + 1
+    print(c_sep_k3)
+
+    for item in oct_k3:
+        if item.fact > item.limit:
+            c_oct_k3 = c_oct_k3 + 1
+    print(c_oct_k3)
+
+    for item in nov_k3:
+        if item.fact > item.limit:
+            c_nov_k3 = c_nov_k3 + 1
+    print(c_feb_k3)
+
+    for item in dec_k3:
+        if item.fact > item.limit:
+            c_dec_k3 = c_dec_k3 + 1
+    print(c_dec_k3)
+
+    # ХВС
+    c_jan_x = 0
+    c_feb_x = 0
+    c_mar_x = 0
+    c_apr_x = 0
+    c_may_x = 0
+    c_jun_x = 0
+    c_jul_x = 0
+    c_aug_x = 0
+    c_sep_x = 0
+    c_oct_x = 0
+    c_nov_x = 0
+    c_dec_x = 0
+
+    jan_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=1) & Q(category_id=4))
+    feb_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=2) & Q(category_id=4))
+    mar_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=3) & Q(category_id=4))
+    apr_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=4) & Q(category_id=4))
+    may_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=5) & Q(category_id=4))
+    jun_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=6) & Q(category_id=4))
+    jul_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=7) & Q(category_id=4))
+    aug_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=8) & Q(category_id=4))
+    sep_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=9) & Q(category_id=4))
+    oct_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=10) & Q(category_id=4))
+    nov_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=11) & Q(category_id=4))
+    dec_x = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=12) & Q(category_id=4))
+
+    for item in jan_x:
+        if item.fact > item.limit:
+            c_jan_x = c_jan_x + 1
+    print(c_jan_x)
+
+    for item in feb_x:
+        if item.fact > item.limit:
+            c_feb_x = c_feb_x + 1
+    print(c_feb_x)
+
+    for item in mar_x:
+        if item.fact > item.limit:
+            c_mar_x = c_mar_x + 1
+    print(c_mar_x)
+
+    for item in apr_x:
+        if item.fact > item.limit:
+            c_apr_x = c_apr_x + 1
+    print(c_apr_x)
+
+    for item in may_x:
+        if item.fact > item.limit:
+            c_may_x = c_may_x + 1
+    print(c_may_x)
+
+    for item in jun_x:
+        if item.fact > item.limit:
+            c_jun_x = c_jun_x + 1
+    print(c_jun_x)
+
+    for item in jul_x:
+        if item.fact > item.limit:
+            c_jul_x = c_jul_x + 1
+    print(c_jul_x)
+
+    for item in aug_x:
+        if item.fact > item.limit:
+            c_aug_x = c_aug_x + 1
+    print(c_aug_x)
+
+    for item in sep_x:
+        if item.fact > item.limit:
+            c_sep_x = c_sep_x + 1
+    print(c_sep_x)
+
+    for item in oct_x:
+        if item.fact > item.limit:
+            c_oct_x = c_oct_x + 1
+    print(c_oct_x)
+
+    for item in nov_x:
+        if item.fact > item.limit:
+            c_nov_x = c_nov_x + 1
+    print(c_feb_x)
+
+    for item in dec_x:
+        if item.fact > item.limit:
+            c_dec_x = c_dec_x + 1
+    print(c_dec_x)
+
+    # ВО
+    c_jan_v = 0
+    c_feb_v = 0
+    c_mar_v = 0
+    c_apr_v = 0
+    c_may_v = 0
+    c_jun_v = 0
+    c_jul_v = 0
+    c_aug_v = 0
+    c_sep_v = 0
+    c_oct_v = 0
+    c_nov_v = 0
+    c_dec_v = 0
+
+    jan_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=1) & Q(category_id=5))
+    feb_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=2) & Q(category_id=5))
+    mar_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=3) & Q(category_id=5))
+    apr_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=4) & Q(category_id=5))
+    may_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=5) & Q(category_id=5))
+    jun_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=6) & Q(category_id=5))
+    jul_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=7) & Q(category_id=5))
+    aug_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=8) & Q(category_id=5))
+    sep_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=9) & Q(category_id=5))
+    oct_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=10) & Q(category_id=5))
+    nov_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=11) & Q(category_id=5))
+    dec_v = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=12) & Q(category_id=5))
+
+    for item in jan_v:
+        if item.fact > item.limit:
+            c_jan_v = c_jan_v + 1
+    print(c_jan_v)
+
+    for item in feb_v:
+        if item.fact > item.limit:
+            c_feb_v = c_feb_v + 1
+    print(c_feb_v)
+
+    for item in mar_v:
+        if item.fact > item.limit:
+            c_mar_v = c_mar_v + 1
+    print(c_mar_v)
+
+    for item in apr_v:
+        if item.fact > item.limit:
+            c_apr_v = c_apr_v + 1
+    print(c_apr_v)
+
+    for item in may_v:
+        if item.fact > item.limit:
+            c_may_v = c_may_v + 1
+    print(c_may_v)
+
+    for item in jun_v:
+        if item.fact > item.limit:
+            c_jun_v = c_jun_v + 1
+    print(c_jun_v)
+
+    for item in jul_v:
+        if item.fact > item.limit:
+            c_jul_v = c_jul_v + 1
+    print(c_jul_v)
+
+    for item in aug_v:
+        if item.fact > item.limit:
+            c_aug_v = c_aug_v + 1
+    print(c_aug_v)
+
+    for item in sep_v:
+        if item.fact > item.limit:
+            c_sep_v = c_sep_v + 1
+    print(c_sep_v)
+
+    for item in oct_v:
+        if item.fact > item.limit:
+            c_oct_v = c_oct_v + 1
+    print(c_oct_v)
+
+    for item in nov_v:
+        if item.fact > item.limit:
+            c_nov_v = c_nov_v + 1
+    print(c_feb_v)
+
+    for item in dec_v:
+        if item.fact > item.limit:
+            c_dec_v = c_dec_v + 1
+    print(c_dec_v)
+
+    # Электричество
+    c_jan_e = 0
+    c_feb_e = 0
+    c_mar_e = 0
+    c_apr_e = 0
+    c_may_e = 0
+    c_jun_e = 0
+    c_jul_e = 0
+    c_aug_e = 0
+    c_sep_e = 0
+    c_oct_e = 0
+    c_nov_e = 0
+    c_dec_e = 0
+
+    jan_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=1) & Q(category_id=6))
+    feb_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=2) & Q(category_id=6))
+    mar_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=3) & Q(category_id=6))
+    apr_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=4) & Q(category_id=6))
+    may_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=5) & Q(category_id=6))
+    jun_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=6) & Q(category_id=6))
+    jul_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=7) & Q(category_id=6))
+    aug_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=8) & Q(category_id=6))
+    sep_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=9) & Q(category_id=6))
+    oct_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=10) & Q(category_id=6))
+    nov_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=11) & Q(category_id=6))
+    dec_e = Consumption.objects.filter(Q(god_id=year_id) & Q(month_id=12) & Q(category_id=6))
+
+    for item in jan_e:
+        if item.fact > item.limit:
+            c_jan_e = c_jan_e + 1
+    print(c_jan_e)
+
+    for item in feb_e:
+        if item.fact > item.limit:
+            c_feb_e = c_feb_e + 1
+    print(c_feb_e)
+
+    for item in mar_e:
+        if item.fact > item.limit:
+            c_mar_e = c_mar_e + 1
+    print(c_mar_e)
+
+    for item in apr_e:
+        if item.fact > item.limit:
+            c_apr_e = c_apr_e + 1
+    print(c_apr_e)
+
+    for item in may_e:
+        if item.fact > item.limit:
+            c_may_e = c_may_e + 1
+    print(c_may_e)
+
+    for item in jun_e:
+        if item.fact > item.limit:
+            c_jun_e = c_jun_e + 1
+    print(c_jun_e)
+
+    for item in jul_e:
+        if item.fact > item.limit:
+            c_jul_e = c_jul_e + 1
+    print(c_jul_e)
+
+    for item in aug_e:
+        if item.fact > item.limit:
+            c_aug_e = c_aug_e + 1
+    print(c_aug_e)
+
+    for item in sep_e:
+        if item.fact > item.limit:
+            c_sep_e = c_sep_e + 1
+    print(c_sep_e)
+
+    for item in oct_e:
+        if item.fact > item.limit:
+            c_oct_e = c_oct_e + 1
+    print(c_oct_e)
+
+    for item in nov_e:
+        if item.fact > item.limit:
+            c_nov_e = c_nov_e + 1
+    print(c_feb_e)
+
+    for item in dec_e:
+        if item.fact > item.limit:
+            c_dec_e = c_dec_e + 1
+    print(c_dec_e)
+
+
+    data = {
+        'year': Year,
+         # Отопление
+        'january_o': c_jan_ot,
+        'february_o': c_feb_ot,
+        'march_o': c_mar_ot,
+        'april_o': c_apr_ot,
+        'may_o': c_may_ot,
+        'june_o': c_jun_ot,
+        'jule_o': c_jul_ot,
+        'august_o': c_aug_ot,
+        'september_o': c_sep_ot,
+        'october_o': c_oct_ot,
+        'novembeer_o': c_nov_ot,
+        'december_o': c_dec_ot,
+        # Компонент ГКал
+        'january_kog': c_jan_kog,
+        'february_kog': c_feb_kog,
+        'march_kog': c_mar_kog,
+        'april_kog': c_apr_kog,
+        'may_kog': c_may_kog,
+        'june_kog': c_jun_kog,
+        'jule_kog': c_jul_kog,
+        'august_kog': c_aug_kog,
+        'september_kog': c_sep_kog,
+        'october_kog': c_oct_kog,
+        'novembeer_kog': c_nov_kog,
+        'december_kog': c_dec_kog,
+        # Компонент м3
+        'january_k3': c_jan_k3,
+        'february_k3': c_feb_k3,
+        'march_k3': c_mar_k3,
+        'april_k3': c_apr_k3,
+        'may_k3': c_may_k3,
+        'june_k3': c_jun_k3,
+        'jule_k3': c_jul_k3,
+        'august_k3': c_aug_k3,
+        'september_k3': c_sep_k3,
+        'october_k3': c_oct_k3,
+        'novembeer_k3': c_nov_k3,
+        'december_k3': c_dec_k3,
+        # ХВС
+        'january_x': c_jan_x,
+        'february_x': c_feb_x,
+        'march_x': c_mar_x,
+        'april_x': c_apr_x,
+        'may_x': c_may_x,
+        'june_x': c_jun_x,
+        'jule_x': c_jul_x,
+        'august_x': c_aug_x,
+        'september_x': c_sep_x,
+        'october_x': c_oct_x,
+        'novembeer_x': c_nov_x,
+        'december_x': c_dec_x,
+        # ВО
+        'january_v': c_jan_v,
+        'february_v': c_feb_v,
+        'march_v': c_mar_v,
+        'april_v': c_apr_v,
+        'may_v': c_may_v,
+        'june_v': c_jun_v,
+        'jule_v': c_jul_v,
+        'august_v': c_aug_v,
+        'september_v': c_sep_v,
+        'october_v': c_oct_v,
+        'novembeer_v': c_nov_v,
+        'december_v': c_dec_v,
+        # Электричество
+        'january_e': c_jan_e,
+        'february_e': c_feb_e,
+        'march_e': c_mar_e,
+        'april_e': c_apr_e,
+        'may_e': c_may_e,
+        'june_e': c_jun_e,
+        'jule_e': c_jul_e,
+        'august_e': c_aug_e,
+        'september_e': c_sep_e,
+        'october_e': c_oct_e,
+        'novembeer_e': c_nov_e,
+        'december_e': c_dec_e,
+    }
+    return render(request, 'website/dashboard_admin.html', data)
+
+
 class AdressList(LoginRequiredMixin, generic.ListView):
     model = Consumption
     template_name = 'website/main.html'
@@ -228,6 +837,8 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                                  TheAddressGroup__consumption__category=Category.objects.get(
                                      pk=category_id)))).order_by('TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
             # print(group_data_filtered)
+            group_data_3 = group_data_filtered.annotate(otklonenie_new=F('limit') - F('fact'))
+            group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
 
             list_group_data = []
             for one_address in all_address_of_the_municipal_organizations:
@@ -240,7 +851,7 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                     for one_table_address_without_group_data in table_address_without_group_data:
                         list_group_data.append(one_table_address_without_group_data)
                 elif one_address.group not in list_group_data:
-                    for one_group_data in group_data_filtered:
+                    for one_group_data in group_data_4:
                         list_group_data.append(one_group_data)
                         table_address_with_group_data = Consumption.objects.filter(
                             address_of_the_municipal_organization__group=one_group_data).filter(
@@ -248,7 +859,9 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                             pk=month_id)).filter(category=Category.objects.get(pk=category_id))
                         for one_table_address_with_group_data in table_address_with_group_data:
                             list_group_data.append(one_table_address_with_group_data)
+
             # print(list_group_data, 444)
+            print(1)
 
             return render(request, 'website/view_consumption.html',
                           {'all_address': all_address_of_the_municipal_organizations,
@@ -257,7 +870,7 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
     else:
         form = OrganizationsForm()
         all_address_of_the_municipal_organizations = AddressOfTheMunicipalOrganizations.objects.all().order_by('address')
-        print(all_address_of_the_municipal_organizations, 555555555)
+        # print(all_address_of_the_municipal_organizations, 555555555)
         filtered_group_data = AddressGroup.objects.all().distinct()
         group_data_filtered = filtered_group_data.annotate(
             fact=Sum('TheAddressGroup__consumption__fact',
@@ -306,6 +919,7 @@ def view_data_adress_admin(request, category_id, year_id, month_id):
                     for one_table_address_with_group_data in table_address_with_group_data:
                         list_group_data.append(one_table_address_with_group_data)
         # print(list_group_data, 444)
+        print(2)
 
         return render(request, 'website/view_consumption.html',
                       {'all_address': all_address_of_the_municipal_organizations,
@@ -2435,6 +3049,7 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
     row = 3
     row_address = 3
     col = colonnna
+    count = 0
     # for one_address in all_address_4:
     #     if (one_address.group is None):
     #         print(1)
@@ -2450,14 +3065,13 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
     #         # worksheet.write(row, col + 4, one_address.sum, num_color_cut3)
     #         # row = row + 1
     #     elif one_address.group not in list_group_data:
-
+    municipalorg = MunicipalOrganizations.objects.all()
+    for organization in municipalorg:
+        print(organization)
     for one_group_data in group_data_4:
-        # print(one_group_data, 'Главный адрес')
         list_group_data.append(one_group_data)
-        # worksheet.write(row, 0, str(one_address.municipalOrganization), f_address_bold)
         worksheet.write(row, 0, 'Группа адресов', f_address_bold)
         worksheet.write(row, 1, str(one_group_data.titleOfTheAddressGroup), f_address_bold)
-        # worksheet.write(row, col, sum_data_final['fact'], num_color_bold)
         worksheet.write(row, col, one_group_data.fact, num_color_bold)
         worksheet.write(row, col + 1, one_group_data.limit, num_color_bold)
         worksheet.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
@@ -2478,14 +3092,153 @@ def write_year(year_id, category_id, worksheet, colonnna, f_address, f_address_b
             row = row + 1
     worksheet.merge_range(row, 0, row, 1, '', f_address_bold)
     worksheet.write(row, 0, 'Итог', f_address_bold)
-    worksheet.write(row, col, sum_data_final['fact'], num_color)
-    worksheet.write(row, col + 1, sum_data_final['limit'], num_color)
-    worksheet.write(row, col + 2, sum_data_final['otklonenie'], num_color)
-    worksheet.write(row, col + 3, '-', num_color)
-    worksheet.write(row, col + 4, sum_data_final['sum'], num_color)
+    worksheet.write(row, col, sum_data_final['fact'], num_color_bold)
+    worksheet.write(row, col + 1, sum_data_final['limit'], num_color_bold)
+    worksheet.write(row, col + 2, sum_data_final['otklonenie'], num_color_bold)
+    worksheet.write(row, col + 3, '-', num_color_bold)
+    worksheet.write(row, col + 4, sum_data_final['sum'], num_color_bold)
     # for j in list_group_data:
     #     print('write year')
     #     print(j, j.fact, j.limit)
+
+# def write_final(year_id, worksheet, colonnna, f_address, f_address_bold, num_color, num_color_bold,
+#                num_color_cut2,
+#                num_color_cut3, num_color_bold_cut2, num_color_bold_cut3, f_address_italic_underline):
+#     sum_data_otoplenie = Consumption.objects.filter(category__pk=1).filter(
+#         god=year_id)
+#     # sum_data = Consumption.objects.filter(category=category_id).filter(
+#     #     god=year_id).filter(
+#     #     address_of_the_municipal_organization__municipalOrganization__title='УОиДО')
+#     sum_data_final_otoplenie = sum_data_otoplenie.aggregate(fact=Sum('fact'), limit=Sum('limit'), otklonenie=Sum('otklonenie'),
+#                                         otklonenie_percent=Sum('otklonenie_percent'), sum=Sum('sum'))
+#
+#
+#
+#
+#     print(sum_data_final['fact'], sum_data_final['limit'])
+#     group_data_1 = AddressGroup.objects.all().distinct()
+#     all_address_1 = AddressOfTheMunicipalOrganizations.objects.all()
+#
+#     all_address_2 = all_address_1.annotate(fact=Sum('consumption__fact',
+#                                                     filter=(Q(
+#                                                         consumption__god=God.objects.get(pk=year_id),
+#                                                         consumption__category=Category.objects.get(
+#                                                             pk=category_id)))),
+#                                            limit=Sum('consumption__limit',
+#                                                      filter=(Q(
+#                                                          consumption__god=God.objects.get(pk=year_id),
+#                                                          consumption__category=Category.objects.get(
+#                                                              pk=category_id)))),
+#                                            otklonenie=Sum('consumption__otklonenie',
+#                                                           filter=(Q(
+#                                                               consumption__god=God.objects.get(pk=year_id),
+#                                                               consumption__category=Category.objects.get(
+#                                                                   pk=category_id)))),
+#                                            otklonenie_percent=Sum('consumption__otklonenie_percent',
+#                                                                   filter=(
+#                                                                       Q(
+#                                                                           consumption__god=God.objects.get(
+#                                                                               pk=year_id),
+#                                                                           consumption__category=Category.objects.get(
+#                                                                               pk=category_id)))),
+#                                            sum=Sum('consumption__sum',
+#                                                    filter=(Q(
+#                                                        consumption__god=God.objects.get(pk=year_id),
+#                                                        consumption__category=Category.objects.get(
+#                                                            pk=category_id))))).order_by(
+#         'consumption__address_of_the_municipal_organization__group')
+#     # for i in all_address_2:
+#     #     print(i, 'Адрес')
+#
+#     all_address_3 = all_address_2.annotate(otklonenie_new=F('limit') - F('fact'))
+#     all_address_4 = all_address_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+#
+#     group_data_2 = group_data_1.annotate(
+#         fact=Sum('TheAddressGroup__consumption__fact',
+#                  filter=(Q(
+#                      TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+#                      TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+#         limit=Sum('TheAddressGroup__consumption__limit',
+#                   filter=(Q(
+#                       TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+#                       TheAddressGroup__consumption__category=Category.objects.get(pk=category_id)))),
+#         otklonenie=Sum('TheAddressGroup__consumption__otklonenie',
+#                        filter=(Q(
+#                            TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+#                            TheAddressGroup__consumption__category=Category.objects.get(
+#                                pk=category_id)))),
+#         otklonenie_percent=Sum('TheAddressGroup__consumption__otklonenie_percent',
+#                                filter=(Q(
+#                                    TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+#                                    TheAddressGroup__consumption__category=Category.objects.get(
+#                                        pk=category_id)))),
+#         sum=Sum('TheAddressGroup__consumption__sum',
+#                 filter=(Q(
+#                     TheAddressGroup__consumption__god=God.objects.get(pk=year_id),
+#                     TheAddressGroup__consumption__category=Category.objects.get(pk=category_id))))).order_by(
+#         'TheAddressGroup__consumption__address_of_the_municipal_organization__municipalOrganization')
+#     # for j in group_data_2:
+#     #     print('year')
+#     #     print(j)
+#
+#     group_data_3 = group_data_2.annotate(otklonenie_new=F('limit') - F('fact'))
+#     group_data_4 = group_data_3.annotate(otklonenie_percent_new=F('otklonenie_new') / F('limit'))
+#
+#     list_group_data = []
+#     row = 3
+#     row_address = 3
+#     col = colonnna
+#     count = 0
+#     # for one_address in all_address_4:
+#     #     if (one_address.group is None):
+#     #         print(1)
+#     #         worksheet.write(row, 0, str(one_address.municipalOrganization), f_address_bold)
+#     #         # list_group_data.append(one_address)
+#     #         # # print(one_address, 'Просто адрес')
+#     #         # worksheet.write(row, 0, str(one_address.municipalOrganization), f_address_italic_underline)
+#     #         # worksheet.write(row, 1, str(one_address.address), f_address_italic_underline)
+#     #         # worksheet.write(row, col, one_address.fact, num_color)
+#     #         # worksheet.write(row, col + 1, one_address.limit, num_color)
+#     #         # worksheet.write(row, col + 2, one_address.otklonenie_new, num_color_cut2)
+#     #         # worksheet.write(row, col + 3, one_address.otklonenie_percent_new, num_color_cut2)
+#     #         # worksheet.write(row, col + 4, one_address.sum, num_color_cut3)
+#     #         # row = row + 1
+#     #     elif one_address.group not in list_group_data:
+#     municipalorg = MunicipalOrganizations.objects.all()
+#     for organization in municipalorg:
+#         print(organization)
+#     for one_group_data in group_data_4:
+#         list_group_data.append(one_group_data)
+#         worksheet.write(row, 0, 'Группа адресов', f_address_bold)
+#         worksheet.write(row, 1, str(one_group_data.titleOfTheAddressGroup), f_address_bold)
+#         worksheet.write(row, col, one_group_data.fact, num_color_bold)
+#         worksheet.write(row, col + 1, one_group_data.limit, num_color_bold)
+#         worksheet.write(row, col + 2, one_group_data.otklonenie_new, num_color_bold_cut2)
+#         worksheet.write(row, col + 3, one_group_data.otklonenie_percent_new, num_color_bold_cut2)
+#         worksheet.write(row, col + 4, one_group_data.sum, num_color_bold_cut3)
+#         row = row + 1
+#         table_address_with_group_data = all_address_4.filter(
+#             group=one_group_data)
+#         for k in table_address_with_group_data:
+#             list_group_data.append(k)
+#             worksheet.write(row, 0, str(k.municipalOrganization), f_address_bold)
+#             worksheet.write(row, 1, str(k.address), f_address)
+#             worksheet.write(row, col, k.fact, num_color)
+#             worksheet.write(row, col + 1, k.limit, num_color)
+#             worksheet.write(row, col + 2, k.otklonenie_new, num_color_cut2)
+#             worksheet.write(row, col + 3, k.otklonenie_percent_new, num_color_cut2)
+#             worksheet.write(row, col + 4, k.sum, num_color_cut3)
+#             row = row + 1
+#     worksheet.merge_range(row, 0, row, 1, '', f_address_bold)
+#     worksheet.write(row, 0, 'Итог', f_address_bold)
+#     worksheet.write(row, col, sum_data_final['fact'], num_color_bold)
+#     worksheet.write(row, col + 1, sum_data_final['limit'], num_color_bold)
+#     worksheet.write(row, col + 2, sum_data_final['otklonenie'], num_color_bold)
+#     worksheet.write(row, col + 3, '-', num_color_bold)
+#     worksheet.write(row, col + 4, sum_data_final['sum'], num_color_bold)
+#     # for j in list_group_data:
+#     #     print('write year')
+#     #     print(j, j.fact, j.limit)
 
 
 def excel_test(request, year_id):
@@ -2525,6 +3278,11 @@ def excel_test(request, year_id):
     worksheet_6.freeze_panes(3, 2)
     worksheet_6.set_row(2, 60)
     worksheet_6.write('C3', '', format_color_1)
+
+    # worksheet_7 = workbook.add_worksheet('Итоги по организациям')
+    # worksheet_7.freeze_panes(3, 2)
+    # worksheet_7.set_row(2, 60)
+    # worksheet_7.write('C3', '', format_color_1)
 
     format_default = workbook.add_format({
         'font_size': 9,
@@ -2999,6 +3757,12 @@ def excel_test(request, year_id):
     worksheet_6.write('A3', '№ п/п', format_default)
     worksheet_6.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
 
+    # worksheet_7.merge_range('A1:B2', '')
+    # worksheet_7.set_column(0, 0, 25)
+    # worksheet_7.set_column(1, 1, 35)
+    # worksheet_7.write('A3', '№ п/п', format_default)
+    # worksheet_7.write('B3', 'Наименование учреждения/ адрес                      расположение объекта', format_default)
+
     list = [worksheet_1, worksheet_2, worksheet_3, worksheet_4, worksheet_5, worksheet_6]
     categories = Category.objects.all().order_by('pk')
     categories1 = Category.objects.all()
@@ -3165,6 +3929,60 @@ def excel_test(request, year_id):
         i.write('CL3', 'отклонение               (лимит-факт) ', format_red)
         i.write('CM3', 'отклонение               %', format_red)
         i.write('CN3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_red)
+
+    # worksheet_7.merge_range('C1:G1', '', month_format_yellow)
+    # worksheet_7.merge_range('C2:G2', 'Отопление', month_format_yellow)
+    # worksheet_7.set_column(2, 6, 11.22)
+    # worksheet_7.write('C3', 'Фактическое потребление ', format_yellow)
+    # worksheet_7.write('D3', 'Установленный лимит  ', format_yellow)
+    # worksheet_7.write('E3', 'отклонение               (лимит-факт) ', format_yellow)
+    # worksheet_7.write('F3', 'отклонение               %', format_yellow)
+    # worksheet_7.write('G3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+    # # Февраль
+    # worksheet_7.merge_range('H1:L1', '', month_format_blue)
+    # worksheet_7.merge_range('H2:L2', 'Компонент, Гкал', month_format_blue)
+    # worksheet_7.set_column(7, 12, 11.22)
+    # worksheet_7.write('H3', 'Фактическое потребление ', format_blue)
+    # worksheet_7.write('I3', 'Установленный лимит  ', format_blue)
+    # worksheet_7.write('J3', 'отклонение               (лимит-факт) ', format_blue)
+    # worksheet_7.write('K3', 'отклонение               %', format_blue)
+    # worksheet_7.write('L3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
+    # # Март
+    # worksheet_7.merge_range('M1:Q1', '', month_format_green)
+    # worksheet_7.merge_range('M2:Q2', 'Компонент, м3', month_format_green)
+    # worksheet_7.set_column(13, 18, 11.22)
+    # worksheet_7.write('M3', 'Фактическое потребление ', format_green)
+    # worksheet_7.write('N3', 'Установленный лимит  ', format_green)
+    # worksheet_7.write('O3', 'отклонение               (лимит-факт) ', format_green)
+    # worksheet_7.write('P3', 'отклонение               %', format_green)
+    # worksheet_7.write('Q3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_green)
+    # # 1 Квартал
+    # worksheet_7.merge_range('R1:V1', '', month_format_default)
+    # worksheet_7.merge_range('R2:V2', 'ХВС', month_format_default)
+    # worksheet_7.set_column(19, 24, 11.22)
+    # worksheet_7.write('R3', 'Фактическое потребление ', format_default)
+    # worksheet_7.write('S3', 'Установленный лимит  ', format_default)
+    # worksheet_7.write('T3', 'отклонение               (лимит-факт) ', format_default)
+    # worksheet_7.write('U3', 'отклонение               %', format_default)
+    # worksheet_7.write('V3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_default)
+    # # Апрель
+    # worksheet_7.merge_range('W1:AA1', '', month_format_yellow)
+    # worksheet_7.merge_range('W2:AA2', 'ВО', month_format_yellow)
+    # worksheet_7.set_column(25, 30, 11.22)
+    # worksheet_7.write('W3', 'Фактическое потребление ', format_yellow)
+    # worksheet_7.write('X3', 'Установленный лимит  ', format_yellow)
+    # worksheet_7.write('Y3', 'отклонение               (лимит-факт) ', format_yellow)
+    # worksheet_7.write('Z3', 'отклонение               %', format_yellow)
+    # worksheet_7.write('AA3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_yellow)
+    # # Май
+    # worksheet_7.merge_range('AB1:AF1', '', month_format_blue)
+    # worksheet_7.merge_range('AB2:AF2', 'Электричество', month_format_blue)
+    # worksheet_7.set_column(31, 36, 11.22)
+    # worksheet_7.write('AB3', 'Фактическое потребление ', format_blue)
+    # worksheet_7.write('AC3', 'Установленный лимит  ', format_blue)
+    # worksheet_7.write('AD3', 'отклонение               (лимит-факт) ', format_blue)
+    # worksheet_7.write('AE3', 'отклонение               %', format_blue)
+    # worksheet_7.write('AF3', 'Сумма, выставленная по счетам, тыс.руб. (с НДС)', format_blue)
 
     for sheet, category in zip(list, categories):
         write_year(year_id=year_id, category_id=category.id, worksheet=sheet, colonnna=87, f_address=f_address,

@@ -1,0 +1,128 @@
+{% extends 'website_base/base_1.html' %}
+{% load energy_type_tags %}
+{% block title %}Данные за {{ year.name }} год{% endblock %}
+
+{% block content %}
+    <style>
+        td, th {
+            text-align: center;
+        }
+    </style>
+    <h2 style="text-align: center">Статистические данные за {{ year.name }} </h2>
+    <hr>
+    <h3 style="text-align: center">Количество адресов с перепотреблением энергоресурсов</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Январь</th>
+            <th scope="col">Февраль</th>
+            <th scope="col">Март</th>
+            <th scope="col">Апрель</th>
+            <th scope="col">Май</th>
+            <th scope="col">Июнь</th>
+            <th scope="col">Июль</th>
+            <th scope="col">Август</th>
+            <th scope="col">Сентябрь</th>
+            <th scope="col">Октябрь</th>
+            <th scope="col">Ноябрь</th>
+            <th scope="col">Декабрь</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">Отопление</th>
+            <td><a href="#">{{ january_o }}</a></td>
+            <td>{{ february_o }}</td>
+            <td>{{ march_o }}</td>
+            <td>{{ april_o }}</td>
+            <td>{{ may_o }}</td>
+            <td>{{ june_o }}</td>
+            <td>{{ jule_o }}</td>
+            <td>{{ august_o }}</td>
+            <td>{{ september_o }}</td>
+            <td>{{ october_o }}</td>
+            <td>{{ novembeer_o }}</td>
+            <td>{{ december_o }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Компонент, Гкал</th>
+            <td>{{ january_kog }}</td>
+            <td>{{ february_kog }}</td>
+            <td>{{ march_kog }}</td>
+            <td>{{ april_kog }}</td>
+            <td>{{ may_kog }}</td>
+            <td>{{ june_kog }}</td>
+            <td>{{ jule_kog }}</td>
+            <td>{{ august_kog }}</td>
+            <td>{{ september_kog }}</td>
+            <td>{{ october_kog }}</td>
+            <td>{{ novembeer_kog }}</td>
+            <td>{{ december_kog }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Компонент, тыс.м3</th>
+            <td>{{ january_k3 }}</td>
+            <td>{{ february_k3 }}</td>
+            <td>{{ march_k3 }}</td>
+            <td>{{ april_k3 }}</td>
+            <td>{{ may_k3 }}</td>
+            <td>{{ june_k3 }}</td>
+            <td>{{ jule_k3 }}</td>
+            <td>{{ august_k3 }}</td>
+            <td>{{ september_k3 }}</td>
+            <td>{{ october_k3 }}</td>
+            <td>{{ novembeer_k3 }}</td>
+            <td>{{ december_k3 }}</td>
+        </tr>
+        <tr>
+            <th scope="row">ХВС</th>
+            <td>{{ january_x }}</td>
+            <td>{{ february_x }}</td>
+            <td>{{ march_x }}</td>
+            <td>{{ april_x }}</td>
+            <td>{{ may_x }}</td>
+            <td>{{ june_x }}</td>
+            <td>{{ jule_x }}</td>
+            <td>{{ august_x }}</td>
+            <td>{{ september_x }}</td>
+            <td>{{ october_x }}</td>
+            <td>{{ novembeer_x }}</td>
+            <td>{{ december_x }}</td>
+        </tr>
+        <tr>
+            <th scope="row">ВО</th>
+            <td>{{ january_v }}</td>
+            <td>{{ february_v }}</td>
+            <td>{{ march_v }}</td>
+            <td>{{ april_v }}</td>
+            <td>{{ may_v }}</td>
+            <td>{{ june_v }}</td>
+            <td>{{ jule_v }}</td>
+            <td>{{ august_v }}</td>
+            <td>{{ september_v }}</td>
+            <td>{{ october_v }}</td>
+            <td>{{ novembeer_v }}</td>
+            <td>{{ december_v }}</td>
+        </tr>
+        <tr>
+            <th scope="row">Электричество</th>
+             <td>{{ january_e }}</td>
+            <td>{{ february_e }}</td>
+            <td>{{ march_e }}</td>
+            <td>{{ april_e }}</td>
+            <td>{{ may_e }}</td>
+            <td>{{ june_e }}</td>
+            <td>{{ jule_e }}</td>
+            <td>{{ august_e }}</td>
+            <td>{{ september_e }}</td>
+            <td>{{ october_e }}</td>
+            <td>{{ novembeer_e }}</td>
+            <td>{{ december_e }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+{% endblock %}
